@@ -3,7 +3,7 @@ class APIClient {
   constructor() {
     this.baseURL = window.location.hostname === 'localhost' 
       ? 'http://localhost:5000/api'
-      : 'https://survey-africa-backend.up.railway.app/api';
+      : 'https://surveyafrica-backend.up.railway.app/api';
     this.token = typeof localStorage !== 'undefined' ? localStorage.getItem('authToken') : null;
   }
 
