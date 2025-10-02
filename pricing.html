@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    line-height: 1.6;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  header {
+    position: fixed;
+    width: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    z-index: 999;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .brand .logo-mark {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #00cec9;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  nav ul li a:hover {
+    color: #00cec9;
+  }
+
+  main {
+    padding: 120px 20px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-section {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .hero-section h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #00cec9, #fd79a8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .pricing-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.2);
+    text-align: center;
+    transition: transform 0.3s ease;
+    position: relative;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-10px);
+  }
+
+  .pricing-card.popular {
+    border-color: #00cec9;
+    box-shadow: 0 0 30px rgba(0,206,201,0.3);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00cec9;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .plan-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 1rem;
+  }
+
+  .plan-price {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #00cec9;
+    margin-bottom: 0.5rem;
+  }
+
+  .plan-period {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2rem;
+  }
+
+  .features-list {
+    list-style: none;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+
+  .features-list li {
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .features-list li::before {
+    content: "✓";
+    color: #22c55e;
+    font-weight: bold;
+  }
+
+  .btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #00cec9, #fd79a8);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .earning-section {
+    background: rgba(34, 197, 94, 0.1);
+    border: 2px solid rgba(34, 197, 94, 0.3);
+    padding: 3rem;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .earning-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .earning-card {
+    background: rgba(255,255,255,0.05);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+  }
+
+  .earning-amount {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #22c55e;
+    margin-bottom: 1rem;
+  }
+
+  footer {
+    text-align: center;
+    background: rgba(0,0,0,0.9);
+    padding: 2rem;
+    margin-top: 4rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  @media (max-width: 768px) {
+    .hero-section h1 {
+      font-size: 2rem;
+    }
+    
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo-mark">SA</div>
+      <div>Survey Africa</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <h1>Choose Your Plan</h1>
+      <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9);">
+        Start for free and upgrade as you grow. All plans include earning opportunities!
+      </p>
+    </section>
+
+    <div class="earning-section">
+      <h2 style="color: #22c55e; font-size: 2rem; margin-bottom: 1rem;">
+        <i class="fas fa-coins"></i> Earn Money With Every Plan
+      </h2>
+      <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+        All users can earn money through our partner programs and tasks, regardless of their subscription plan.
+      </p>
+      
+      <div class="earning-grid">
+        <div class="earning-card">
+          <div class="earning-amount">$2.50</div>
+          <h4 style="color: #ffd700; margin-bottom: 1rem;">CPA Offers</h4>
+          <p>Complete partner signups and trials</p>
+        </div>
+        <div class="earning-card">
+          <div class="earning-amount">$1.00</div>
+          <h4 style="color: #ffd700; margin-bottom: 1rem;">YouTube Tasks</h4>
+          <p>Watch, like, and subscribe to videos</p>
+        </div>
+        <div class="earning-card">
+          <div class="earning-amount">$0.50</div>
+          <h4 style="color: #ffd700; margin-bottom: 1rem;">Social Sharing</h4>
+          <p>Share surveys on social media</p>
+        </div>
+        <div class="earning-card">
+          <div class="earning-amount">$5.00</div>
+          <h4 style="color: #ffd700; margin-bottom: 1rem;">Referrals</h4>
+          <p>Invite friends to join the platform</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0</div>
+        <div class="plan-period">Forever</div>
+        <ul class="features-list">
+          <li>Up to 3 surveys</li>
+          <li>100 responses per survey</li>
+          <li>Basic analytics</li>
+          <li>Email support</li>
+          <li>Earning opportunities</li>
+          <li>CPA offers access</li>
+          <li>YouTube tasks</li>
+        </ul>
+        <a href="signup.html" class="btn btn-secondary">Get Started Free</a>
+      </div>
+
+      <div class="pricing-card popular">
+        <div class="popular-badge">Most Popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$19</div>
+        <div class="plan-period">per month</div>
+        <ul class="features-list">
+          <li>Unlimited surveys</li>
+          <li>5,000 responses per survey</li>
+          <li>Advanced analytics</li>
+          <li>Priority support</li>
+          <li>Team collaboration</li>
+          <li>Custom branding</li>
+          <li>All earning opportunities</li>
+          <li>Premium CPA offers</li>
+          <li>Bonus YouTube tasks</li>
+        </ul>
+        <a href="signup.html" class="btn btn-primary">Start Pro Trial</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">$99</div>
+        <div class="plan-period">per month</div>
+        <ul class="features-list">
+          <li>Unlimited everything</li>
+          <li>White-label solution</li>
+          <li>API access</li>
+          <li>Dedicated support</li>
+          <li>Custom integrations</li>
+          <li>Advanced security</li>
+          <li>Maximum earning potential</li>
+          <li>Exclusive CPA offers</li>
+          <li>Premium partner programs</li>
+        </ul>
+        <a href="contact.html" class="btn btn-secondary">Contact Sales</a>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 3rem;">
+      <h3 style="color: #ffd700; margin-bottom: 1rem;">Questions about pricing?</h3>
+      <p style="margin-bottom: 2rem;">Our team is here to help you choose the right plan for your needs.</p>
+      <a href="contact.html" class="btn btn-primary" style="width: auto; padding: 15px 40px;">Contact Us</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Survey Africa. Made with ❤️ for Africa.</p>
+  </footer>
+</body>
+</html>

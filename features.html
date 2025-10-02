@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Survey Africa features - multilingual surveys, offline mode, analytics and more" />
+  <title>Features • Survey Africa</title>
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Dark overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: -1;
+    }
+
+    /* Navbar */
+    header {
+      position: fixed;
+      width: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      z-index: 999;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .brand .logo-mark {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #00cec9;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      padding: 0.5rem 0;
+    }
+
+    nav ul li a:hover {
+      border-bottom: 2px solid #fff;
+      color: #ffd700;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .hamburger:hover {
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 250px;
+        text-align: right;
+        padding: 2rem;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+
+    /* Features Page */
+    main {
+      padding: 120px 20px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 3rem;
+      color: #ffd700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: #ffd700;
+      box-shadow: 0 12px 20px rgba(0,0,0,0.5);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      font-weight: bold;
+      color: #ffd700;
+    }
+
+    .feature-desc {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 2rem;
+      font-size: 1rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="logo-mark">SA</div>
+      <div class="logo-name">Survey Africa</div>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <nav>
+      <ul id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <h1 data-aos="fade-up">Our Features</h1>
+    <div class="features-grid">
+      <div class="feature-card" data-aos="fade-up">
+        <div class="feature-icon">🌍</div>
+        <div class="feature-title">Multilingual Support</div>
+        <div class="feature-desc">Reach every community with surveys available in multiple African languages.</div>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Mobile & Offline Ready</div>
+        <div class="feature-desc">Collect responses anywhere, even without internet, with offline mode.</div>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Real-Time Analytics</div>
+        <div class="feature-desc">Visualize your data instantly with our easy-to-use dashboards.</div>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Data Security</div>
+        <div class="feature-desc">Your surveys and responses are safe with our secure storage system.</div>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="feature-icon">🤝</div>
+        <div class="feature-title">Collaboration Tools</div>
+        <div class="feature-desc">Work with your team seamlessly, share insights, and grow together.</div>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Quick Setup</div>
+        <div class="feature-desc">Get started fast with customizable templates that fit your needs.</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    
+    <p>© 2025 Survey Africa. Made with ❤️ for Africa.</p>
+  </footer>
+  <!-- JS -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("nav-menu");
+      menu.classList.toggle("active");
+    }
+  </script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ 
+      duration: 1000, 
+      once: true,
+      offset: 100
+    });
+  </script>
+</body>
+</html>

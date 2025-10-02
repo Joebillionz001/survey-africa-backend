@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Africa - Empowering Africa Through Data</title>
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/logo.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    header {
+      position: fixed;
+      width: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 999;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .brand .logo-mark {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #00cec9;
+      padding: 8px 16px;
+      border: 2px solid #00cec9;
+      border-radius: 10px;
+      background: rgba(0,206,201,0.1);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      color: #00cec9;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 4rem 3rem;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .features-preview {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #00cec9;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      background: rgba(0,0,0,0.9);
+      padding: 2rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-content {
+        padding: 2rem 1.5rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      nav ul {
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<script src="js/app.js"></script>
+<script src="js/mobile.js"></script>
+  <header>
+    <div class="brand">
+      <div class="logo-mark">SA</div>
+      <div>Survey Africa</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#" onclick="login()">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Survey Africa</h1>
+      <p>Empowering African communities through data-driven insights. Create powerful surveys, collect meaningful responses, and drive positive change across the continent.</p>
+      <div class="cta-buttons">
+        <a href="#" onclick="getStarted()" class="btn btn-primary">Get Started Free</a>
+        <a href="features.html" class="btn btn-secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-preview">
+    <h2 style="font-size: 2.5rem; margin-bottom: 3rem; color: #00cec9;">Why Choose Survey Africa?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <div class="feature-title">Multilingual Support</div>
+        <p>Reach every community with surveys in multiple African languages</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Mobile Ready</div>
+        <p>Collect responses anywhere, even offline with our mobile-first design</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Real-Time Analytics</div>
+        <p>Visualize your data instantly with powerful dashboards and insights</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Secure & Private</div>
+        <p>Your data is protected with enterprise-grade security measures</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Survey Africa. Made with ❤️ for Africa. All Rights Reserved.</p>
+  </footer>
+  
+  <script>
+    function getStarted() {
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'signup.html';
+      }
+    }
+    
+    function login() {
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+</body>
+</html>

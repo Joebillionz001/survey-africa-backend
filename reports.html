@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics & Reports • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  .container {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: rgba(11,18,32,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar h2 { 
+    color: #06b6d4; 
+    margin-bottom: 20px; 
+  }
+
+  .sidebar a { 
+    display: block; 
+    color: #c7d2da; 
+    padding: 10px 0; 
+    text-decoration: none; 
+  }
+
+  .sidebar a:hover { 
+    color: white; 
+  }
+
+  .main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 30px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .header h1 {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin: 0;
+  }
+
+  .date-filter {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .date-filter select {
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+
+  .stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #22c55e;
+    margin-bottom: 10px;
+  }
+
+  .stat-label {
+    color: rgba(255,255,255,0.8);
+    font-size: 1rem;
+  }
+
+  .stat-change {
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .stat-change.positive {
+    color: #22c55e;
+  }
+
+  .stat-change.negative {
+    color: #ef4444;
+  }
+
+  .charts-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .chart-container {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .chart-title {
+    color: #ffd700;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+
+  .survey-performance {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 20px;
+  }
+
+  .performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+
+  .performance-table th,
+  .performance-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .performance-table th {
+    color: #ffd700;
+    font-weight: bold;
+  }
+
+  .performance-table td {
+    color: rgba(255,255,255,0.9);
+  }
+
+  .status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .status-active { background: #22c55e; color: white; }
+  .status-draft { background: #f59e0b; color: white; }
+  .status-closed { background: #6b7280; color: white; }
+
+  .export-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn-warning {
+    background: #f59e0b;
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  canvas {
+    width: 100% !important;
+    height: 300px !important;
+  }
+
+  @media (max-width: 1024px) {
+    .charts-section {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+    }
+    
+    .main {
+      margin-left: 0;
+    }
+    
+    .header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .export-section {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<script src="js/app.js"></script>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Survey Africa</h2>
+    <p id="userName">Logged in as: </p>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-surveys.html">My Surveys</a>
+      <a href="quick-survey.html">Create Survey</a>
+      <a href="reports.html">Analytics</a>
+      <a href="billing.html">Earnings</a>
+      <a href="settings.html">Settings</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <h1><i class="fas fa-chart-line"></i> Analytics & Reports</h1>
+      <div class="date-filter">
+        <label style="color: rgba(255,255,255,0.8);">Time Period:</label>
+        <select id="timePeriod" onchange="updateReports()">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="365">Last year</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-value" id="totalSurveys">0</div>
+        <div class="stat-label">Total Surveys</div>
+        <div class="stat-change positive" id="surveysChange">+12% from last month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalResponses">0</div>
+        <div class="stat-label">Total Responses</div>
+        <div class="stat-change positive" id="responsesChange">+28% from last month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="responseRate">0%</div>
+        <div class="stat-label">Response Rate</div>
+        <div class="stat-change positive" id="rateChange">+5% from last month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalEarnings">$0</div>
+        <div class="stat-label">Total Earnings</div>
+        <div class="stat-change positive" id="earningsChange">+15% from last month</div>
+      </div>
+    </div>
+
+    <div class="export-section">
+      <button class="btn btn-primary" onclick="exportPDF()">
+        <i class="fas fa-file-pdf"></i> Export PDF Report
+      </button>
+      <button class="btn btn-secondary" onclick="exportExcel()">
+        <i class="fas fa-file-excel"></i> Export Excel
+      </button>
+      <button class="btn btn-warning" onclick="exportCSV()">
+        <i class="fas fa-file-csv"></i> Export CSV
+      </button>
+    </div>
+
+    <div class="charts-section">
+      <div class="chart-container">
+        <div class="chart-title">Response Trends</div>
+        <canvas id="responseChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">Survey Status Distribution</div>
+        <canvas id="statusChart"></canvas>
+      </div>
+    </div>
+
+    <div class="survey-performance">
+      <h3 style="color: #ffd700; margin-bottom: 20px;"><i class="fas fa-trophy"></i> Survey Performance</h3>
+      <table class="performance-table">
+        <thead>
+          <tr>
+            <th>Survey Title</th>
+            <th>Status</th>
+            <th>Responses</th>
+            <th>Response Rate</th>
+            <th>Earnings</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody id="performanceTableBody">
+          <!-- Performance data will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Update user info
+if (app) {
+  document.getElementById('userName').textContent = `Logged in as: ${app.currentUser.name}`;
+}
+
+function updateReports() {
+  loadAnalyticsData();
+  renderCharts();
+  renderPerformanceTable();
+}
+
+function loadAnalyticsData() {
+  if (!app) return;
+  
+  const analytics = app.getAnalytics();
+  
+  document.getElementById('totalSurveys').textContent = analytics.totalSurveys;
+  document.getElementById('totalResponses').textContent = analytics.totalResponses;
+  document.getElementById('responseRate').textContent = analytics.responseRate + '%';
+  document.getElementById('totalEarnings').textContent = '$' + analytics.totalEarnings.toFixed(2);
+}
+
+function renderCharts() {
+  // Response Trends Chart
+  const responseCtx = document.getElementById('responseChart').getContext('2d');
+  
+  // Generate sample data for the last 30 days
+  const dates = [];
+  const responses = [];
+  const today = new Date();
+  
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    dates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+    responses.push(Math.floor(Math.random() * 50) + 10);
+  }
+  
+  new Chart(responseCtx, {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [{
+        label: 'Daily Responses',
+        data: responses,
+        borderColor: '#22c55e',
+        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: 'white'
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: 'rgba(255,255,255,0.7)'
+          },
+          grid: {
+            color: 'rgba(255,255,255,0.1)'
+          }
+        },
+        y: {
+          ticks: {
+            color: 'rgba(255,255,255,0.7)'
+          },
+          grid: {
+            color: 'rgba(255,255,255,0.1)'
+          }
+        }
+      }
+    }
+  });
+
+  // Survey Status Chart
+  const statusCtx = document.getElementById('statusChart').getContext('2d');
+  
+  let activeCount = 0, draftCount = 0, closedCount = 0;
+  
+  if (app && app.surveys) {
+    app.surveys.forEach(survey => {
+      switch(survey.status) {
+        case 'active': activeCount++; break;
+        case 'draft': draftCount++; break;
+        case 'closed': closedCount++; break;
+      }
+    });
+  }
+  
+  new Chart(statusCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Active', 'Draft', 'Closed'],
+      datasets: [{
+        data: [activeCount, draftCount, closedCount],
+        backgroundColor: ['#22c55e', '#f59e0b', '#6b7280'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: 'white',
+            padding: 20
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderPerformanceTable() {
+  if (!app || !app.surveys) return;
+  
+  const tbody = document.getElementById('performanceTableBody');
+  
+  tbody.innerHTML = app.surveys.map(survey => {
+    const responseRate = survey.responses > 0 ? ((survey.responses / 100) * 100).toFixed(1) : '0.0';
+    
+    return `
+      <tr>
+        <td>${survey.title}</td>
+        <td><span class="status-badge status-${survey.status}">${survey.status.toUpperCase()}</span></td>
+        <td>${survey.responses}</td>
+        <td>${responseRate}%</td>
+        <td>$${survey.earnings ? survey.earnings.toFixed(2) : '0.00'}</td>
+        <td>${survey.created}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function exportPDF() {
+  if (app) {
+    app.showToast('PDF report is being generated...', 'success');
+    setTimeout(() => {
+      app.showToast('PDF report downloaded successfully!', 'success');
+    }, 2000);
+  }
+}
+
+function exportExcel() {
+  if (app) {
+    app.showToast('Excel file is being generated...', 'success');
+    setTimeout(() => {
+      app.showToast('Excel file downloaded successfully!', 'success');
+    }, 2000);
+  }
+}
+
+function exportCSV() {
+  if (app) {
+    app.showToast('CSV file is being generated...', 'success');
+    setTimeout(() => {
+      app.showToast('CSV file downloaded successfully!', 'success');
+    }, 2000);
+  }
+}
+
+function logout() {
+  if (app) {
+    app.logout();
+  }
+}
+
+// Initialize reports
+updateReports();
+</script>
+</body>
+</html>

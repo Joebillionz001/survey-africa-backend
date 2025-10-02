@@ -1,0 +1,52 @@
+/* Global Logo Styles for Survey Africa */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.brand .logo-mark {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #00cec9;
+  padding: 12px 24px;
+  border: 2px solid #00cec9;
+  border-radius: 14px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,206,201,0.3);
+  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.brand .logo-mark:hover {
+  color: #fff;
+  background: linear-gradient(135deg, #00cec9, #fd79a8);
+  border-color: transparent;
+  box-shadow: 0 6px 30px rgba(0,206,201,0.6);
+  transform: translateY(-2px) scale(1.05);
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #00cec9;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+  .brand .logo-mark {
+    font-size: 1.4rem;
+    padding: 8px 15px;
+  }
+  
+  .brand {
+    font-size: 1.2rem;
+  }
+}

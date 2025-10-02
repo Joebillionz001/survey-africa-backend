@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Builder • Survey Africa</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f6fa;
+      min-height: 100vh;
+    }
+    .header {
+      background: #00cec9;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .container {
+      display: flex;
+      height: calc(100vh - 80px);
+    }
+    .sidebar {
+      width: 300px;
+      background: white;
+      border-right: 1px solid #ddd;
+      padding: 20px;
+    }
+    .question-types {
+      display: grid;
+      gap: 10px;
+    }
+    .question-type {
+      padding: 15px;
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      cursor: grab;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .question-type:hover {
+      border-color: #00cec9;
+      background: #f0fdfc;
+    }
+    .builder {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .survey-title {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .survey-title input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .question-item {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .question-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .options-container {
+      margin-top: 15px;
+    }
+    .option-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .option-item input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn-primary { background: #00cec9; color: white; }
+    .btn-danger { background: #e74c3c; color: white; }
+    .btn-success { background: #27ae60; color: white; }
+    .drop-zone {
+      min-height: 200px;
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      margin-bottom: 20px;
+    }
+    .drop-zone.drag-over {
+      border-color: #00cec9;
+      background: #f0fdfc;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Survey Builder</h1>
+    <div>
+      <button class="btn btn-success" onclick="previewSurvey()">Preview</button>
+      <button class="btn btn-primary" onclick="saveSurvey()">Save Survey</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="sidebar">
+      <h3>Question Types</h3>
+      <div class="question-types">
+        <div class="question-type" draggable="true" data-type="text">
+          📝 Text Question
+        </div>
+        <div class="question-type" draggable="true" data-type="multiple">
+          ☑️ Multiple Choice
+        </div>
+        <div class="question-type" draggable="true" data-type="rating">
+          ⭐ Rating Scale
+        </div>
+        <div class="question-type" draggable="true" data-type="checkbox">
+          ✅ Checkboxes
+        </div>
+        <div class="question-type" draggable="true" data-type="dropdown">
+          📋 Dropdown
+        </div>
+      </div>
+    </div>
+
+    <div class="builder">
+      <div class="survey-title">
+        <input type="text" id="surveyTitle" placeholder="Enter survey title..." value="My New Survey">
+        <textarea id="surveyDescription" placeholder="Survey description..." style="width:100%;margin-top:10px;padding:10px;border:1px solid #ddd;border-radius:6px;"></textarea>
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        Drag question types here to build your survey
+      </div>
+
+      <div id="questionsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    let questionCounter = 0;
+    let surveyData = { title: '', description: '', questions: [] };
+
+    // Drag and drop functionality
+    document.querySelectorAll('.question-type').forEach(item => {
+      item.addEventListener('dragstart', function(e) {
+        e.dataTransfer.setData('text/plain', this.dataset.type);
+      });
+    });
+
+    const dropZone = document.getElementById('dropZone');
+    const questionsContainer = document.getElementById('questionsContainer');
+
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      this.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', function() {
+      this.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      const questionType = e.dataTransfer.getData('text/plain');
+      addQuestion(questionType);
+    });
+
+    function addQuestion(type) {
+      questionCounter++;
+      const questionId = `question_${questionCounter}`;
+      
+      const questionHtml = `
+        <div class="question-item" data-id="${questionId}" data-type="${type}">
+          <div class="question-header">
+            <span>Question ${questionCounter} (${type})</span>
+            <button class="btn btn-danger" onclick="removeQuestion('${questionId}')">Delete</button>
+          </div>
+          <input type="text" class="question-input" placeholder="Enter your question..." onchange="updateSurveyData()">
+          ${getQuestionTypeHtml(type, questionId)}
+          <label><input type="checkbox" onchange="updateSurveyData()"> Required</label>
+        </div>
+      `;
+      
+      questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
+      updateSurveyData();
+    }
+
+    function getQuestionTypeHtml(type, questionId) {
+      switch(type) {
+        case 'multiple':
+        case 'checkbox':
+        case 'dropdown':
+          return `
+            <div class="options-container">
+              <div class="option-item">
+                <input type="text" placeholder="Option 1" onchange="updateSurveyData()">
+                <button class="btn btn-danger" onclick="removeOption(this)">Remove</button>
+              </div>
+              <div class="option-item">
+                <input type="text" placeholder="Option 2" onchange="updateSurveyData()">
+                <button class="btn btn-danger" onclick="removeOption(this)">Remove</button>
+              </div>
+              <button class="btn btn-primary" onclick="addOption(this)">Add Option</button>
+            </div>
+          `;
+        case 'rating':
+          return `
+            <div>
+              Scale: 1 to <select onchange="updateSurveyData()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+          `;
+        default:
+          return '';
+      }
+    }
+
+    function addOption(btn) {
+      const optionsContainer = btn.parentElement;
+      const optionCount = optionsContainer.querySelectorAll('.option-item').length + 1;
+      const optionHtml = `
+        <div class="option-item">
+          <input type="text" placeholder="Option ${optionCount}" onchange="updateSurveyData()">
+          <button class="btn btn-danger" onclick="removeOption(this)">Remove</button>
+        </div>
+      `;
+      btn.insertAdjacentHTML('beforebegin', optionHtml);
+      updateSurveyData();
+    }
+
+    function removeOption(btn) {
+      btn.parentElement.remove();
+      updateSurveyData();
+    }
+
+    function removeQuestion(questionId) {
+      document.querySelector(`[data-id="${questionId}"]`).remove();
+      updateSurveyData();
+    }
+
+    function updateSurveyData() {
+      surveyData.title = document.getElementById('surveyTitle').value;
+      surveyData.description = document.getElementById('surveyDescription').value;
+      surveyData.questions = [];
+
+      document.querySelectorAll('.question-item').forEach(item => {
+        const question = {
+          id: item.dataset.id,
+          type: item.dataset.type,
+          text: item.querySelector('.question-input').value,
+          required: item.querySelector('input[type="checkbox"]').checked,
+          options: []
+        };
+
+        item.querySelectorAll('.option-item input').forEach(optionInput => {
+          if (optionInput.value.trim()) {
+            question.options.push(optionInput.value.trim());
+          }
+        });
+
+        surveyData.questions.push(question);
+      });
+    }
+
+    function previewSurvey() {
+      updateSurveyData();
+      localStorage.setItem('previewSurvey', JSON.stringify(surveyData));
+      window.open('survey-preview.html', '_blank');
+    }
+
+    async function saveSurvey() {
+      updateSurveyData();
+      
+      if (!surveyData.title.trim()) {
+        alert('Please enter a survey title');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/api/surveys', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify(surveyData)
+        });
+
+        if (response.ok) {
+          alert('Survey saved successfully!');
+          window.location.href = 'my-surveys.html';
+        } else {
+          alert('Failed to save survey');
+        }
+      } catch (error) {
+        alert('Error saving survey');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Signup</title>
+</head>
+<body>
+    <h1>Test Signup Functionality</h1>
+    <div id="result"></div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        async function testSignup() {
+            try {
+                const app = new SurveyApp();
+                const result = await app.register({
+                    name: 'Test User',
+                    username: 'testuser123',
+                    email: 'test@example.com',
+                    password: 'password123'
+                });
+                
+                document.getElementById('result').innerHTML = `
+                    <h2>Signup Test Result:</h2>
+                    <p>Success: ${result.success}</p>
+                    <p>Message: ${result.message || 'Registration successful'}</p>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `
+                    <h2>Signup Test Error:</h2>
+                    <p style="color: red;">${error.message}</p>
+                `;
+            }
+        }
+        
+        // Run test when page loads
+        testSignup();
+    </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey Templates • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #111;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  .container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: rgba(11,18,32,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 9px;
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar h2 { 
+    color: #06b6d4; 
+    margin-bottom: 10px; 
+  }
+
+  .sidebar a { 
+    display:block; 
+    color:#c7d2da; 
+    padding:10px 0; 
+    text-decoration:none; 
+  }
+
+  .sidebar a:hover { 
+    color:white; 
+  }
+
+  .main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 20px;
+  }
+
+  .templates-content {
+    color: white;
+  }
+
+  .header {
+    margin-bottom: 30px;
+  }
+
+  .header h1 {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin: 0;
+  }
+
+  .categories {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .category-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .category-btn.active {
+    background: #00cec9;
+  }
+
+  .category-btn:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+  }
+
+  .template-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .template-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .template-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 15px;
+  }
+
+  .template-icon {
+    font-size: 2rem;
+    color: #00cec9;
+    margin-bottom: 10px;
+  }
+
+  .template-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 10px;
+  }
+
+  .template-desc {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+
+  .template-stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+  }
+
+  .btn-primary {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .templates-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .categories {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Survey Africa</h2>
+    <p id="userName">Logged in as: USERNAME</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-surveys.html">My Surveys</a>
+      <a href="quick-survey.html">Create Survey</a>
+      <a href="reports.html">Analytics</a>
+      <a href="billing.html">Earnings</a>
+      <a href="settings.html">Settings</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="templates-content">
+      <div class="header">
+        <h1>Survey Templates</h1>
+        <p>Choose from professionally designed templates to get started quickly</p>
+      </div>
+
+      <div class="categories">
+        <button class="category-btn active" onclick="filterTemplates('all')">All Templates</button>
+        <button class="category-btn" onclick="filterTemplates('customer')">Customer Feedback</button>
+        <button class="category-btn" onclick="filterTemplates('market')">Market Research</button>
+        <button class="category-btn" onclick="filterTemplates('employee')">Employee Surveys</button>
+        <button class="category-btn" onclick="filterTemplates('event')">Event Feedback</button>
+      </div>
+
+      <div class="templates-grid" id="templatesGrid">
+        <!-- Templates will be populated by JavaScript -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const templates = [
+    {
+      id: 1,
+      title: "Customer Satisfaction Survey",
+      category: "customer",
+      icon: "😊",
+      description: "Measure customer satisfaction and identify areas for improvement",
+      questions: 8,
+      avgTime: "3 min",
+      uses: 1250
+    },
+    {
+      id: 2,
+      title: "Product Feedback Survey",
+      category: "customer",
+      icon: "📦",
+      description: "Collect detailed feedback about your products or services",
+      questions: 12,
+      avgTime: "5 min",
+      uses: 890
+    },
+    {
+      id: 3,
+      title: "Market Research Survey",
+      category: "market",
+      icon: "📊",
+      description: "Understand market trends and consumer preferences",
+      questions: 15,
+      avgTime: "7 min",
+      uses: 650
+    },
+    {
+      id: 4,
+      title: "Employee Engagement Survey",
+      category: "employee",
+      icon: "👥",
+      description: "Measure employee satisfaction and workplace culture",
+      questions: 20,
+      avgTime: "10 min",
+      uses: 420
+    },
+    {
+      id: 5,
+      title: "Event Feedback Survey",
+      category: "event",
+      icon: "🎉",
+      description: "Gather feedback from event attendees and participants",
+      questions: 10,
+      avgTime: "4 min",
+      uses: 780
+    },
+    {
+      id: 6,
+      title: "Brand Awareness Survey",
+      category: "market",
+      icon: "🏷️",
+      description: "Assess brand recognition and perception in the market",
+      questions: 14,
+      avgTime: "6 min",
+      uses: 340
+    },
+    {
+      id: 7,
+      title: "Website Usability Survey",
+      category: "customer",
+      icon: "💻",
+      description: "Evaluate user experience and website functionality",
+      questions: 11,
+      avgTime: "5 min",
+      uses: 560
+    },
+    {
+      id: 8,
+      title: "Training Evaluation Survey",
+      category: "employee",
+      icon: "📚",
+      description: "Assess the effectiveness of training programs",
+      questions: 9,
+      avgTime: "4 min",
+      uses: 290
+    }
+  ];
+
+  function renderTemplates(filteredTemplates = templates) {
+    const grid = document.getElementById('templatesGrid');
+    grid.innerHTML = filteredTemplates.map(template => `
+      <div class="template-card" data-category="${template.category}">
+        <div class="template-header">
+          <div class="template-icon">${template.icon}</div>
+        </div>
+        <div class="template-title">${template.title}</div>
+        <div class="template-desc">${template.description}</div>
+        <div class="template-stats">
+          <span><i class="fas fa-question-circle"></i> ${template.questions} questions</span>
+          <span><i class="fas fa-clock"></i> ${template.avgTime}</span>
+          <span><i class="fas fa-users"></i> ${template.uses} uses</span>
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="useTemplate(${template.id})">
+            <i class="fas fa-play"></i> Use Template
+          </button>
+          <button class="btn btn-secondary" onclick="previewTemplate(${template.id})">
+            <i class="fas fa-eye"></i> Preview
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterTemplates(category) {
+    // Update active button
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filter templates
+    const filtered = category === 'all' ? templates : templates.filter(t => t.category === category);
+    renderTemplates(filtered);
+  }
+
+  function useTemplate(id) {
+    alert(`Using template ${id}. Redirecting to survey builder...`);
+    setTimeout(() => window.location.href = 'quick-survey.html', 1000);
+  }
+
+  function previewTemplate(id) {
+    alert(`Previewing template ${id}...`);
+  }
+
+  function logout() {
+    alert('Logging out...');
+    setTimeout(() => window.location.href = 'index.html', 1000);
+  }
+
+  renderTemplates();
+</script>
+</body>
+</html>

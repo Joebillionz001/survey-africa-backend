@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earn Money - CPAGrip Offerwall • Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/logo.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 240px;
+      background: rgba(11,18,32,0.5);
+      backdrop-filter: blur(8px);
+      color: white;
+      padding: 20px;
+      position: fixed;
+      height: 100vh;
+      overflow: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .sidebar .logo-mark {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+    }
+    .sidebar nav a {
+      display: block;
+      color: #c7d2da;
+      padding: 12px 0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .sidebar nav a:hover {
+      color: white;
+      background: rgba(255,255,255,0.1);
+      padding-left: 10px;
+    }
+    .sidebar nav a i {
+      width: 20px;
+      margin-right: 10px;
+    }
+    .main {
+      flex: 1;
+      margin-left: 240px;
+      padding: 20px;
+      color: white;
+    }
+    .header {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      color: #00cec9;
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.8);
+    }
+    .offerwall-container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 20px;
+      min-height: 600px;
+    }
+    .offer-item {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .offer-item:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+    .offer-info h4 {
+      color: #00cec9;
+      margin-bottom: 5px;
+    }
+    .offer-info p {
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+    }
+    .offer-payout {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+    }
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: rgba(255,255,255,0.8);
+    }
+    .earnings-banner {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .earnings-banner h3 {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    .btn {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,206,201,0.4);
+    }
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,206,201,0.4);
+      transition: all 0.3s ease;
+      font-size: 18px;
+      width: 48px;
+      height: 48px;
+      align-items: center;
+      justify-content: center;
+    }
+    .mobile-menu-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,206,201,0.6);
+    }
+    .mobile-menu-btn:active {
+      transform: translateY(0);
+    }
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    @media (max-width: 768px) {
+      .mobile-menu-btn { display: flex; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.mobile-visible { transform: translateX(0); }
+      .sidebar-overlay.active { display: block; }
+      .main { margin-left: 0; padding-top: 60px; }
+      .header h1 { font-size: 2rem; }
+      .offer-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile menu button -->
+  <button class="mobile-menu-btn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar overlay -->
+  <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="logo-mark">SA</span>
+        <span>Survey Africa</span>
+      </div>
+      <nav>
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="my-surveys.html"><i class="fas fa-list"></i> My Surveys</a>
+        <a href="quick-survey.html"><i class="fas fa-plus"></i> Create Survey</a>
+        <a href="reports.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+        <a href="offerwall.html" style="color:#00cec9;"><i class="fas fa-coins"></i> Earn Money</a>
+        <a href="tasks.html"><i class="fas fa-tasks"></i> All Tasks</a>
+        <a href="billing.html"><i class="fas fa-wallet"></i> Earnings</a>
+        <a href="withdrawal.html"><i class="fas fa-money-bill-wave"></i> Withdraw</a>
+        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+        <a href="index.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="header">
+        <h1><i class="fas fa-coins"></i> Earn Real Money</h1>
+        <p>Complete offers and tasks to earn cash rewards instantly!</p>
+      </div>
+
+      <div class="earnings-banner">
+        <h3>💰 Your Current Earnings: $<span id="userEarnings">0.00</span></h3>
+        <p>Complete offers, surveys, and tasks from multiple providers to maximize your earnings!</p>
+        <p style="margin-top: 10px; font-size: 14px;">📅 Daily Tasks: <span id="dailyCount">0</span>/10 completed today</p>
+        <p style="margin-top: 5px; font-size: 12px; opacity: 0.8;">💫 New tasks available every day at midnight!</p>
+        <button class="btn" onclick="refreshOfferwall()">
+          <i class="fas fa-sync"></i> Refresh All
+        </button>
+      </div>
+
+      <div class="provider-tabs" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="tab active" onclick="showProvider('all')" style="padding: 10px 20px; background: #00cec9; color: white; border: none; border-radius: 8px; cursor: pointer;">All Offers</button>
+        <button class="tab" onclick="showProvider('cpagrip')" style="padding: 10px 20px; background: rgba(255,255,255,0.1); color: white; border: none; border-radius: 8px; cursor: pointer;">CPAGrip</button>
+        <button class="tab" onclick="showProvider('bitlabs')" style="padding: 10px 20px; background: rgba(255,255,255,0.1); color: white; border: none; border-radius: 8px; cursor: pointer;">BitLabs</button>
+        <button class="tab" onclick="showProvider('cpx')" style="padding: 10px 20px; background: rgba(255,255,255,0.1); color: white; border: none; border-radius: 8px; cursor: pointer;">CPX Research</button>
+        <button class="tab" onclick="showProvider('youtube')" style="padding: 10px 20px; background: rgba(255,255,255,0.1); color: white; border: none; border-radius: 8px; cursor: pointer;">YouTube Tasks</button>
+        <button class="tab" onclick="showProvider('revenuecpm')" style="padding: 10px 20px; background: rgba(255,255,255,0.1); color: white; border: none; border-radius: 8px; cursor: pointer;">RevenueCPM</button>
+      </div>
+
+      <div class="offerwall-container">
+        <div class="loading" id="loadingMessage">
+          <i class="fas fa-spinner fa-spin"></i> Loading all earning opportunities...
+        </div>
+        <div id="offersContainer" style="display:none;"></div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>© 2025 Survey Africa. Made with ❤️ for Africa. All Rights Reserved.</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/mobile.js"></script>
+  <script>
+    let currentUser = null;
+    let currentProvider = 'all';
+    let allOffers = {
+      cpagrip: [],
+      bitlabs: [],
+      cpx: [],
+      youtube: [],
+      revenuecpm: []
+    };
+
+    function showProvider(provider) {
+      currentProvider = provider;
+      document.querySelectorAll('.tab').forEach(t => {
+        t.style.background = 'rgba(255,255,255,0.1)';
+      });
+      event.target.style.background = '#00cec9';
+      displayAllOffers();
+    }
+
+    async function loadOfferwall() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Get user data from localStorage
+      const userData = localStorage.getItem('currentUser');
+      if (userData) {
+        currentUser = JSON.parse(userData);
+        document.getElementById('userEarnings').textContent = (currentUser.totalEarnings || 0).toFixed(2);
+      }
+
+      // Load all providers
+      await Promise.all([
+        loadCPAGripOffers(),
+        loadBitLabsOffers(),
+        loadCPXOffers(),
+        loadYouTubeOffers(),
+        loadRevenueCPMOffers()
+      ]);
+      
+      displayAllOffers();
+
+    }
+
+    async function loadCPAGripOffers() {
+      try {
+        const response = await fetch('http://localhost:5000/api/cpagrip/offers');
+        const data = await response.json();
+        if (data.success && data.offers) {
+          allOffers.cpagrip = data.offers.map(offer => ({...offer, provider: 'CPAGrip'}));
+        }
+      } catch (error) {
+        console.error('CPAGrip error:', error);
+      }
+    }
+
+    async function loadBitLabsOffers() {
+      try {
+        const response = await fetch('http://localhost:5000/api/external-surveys/bitlabs');
+        const data = await response.json();
+        if (data.surveys) {
+          allOffers.bitlabs = data.surveys.map(survey => ({
+            title: survey.name,
+            description: survey.description,
+            payout: survey.reward,
+            offerlink: survey.click_url,
+            provider: 'BitLabs'
+          }));
+        }
+      } catch (error) {
+        console.error('BitLabs error:', error);
+      }
+    }
+
+    async function loadCPXOffers() {
+      try {
+        const response = await fetch('http://localhost:5000/api/external-surveys/cpx');
+        const data = await response.json();
+        if (data.surveys) {
+          allOffers.cpx = data.surveys.map(survey => ({
+            title: survey.title,
+            description: survey.description,
+            payout: survey.payout,
+            offerlink: survey.url,
+            provider: 'CPX Research'
+          }));
+        }
+      } catch (error) {
+        console.error('CPX error:', error);
+      }
+    }
+
+    async function loadYouTubeOffers() {
+      // Sample YouTube videos - you can replace with real data
+      allOffers.youtube = [
+        {
+          title: 'Watch: Amazing African Wildlife Documentary',
+          description: 'Watch this 5-minute video about African wildlife and earn instantly!',
+          payout: 0.45,
+          offerlink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          provider: 'YouTube',
+          videoId: 'dQw4w9WgXcQ'
+        },
+        {
+          title: 'Watch: African Culture & Traditions',
+          description: 'Learn about African culture in this engaging 3-minute video',
+          payout: 0.5,
+          offerlink: 'https://www.youtube.com/watch?v=oHg5SJYRHA0',
+          provider: 'YouTube',
+          videoId: 'oHg5SJYRHA0'
+        }
+      ];
+    }
+
+    async function loadRevenueCPMOffers() {
+      allOffers.revenuecpm = [
+        {
+          title: 'High-Paying CPM Offer',
+          description: 'Complete this premium offer to earn high rewards instantly!',
+          payout: 0.4,
+          offerlink: 'https://www.revenuecpmgate.com/d7qcqski?key=5154abeacddaf8f67f17e78bb08959d4',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Premium Survey Offer',
+          description: 'Take this exclusive survey and get paid within minutes',
+          payout: 0.55,
+          offerlink: 'https://www.revenuecpmgate.com/d7qcqski?key=5154abeacddaf8f67f17e78bb08959d4',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Smartlink Premium Offer',
+          description: 'Complete this smartlink offer for guaranteed high payouts!',
+          payout: 0.48,
+          offerlink: 'https://www.revenuecpmgate.com/n2hkz5fx?key=3f92941a066285e57d403561b490e9cd',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Exclusive Smartlink Offer',
+          description: 'Limited time exclusive offer with maximum earning potential!',
+          payout: 0.42,
+          offerlink: 'https://www.revenuecpmgate.com/zq47tjzz?key=0cf5e309263e172fd773b75a725bd5e1',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'VIP Smartlink Offer',
+          description: 'VIP exclusive offer with instant payouts and high rewards!',
+          payout: 0.52,
+          offerlink: 'https://www.revenuecpmgate.com/fkp5u5b2df?key=e3fe3a0971b040140972f96b315d183a',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Elite Smartlink Offer',
+          description: 'Elite tier offer with the highest conversion rates available!',
+          payout: 0.47,
+          offerlink: 'https://www.revenuecpmgate.com/j6cczn961?key=1c8332ec80b5c834c7fc1bdf951b72cb',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Platinum Offer #6',
+          description: 'Premium platinum tier offer with guaranteed payouts!',
+          payout: 0.44,
+          offerlink: 'https://www.revenuecpmgate.com/pa4xfxvj?key=76bb97e75f0513c9f67220cf385686b0',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Diamond Offer #7',
+          description: 'Diamond level offer with instant rewards and high conversion!',
+          payout: 0.41,
+          offerlink: 'https://www.revenuecpmgate.com/nf4zkzv78e?key=0ca3b0e5c234d00e2e7168ec272fcd7b',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Gold Tier Offer #8',
+          description: 'Gold tier exclusive with maximum earning potential!',
+          payout: 0.58,
+          offerlink: 'https://www.revenuecpmgate.com/mg5jxjcfj?key=1f3c2b959d4913119ba75cce47576c08',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Silver Premium #9',
+          description: 'Silver premium offer with reliable high payouts!',
+          payout: 0.46,
+          offerlink: 'https://www.revenuecpmgate.com/sxnx3gjt?key=fc6c0baaf3d9c153f8514e0acd32b67b',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Mega Bonus Offer #10',
+          description: 'Mega bonus offer with special rewards and instant payouts!',
+          payout: 0.43,
+          offerlink: 'https://www.revenuecpmgate.com/d492524414?key=08cff78fe7cfbf505f1feb6234b905b8',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Super Premium #11',
+          description: 'Super premium offer with the best conversion rates!',
+          payout: 0.49,
+          offerlink: 'https://www.revenuecpmgate.com/mcbmcietif?key=68a73d0b0183e720f5d2db272ad0900a',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Ultra High Value #12',
+          description: 'Ultra high value offer with guaranteed satisfaction!',
+          payout: 0.51,
+          offerlink: 'https://www.revenuecpmgate.com/vssp44x0?key=8d03045df93bfbda3ce076893a517b65',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Exclusive Elite #13',
+          description: 'Exclusive elite offer with premium rewards system!',
+          payout: 0.54,
+          offerlink: 'https://www.revenuecpmgate.com/f3fejyng?key=1618110aad551294966c6959cb977b63',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Master Tier #14',
+          description: 'Master tier offer with exceptional earning opportunities!',
+          payout: 0.4,
+          offerlink: 'https://www.revenuecpmgate.com/nzez1drr9?key=b4497d55dd340f51c9316af6f4f4c738',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Champion Level #15',
+          description: 'Champion level offer with top-tier rewards and bonuses!',
+          payout: 0.56,
+          offerlink: 'https://www.revenuecpmgate.com/u18prnzwz?key=4d453020deb1c873ad0c3f3143071c32',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Legend Status #16',
+          description: 'Legend status offer with legendary payouts and rewards!',
+          payout: 0.45,
+          offerlink: 'https://www.revenuecpmgate.com/g3rx6hg7?key=64d8c0363113561af2537888abffa322',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Ultimate Premium #17',
+          description: 'Ultimate premium offer with the highest quality rewards!',
+          payout: 0.53,
+          offerlink: 'https://www.revenuecpmgate.com/qi9mrkmpeh?key=307b32fb20f567eb9b1a5aa340086dbb',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Supreme Offer #18',
+          description: 'Supreme level offer with unmatched earning potential!',
+          payout: 0.42,
+          offerlink: 'https://www.revenuecpmgate.com/maybktkbn?key=201ec69030e67b429cc5cc93396e01e1',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Royal Premium #19',
+          description: 'Royal premium offer with exclusive high-value rewards!',
+          payout: 0.57,
+          offerlink: 'https://www.revenuecpmgate.com/e83pu8csu9?key=8f546929619524c80de77af2bfde7d79',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Imperial Elite #20',
+          description: 'Imperial elite offer with maximum conversion guarantee!',
+          payout: 0.48,
+          offerlink: 'https://www.revenuecpmgate.com/stbd5gvfm2?key=127fa1f966d630742b9ff82b13349cbf',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Sovereign Tier #21',
+          description: 'Sovereign tier offer with premium instant payouts!',
+          payout: 0.59,
+          offerlink: 'https://www.revenuecpmgate.com/ad8dmhc5?key=646ef3cc39139307376f5a007ea10d68',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Majestic Level #22',
+          description: 'Majestic level offer with extraordinary earning opportunities!',
+          payout: 0.44,
+          offerlink: 'https://www.revenuecpmgate.com/nfri0c4mw9?key=348439d2443f9e4ab0b18b19e3504675',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Divine Premium #23',
+          description: 'Divine premium offer with heavenly rewards and bonuses!',
+          payout: 0.6,
+          offerlink: 'https://www.revenuecpmgate.com/zee8vaynd?key=4c8d31b4715660bc25bcc5d62500ee7f',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Cosmic Elite #24',
+          description: 'Cosmic elite offer with out-of-this-world payouts!',
+          payout: 0.5,
+          offerlink: 'https://www.revenuecpmgate.com/n3mtebuk?key=aa0c4df4b2571bd155952017854600ed',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Infinite Value #25',
+          description: 'Infinite value offer with limitless earning potential!',
+          payout: 0.55,
+          offerlink: 'https://www.revenuecpmgate.com/gq5n944x0h?key=b4eba0f7966ae9beb475db5116441f3a',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Legendary Max #26',
+          description: 'Legendary maximum offer with epic rewards system!',
+          payout: 0.58,
+          offerlink: 'https://www.revenuecpmgate.com/eujsq31zgr?key=01be21ff59e0bca7354a9afe15e931ec',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Mythical Tier #27',
+          description: 'Mythical tier offer with legendary status rewards!',
+          payout: 0.52,
+          offerlink: 'https://www.revenuecpmgate.com/r83bkss1my?key=e5f85cf58cb6c67c4b9f632dc36f4976',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Godlike Premium #28',
+          description: 'Godlike premium offer with divine level payouts!',
+          payout: 0.56,
+          offerlink: 'https://www.revenuecpmgate.com/emq1mzxt?key=ef713d7f7964d8730d677b7aa309bc40',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Transcendent Elite #29',
+          description: 'Transcendent elite offer beyond all limits!',
+          payout: 0.6,
+          offerlink: 'https://www.revenuecpmgate.com/de4z8g3p5?key=0743d972f04fadd2d27d05888fbc2a56',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Omnipotent Max #30',
+          description: 'Omnipotent maximum offer with unlimited earning power!',
+          payout: 0.56,
+          offerlink: 'https://www.revenuecpmgate.com/iar5eesw?key=c798c49ed65cd7845b45770e6626da02',
+          provider: 'RevenueCPM'
+        },
+        {
+          title: 'Apex Supreme #31',
+          description: 'Apex supreme offer - the ultimate earning experience!',
+          payout: 0.60,
+          offerlink: 'https://www.revenuecpmgate.com/bnm90hii20?key=43f7eca7879286ce2c0fa94be1cd2a13',
+          provider: 'RevenueCPM'
+        }
+      ];
+    }
+
+    function displayAllOffers() {
+      let offersToShow = [];
+      
+      if (currentProvider === 'all') {
+        offersToShow = [...allOffers.cpagrip, ...allOffers.bitlabs, ...allOffers.cpx, ...allOffers.youtube, ...allOffers.revenuecpm];
+      } else {
+        offersToShow = allOffers[currentProvider] || [];
+      }
+      
+      // Shuffle and limit offers to 10 per day
+      offersToShow = getDailyOffers(offersToShow);
+      
+      document.getElementById('loadingMessage').style.display = 'none';
+      
+      if (offersToShow.length === 0) {
+        document.getElementById('offersContainer').innerHTML = `
+          <div style="text-align: center; padding: 50px;">
+            <i class="fas fa-info-circle" style="font-size: 3rem; color: #00cec9; margin-bottom: 20px;"></i>
+            <h3>No ${currentProvider === 'all' ? '' : currentProvider.toUpperCase()} offers available</h3>
+            <p>Check back later for new earning opportunities!</p>
+          </div>
+        `;
+      } else {
+        displayOffers(offersToShow);
+      }
+      
+      document.getElementById('offersContainer').style.display = 'block';
+    }
+    
+    function getDailyOffers(allOffers) {
+      const today = new Date().toDateString();
+      const storedDay = localStorage.getItem('dailyOffersDate');
+      
+      // Check if we need new daily offers
+      if (storedDay !== today) {
+        // New day - shuffle and pick 10 offers
+        const shuffled = [...allOffers].sort(() => Math.random() - 0.5);
+        const dailyOffers = shuffled.slice(0, 10);
+        
+        localStorage.setItem('dailyOffers', JSON.stringify(dailyOffers));
+        localStorage.setItem('dailyOffersDate', today);
+        return dailyOffers;
+      } else {
+        // Same day - return stored offers
+        const stored = localStorage.getItem('dailyOffers');
+        return stored ? JSON.parse(stored) : allOffers.slice(0, 10);
+      }
+    }
+
+    function displayOffers(offers) {
+      const container = document.getElementById('offersContainer');
+      container.innerHTML = '';
+      
+      if (!offers || offers.length === 0) {
+        container.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.8);">No offers available at the moment.</p>';
+        container.style.display = 'block';
+        return;
+      }
+      
+      offers.forEach(offer => {
+        const offerDiv = document.createElement('div');
+        offerDiv.className = 'offer-item';
+        offerDiv.innerHTML = `
+          <div class="offer-info">
+            <h4>${offer.title || 'Special Offer'}</h4>
+            <p style="color: rgba(255,255,255,0.9); margin: 8px 0;">${offer.description || 'Complete this offer to earn rewards'}</p>
+            <small style="color: #00cec9; font-weight: bold;">${offer.provider || 'Provider'}</small>
+          </div>
+          <a href="${offer.offerlink}" target="_blank" class="offer-payout" onclick="trackOfferClick('${offer.title}', ${offer.payout})">
+            Earn $${offer.payout || '0.50'}
+          </a>
+        `;
+        container.appendChild(offerDiv);
+      });
+      
+      container.style.display = 'block';
+    }
+    
+    function refreshOfferwall() {
+      document.getElementById('loadingMessage').style.display = 'block';
+      document.getElementById('offersContainer').style.display = 'none';
+      loadOfferwall();
+    }
+
+    function trackOfferClick(title, payout) {
+      // Check daily limit
+      const today = new Date().toDateString();
+      const dailyTasks = JSON.parse(localStorage.getItem('dailyTasks') || '{}');
+      const todayCount = dailyTasks[today] || 0;
+      
+      if (todayCount >= 10) {
+        alert('Daily limit reached! You can complete up to 10 tasks per day. Come back tomorrow for more earning opportunities!');
+        return false;
+      }
+      
+      // Remove completed task from daily offers
+      removeCompletedTask(title);
+      
+      // Update daily count
+      dailyTasks[today] = todayCount + 1;
+      localStorage.setItem('dailyTasks', JSON.stringify(dailyTasks));
+      
+      // Save to admin completed tasks
+      saveToAdminTasks(title, payout, today);
+      
+      // Refresh display
+      displayAllOffers();
+      updateDailyCounter();
+      
+      // Show instruction message
+      setTimeout(() => {
+        alert(`Task ${todayCount + 1}/10 for today. Complete the required task on the external site. Earnings will be credited when confirmed (5-30 minutes).`);
+      }, 500);
+    }
+    
+    function removeCompletedTask(taskTitle) {
+      const dailyOffers = JSON.parse(localStorage.getItem('dailyOffers') || '[]');
+      const updatedOffers = dailyOffers.filter(offer => offer.title !== taskTitle);
+      localStorage.setItem('dailyOffers', JSON.stringify(updatedOffers));
+    }
+    
+    function saveToAdminTasks(title, payout, date) {
+      const adminTasks = JSON.parse(localStorage.getItem('adminCompletedTasks') || '[]');
+      adminTasks.push({
+        title: title,
+        payout: payout,
+        completedDate: date,
+        completedAt: new Date().toISOString(),
+        status: 'completed'
+      });
+      localStorage.setItem('adminCompletedTasks', JSON.stringify(adminTasks));
+    }
+
+    // This function will only be called by CPAGrip postback
+    function processOfferCompletion(offerId, payout, title) {
+      const userData = localStorage.getItem('currentUser');
+      if (userData) {
+        const user = JSON.parse(userData);
+        user.totalEarnings = (user.totalEarnings || 0) + payout;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        
+        const earnings = JSON.parse(localStorage.getItem('userEarnings') || '[]');
+        earnings.push({
+          amount: payout,
+          type: 'cpagrip_offer',
+          description: title,
+          offerId: offerId,
+          completedAt: new Date().toISOString()
+        });
+        localStorage.setItem('userEarnings', JSON.stringify(earnings));
+        
+        updateEarningsDisplay();
+        showCompletionNotification(payout.toFixed(2));
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'index.html';
+    }
+
+    function showCompletionNotification(amount) {
+      // Create completion modal
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+      `;
+      
+      modal.innerHTML = `
+        <div style="
+          background: linear-gradient(135deg, #00cec9, #fd79a8);
+          padding: 40px;
+          border-radius: 20px;
+          text-align: center;
+          color: white;
+          max-width: 400px;
+          animation: bounce 0.5s ease;
+        ">
+          <i class="fas fa-check-circle" style="font-size: 4rem; margin-bottom: 20px;"></i>
+          <h2>Task Completed!</h2>
+          <p style="font-size: 1.2rem; margin: 20px 0;">You earned <strong>$${amount}</strong></p>
+          <button onclick="this.parentElement.parentElement.remove()" style="
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+          ">View My Tasks</button>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (document.body.contains(modal)) {
+          modal.remove();
+        }
+      }, 5000);
+      
+      // Add bounce animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes bounce {
+          0%, 20%, 60%, 100% { transform: translateY(0); }
+          40% { transform: translateY(-20px); }
+          80% { transform: translateY(-10px); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      sidebar.classList.toggle('mobile-visible');
+      overlay.classList.toggle('active');
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      sidebar.classList.remove('mobile-visible');
+      overlay.classList.remove('active');
+    }
+
+    // Check for earnings updates from backend postbacks
+    async function checkEarningsUpdates() {
+      try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch('http://localhost:5000/api/auth/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (response.ok) {
+          const userData = await response.json();
+          const currentEarnings = parseFloat(document.getElementById('userEarnings').textContent);
+          
+          if (userData.totalEarnings > currentEarnings) {
+            const earned = (userData.totalEarnings - currentEarnings).toFixed(2);
+            document.getElementById('userEarnings').textContent = userData.totalEarnings.toFixed(2);
+            
+            // Update localStorage
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            user.totalEarnings = userData.totalEarnings;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            showCompletionNotification(earned);
+          }
+        }
+      } catch (error) {
+        // Backend not available
+      }
+    }
+
+    // Load offerwall when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadOfferwall();
+      updateDailyCounter();
+      
+      // Check for earnings updates every 30 seconds
+      setInterval(checkEarningsUpdates, 30000);
+    });
+    
+    function updateDailyCounter() {
+      const today = new Date().toDateString();
+      const dailyTasks = JSON.parse(localStorage.getItem('dailyTasks') || '{}');
+      const todayCount = dailyTasks[today] || 0;
+      document.getElementById('dailyCount').textContent = todayCount;
+    }
+
+    // Update earnings display when user completes offers
+    function updateEarningsDisplay() {
+      const userData = localStorage.getItem('currentUser');
+      if (userData) {
+        const user = JSON.parse(userData);
+        document.getElementById('userEarnings').textContent = (user.totalEarnings || 0).toFixed(2);
+      }
+    }
+
+    // Listen for earnings updates
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'currentUser') {
+        updateEarningsDisplay();
+      }
+    });
+  </script>
+</body>
+</html>

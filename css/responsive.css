@@ -1,0 +1,170 @@
+/* Global Responsive Styles for Survey Africa */
+
+/* Mobile menu button */
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Sidebar overlay */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+/* Responsive sidebar */
+.sidebar {
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+/* Mobile responsive breakpoints */
+@media (max-width: 768px) {
+  .mobile-menu-btn { display: block; }
+  
+  .sidebar { 
+    transform: translateX(-100%); 
+    width: 280px;
+  }
+  
+  .sidebar.mobile-visible { 
+    transform: translateX(0); 
+  }
+  
+  .sidebar-overlay.active { 
+    display: block; 
+  }
+  
+  .main { 
+    margin-left: 0 !important; 
+    padding-top: 60px; 
+  }
+  
+  /* Form adjustments */
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Button adjustments */
+  .btn, .button {
+    min-height: 44px; /* Touch target size */
+    padding: 12px 20px;
+  }
+  
+  /* Navigation adjustments */
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Card layouts */
+  .stats, .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  /* Header adjustments */
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Single column layouts */
+  .stats, .cards {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Full width elements */
+  .card, .form-group, .actions button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  /* Smaller text on mobile */
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  
+  /* Padding adjustments */
+  .container, .main {
+    padding: 10px;
+  }
+  
+  /* Search box */
+  .search-box {
+    max-width: 100%;
+  }
+  
+  /* Quick actions */
+  .quick-actions {
+    flex-direction: column;
+  }
+  
+  .quick-btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+/* Landscape phone adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .sidebar {
+    width: 240px;
+  }
+  
+  .main {
+    padding-top: 20px;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+  
+  .main {
+    margin-left: 200px;
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  .btn:hover,
+  .button:hover {
+    transform: none; /* Remove hover animations on touch devices */
+  }
+  
+  /* Larger touch targets */
+  a, button, input, select, textarea {
+    min-height: 44px;
+  }
+}

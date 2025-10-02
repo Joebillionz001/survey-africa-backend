@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdraw Earnings • Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 240px;
+      background: rgba(11,18,32,0.5);
+      backdrop-filter: blur(8px);
+      color: white;
+      padding: 20px;
+      position: fixed;
+      height: 100vh;
+      overflow: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .sidebar .logo-mark {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+    }
+    .sidebar nav a {
+      display: block;
+      color: #c7d2da;
+      padding: 12px 0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .sidebar nav a:hover {
+      color: white;
+      background: rgba(255,255,255,0.1);
+      padding-left: 10px;
+    }
+    .sidebar nav a i {
+      width: 20px;
+      margin-right: 10px;
+    }
+    .main {
+      flex: 1;
+      margin-left: 240px;
+      padding: 20px;
+      color: white;
+    }
+    .header {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      color: #22c55e;
+      margin-bottom: 10px;
+    }
+    .earnings-card {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .earnings-card h2 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    .withdrawal-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .payment-method {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 25px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .payment-method:hover {
+      border-color: #00cec9;
+      transform: translateY(-5px);
+    }
+    .payment-method.selected {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .payment-method h3 {
+      color: #00cec9;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 16px;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #00cec9;
+    }
+    .btn {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .withdrawal-history {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 25px;
+    }
+    .history-item {
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .status {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status-pending { background: #f59e0b; color: white; }
+    .status-completed { background: #22c55e; color: white; }
+    .status-failed { background: #ef4444; color: white; }
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    @media (max-width: 768px) {
+      .mobile-menu-btn { display: block; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.mobile-visible { transform: translateX(0); }
+      .sidebar-overlay.active { display: block; }
+      .main { margin-left: 0; padding-top: 60px; }
+      .withdrawal-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <button class="mobile-menu-btn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="logo-mark">SA</span>
+        <span>Survey Africa</span>
+      </div>
+      <nav>
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="my-surveys.html"><i class="fas fa-list"></i> My Surveys</a>
+        <a href="quick-survey.html"><i class="fas fa-plus"></i> Create Survey</a>
+        <a href="reports.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+        <a href="offerwall.html"><i class="fas fa-coins"></i> Earn Money</a>
+        <a href="tasks.html"><i class="fas fa-tasks"></i> All Tasks</a>
+        <a href="billing.html"><i class="fas fa-wallet"></i> Earnings</a>
+        <a href="withdrawal.html" style="color:#22c55e;"><i class="fas fa-money-bill-wave"></i> Withdraw</a>
+        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+        <a href="index.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <h1><i class="fas fa-money-bill-wave"></i> Withdraw Earnings</h1>
+        <p>Cash out your earnings instantly</p>
+      </div>
+
+      <div class="earnings-card">
+        <h2>$<span id="availableBalance">0.00</span></h2>
+        <p>Available Balance</p>
+        <small>Minimum withdrawal: $5.00</small>
+      </div>
+
+      <div class="withdrawal-container">
+        <div class="payment-method" onclick="selectMethod('paystack')">
+          <h3><i class="fas fa-credit-card"></i> Paystack Transfer</h3>
+          <p>Instant transfer to your Nigerian bank account</p>
+          <small>Fee: ₦50 | Instant</small>
+        </div>
+
+        <div class="payment-method" onclick="selectMethod('mobile')">
+          <h3><i class="fas fa-mobile-alt"></i> Mobile Money</h3>
+          <p>Send to MTN, Airtel, or other mobile wallets</p>
+          <small>Fee: ₦25 | Instant</small>
+        </div>
+      </div>
+
+      <div id="withdrawalForm" style="display: none;">
+        <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border-radius: 15px; padding: 25px;">
+          <h3 style="margin-bottom: 20px;">Withdrawal Details</h3>
+          
+          <div class="form-group">
+            <label for="amount">Amount to Withdraw</label>
+            <input type="number" id="amount" min="5" step="0.01" placeholder="Enter amount">
+          </div>
+
+          <div id="paystackFields" style="display: none;">
+            <div class="form-group">
+              <label for="bankCode">Bank</label>
+              <select id="bankCode">
+                <option value="">Select Bank</option>
+                <option value="044">Access Bank</option>
+                <option value="014">Afribank</option>
+                <option value="023">Citibank</option>
+                <option value="050">Ecobank</option>
+                <option value="011">First Bank</option>
+                <option value="214">First City Monument Bank</option>
+                <option value="070">Fidelity Bank</option>
+                <option value="058">Guaranty Trust Bank</option>
+                <option value="030">Heritage Bank</option>
+                <option value="082">Keystone Bank</option>
+                <option value="221">Stanbic IBTC Bank</option>
+                <option value="068">Standard Chartered Bank</option>
+                <option value="232">Sterling Bank</option>
+                <option value="033">United Bank for Africa</option>
+                <option value="032">Union Bank</option>
+                <option value="035">Wema Bank</option>
+                <option value="057">Zenith Bank</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="accountNumber">Account Number</label>
+              <input type="text" id="accountNumber" placeholder="Enter 10-digit account number">
+            </div>
+            <div class="form-group">
+              <label for="accountName">Account Name</label>
+              <input type="text" id="accountName" placeholder="Account holder name" readonly>
+            </div>
+          </div>
+
+          <div id="mobileFields" style="display: none;">
+            <div class="form-group">
+              <label for="mobileProvider">Mobile Money Provider</label>
+              <select id="mobileProvider">
+                <option value="">Select Provider</option>
+                <option value="mtn">MTN Mobile Money</option>
+                <option value="airtel">Airtel Money</option>
+                <option value="9mobile">9mobile Money</option>
+                <option value="glo">Glo Mobile Money</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mobileNumber">Mobile Number</label>
+              <input type="tel" id="mobileNumber" placeholder="08012345678">
+            </div>
+          </div>
+
+          <button class="btn" onclick="processWithdrawal()">
+            <i class="fas fa-paper-plane"></i> Request Withdrawal
+          </button>
+        </div>
+      </div>
+
+      <div class="withdrawal-history">
+        <h3 style="margin-bottom: 20px;">Withdrawal History</h3>
+        <div id="historyContainer">
+          <p style="text-align: center; color: rgba(255,255,255,0.6);">No withdrawals yet</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>© 2025 Survey Africa. Made with ❤️ for Africa. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    let selectedMethod = null;
+
+    function loadUserBalance() {
+      const userData = localStorage.getItem('currentUser');
+      if (userData) {
+        const user = JSON.parse(userData);
+        document.getElementById('availableBalance').textContent = (user.totalEarnings || 0).toFixed(2);
+      }
+    }
+
+    function selectMethod(method) {
+      selectedMethod = method;
+      
+      // Update UI
+      document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+      event.target.closest('.payment-method').classList.add('selected');
+      
+      // Show form
+      document.getElementById('withdrawalForm').style.display = 'block';
+      
+      // Show/hide fields
+      document.getElementById('paystackFields').style.display = method === 'paystack' ? 'block' : 'none';
+      document.getElementById('mobileFields').style.display = method === 'mobile' ? 'block' : 'none';
+    }
+
+    function processWithdrawal() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const balance = parseFloat(document.getElementById('availableBalance').textContent);
+      
+      if (!amount || amount < 5) {
+        alert('Minimum withdrawal amount is $5.00');
+        return;
+      }
+      
+      if (amount > balance) {
+        alert('Insufficient balance');
+        return;
+      }
+      
+      let paymentDetails = {};
+      
+      if (selectedMethod === 'paystack') {
+        const bankCode = document.getElementById('bankCode').value;
+        const accountNumber = document.getElementById('accountNumber').value;
+        const accountName = document.getElementById('accountName').value;
+        
+        if (!bankCode || !accountNumber) {
+          alert('Please select bank and enter account number');
+          return;
+        }
+        paymentDetails = { bankCode, accountNumber, accountName, method: 'Paystack Transfer' };
+        
+        // Process Paystack transfer
+        await processPaystackTransfer(amount, paymentDetails);
+        return;
+        
+      } else if (selectedMethod === 'mobile') {
+        const provider = document.getElementById('mobileProvider').value;
+        const mobileNumber = document.getElementById('mobileNumber').value;
+        
+        if (!provider || !mobileNumber) {
+          alert('Please select provider and enter mobile number');
+          return;
+        }
+        paymentDetails = { provider, mobileNumber, method: 'Mobile Money' };
+      }
+      
+      // Save withdrawal request
+      const withdrawal = {
+        id: Date.now(),
+        amount: amount,
+        method: paymentDetails.method,
+        details: paymentDetails,
+        status: 'pending',
+        requestedAt: new Date().toISOString(),
+        fee: selectedMethod === 'paystack' ? 50 : 25
+      };
+      
+      const withdrawals = JSON.parse(localStorage.getItem('withdrawalHistory') || '[]');
+      withdrawals.unshift(withdrawal);
+      localStorage.setItem('withdrawalHistory', JSON.stringify(withdrawals));
+      
+      // Update user balance
+      const userData = JSON.parse(localStorage.getItem('currentUser'));
+      userData.totalEarnings -= amount;
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      
+      alert('Withdrawal request submitted! Processing time: 1-3 business days.');
+      
+      // Reset form
+      document.getElementById('withdrawalForm').style.display = 'none';
+      document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+      selectedMethod = null;
+      
+      loadUserBalance();
+      loadWithdrawalHistory();
+    }
+
+    function loadWithdrawalHistory() {
+      const withdrawals = JSON.parse(localStorage.getItem('withdrawalHistory') || '[]');
+      const container = document.getElementById('historyContainer');
+      
+      if (withdrawals.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6);">No withdrawals yet</p>';
+        return;
+      }
+      
+      container.innerHTML = withdrawals.map(w => `
+        <div class="history-item">
+          <div>
+            <strong>$${w.amount.toFixed(2)}</strong> via ${w.method}
+            <br><small>${new Date(w.requestedAt).toLocaleDateString()}</small>
+          </div>
+          <span class="status status-${w.status}">${w.status.toUpperCase()}</span>
+        </div>
+      `).join('');
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      sidebar.classList.toggle('mobile-visible');
+      overlay.classList.toggle('active');
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      sidebar.classList.remove('mobile-visible');
+      overlay.classList.remove('active');
+    }
+
+    function logout() {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'index.html';
+    }
+
+    // Secure API functions - calls backend instead of direct Paystack
+    async function verifyAccountNumber() {
+      const bankCode = document.getElementById('bankCode').value;
+      const accountNumber = document.getElementById('accountNumber').value;
+      
+      if (!bankCode || !accountNumber || accountNumber.length !== 10) return;
+      
+      try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch('http://localhost:5000/api/paystack/verify-account', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ accountNumber, bankCode })
+        });
+        
+        const data = await response.json();
+        if (data.status) {
+          document.getElementById('accountName').value = data.data.account_name;
+        }
+      } catch (error) {
+        console.error('Account verification failed:', error);
+      }
+    }
+    
+    async function processPaystackTransfer(amount, details) {
+      try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch('http://localhost:5000/api/paystack/withdraw', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            amount,
+            bankCode: details.bankCode,
+            accountNumber: details.accountNumber,
+            accountName: details.accountName,
+            method: 'paystack'
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert('Transfer successful! Money sent to your account.');
+          
+          // Update user balance
+          const userData = JSON.parse(localStorage.getItem('currentUser'));
+          userData.totalEarnings = data.newBalance;
+          localStorage.setItem('currentUser', JSON.stringify(userData));
+          
+          // Save to history
+          const withdrawal = {
+            id: Date.now(),
+            amount: amount,
+            method: 'Paystack Transfer',
+            details: details,
+            status: 'completed',
+            requestedAt: new Date().toISOString(),
+            fee: 50,
+            reference: data.reference
+          };
+          
+          const withdrawals = JSON.parse(localStorage.getItem('withdrawalHistory') || '[]');
+          withdrawals.unshift(withdrawal);
+          localStorage.setItem('withdrawalHistory', JSON.stringify(withdrawals));
+          
+          loadUserBalance();
+          loadWithdrawalHistory();
+        } else {
+          alert('Transfer failed: ' + data.error);
+        }
+      } catch (error) {
+        console.error('Withdrawal error:', error);
+        alert('Transfer failed. Please try again.');
+      }
+    }
+    
+    // Add event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserBalance();
+      loadWithdrawalHistory();
+      
+      // Auto-verify account when bank and account number are entered
+      document.getElementById('accountNumber').addEventListener('input', verifyAccountNumber);
+      document.getElementById('bankCode').addEventListener('change', verifyAccountNumber);
+    });
+  </script>
+</body>
+</html>

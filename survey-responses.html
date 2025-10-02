@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey Responses • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #111;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  header {
+    position: fixed;
+    width: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    z-index: 999;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .brand .logo-mark {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #00cec9;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  nav ul li a:hover {
+    color: #00cec9;
+  }
+
+  .hamburger {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .hamburger:hover {
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    nav ul {
+      display: none;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.9);
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 250px;
+      padding: 2rem;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    nav ul.active {
+      display: flex;
+    }
+
+    .hamburger {
+      display: block;
+    }
+  }
+
+  .container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: rgba(11,18,32,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 9px;
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar h2 { 
+    color: #06b6d4; 
+    margin-bottom: 10px; 
+  }
+
+  .sidebar a { 
+    display:block; 
+    color:#c7d2da; 
+    padding:10px 0; 
+    text-decoration:none; 
+  }
+
+  .sidebar a:hover { 
+    color:white; 
+  }
+
+  .main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 20px;
+    max-width: 1200px;
+  }
+
+  .responses-content {
+    color: white;
+  }
+
+  .header {
+    margin-bottom: 30px;
+  }
+
+  .header h1 {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin: 0 0 10px 0;
+  }
+
+  .survey-info {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 30px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 5px;
+  }
+
+  .responses-container {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 30px;
+  }
+
+  .response-item {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border-left: 4px solid #00cec9;
+  }
+
+    footer{
+    margin-bottom: 100px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: capitalize;
+    background-color: #06b6d4;
+    margin: 30px;
+    margin-top: 30px;
+    padding: 20px;
+    background: transparent;
+    color: #06b6d4;
+
+  }
+
+  .response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .response-id {
+    font-weight: bold;
+    color: #ffd700;
+  }
+
+  .response-date {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+  }
+
+  .question-answer {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+  }
+
+  .question {
+    font-weight: bold;
+    color: #00cec9;
+    margin-bottom: 5px;
+  }
+
+  .answer {
+    color: rgba(255,255,255,0.9);
+  }
+
+  .earning-opportunity {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .btn-cpa {
+    background: #22c55e;
+    color: white;
+  }
+
+  .btn-youtube {
+    background: #ef4444;
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .back-link {
+    color: #ffd700;
+    text-decoration: none;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .response-header {
+      flex-direction: column;
+      align-items: start;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Survey Africa</h2>
+    <p id="userName">Logged in as: USERNAME</p>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-surveys.html">My Surveys</a>
+      <a href="quick-survey.html">Create Survey</a>
+      <a href="reports.html">Analytics</a>
+      <a href="billing.html">Earnings</a>
+      <a href="settings.html">Settings</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="responses-content">
+
+  
+  <div class="header">
+    <h1>Survey Responses</h1>
+  </div>
+
+  <div class="survey-info">
+    <h3 style="color: #ffd700; margin-bottom: 10px;">Customer Satisfaction Survey</h3>
+    <p style="color: rgba(255,255,255,0.8);">Created on January 15, 2025 • Status: Active</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">245</div>
+      <p>Total Responses</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$24.50</div>
+      <p>Earnings</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">4.2</div>
+      <p>Avg Rating</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">89%</div>
+      <p>Completion Rate</p>
+    </div>
+  </div>
+
+  <div class="earning-opportunity">
+    <h4 style="color: #22c55e; margin-bottom: 15px;"><i class="fas fa-coins"></i> Boost Your Earnings</h4>
+    <p style="margin-bottom: 15px;">Complete these tasks to earn extra money from your survey responses:</p>
+    <div>
+      <button class="btn btn-cpa" onclick="completeCpaOffer()">
+        <i class="fas fa-external-link-alt"></i> Complete Partner Offer (+$5.00)
+      </button>
+      <button class="btn btn-youtube" onclick="watchYouTubeVideo()">
+        <i class="fab fa-youtube"></i> Watch & Subscribe (+$2.00)
+      </button>
+      <button class="btn" style="background: #3b82f6; color: white;" onclick="shareOnSocial()">
+        <i class="fas fa-share"></i> Share Survey (+$1.00)
+      </button>
+    </div>
+  </div>
+
+  <div class="responses-container">
+    <h3 style="color: #ffd700; margin-bottom: 20px;">Recent Responses</h3>
+    
+    <div class="response-item">
+      <div class="response-header">
+        <span class="response-id">Response #245</span>
+        <span class="response-date">January 20, 2025 - 2:30 PM</span>
+      </div>
+      <div class="question-answer">
+        <div class="question">How satisfied are you with our service?</div>
+        <div class="answer">Very satisfied - The service exceeded my expectations!</div>
+      </div>
+      <div class="question-answer">
+        <div class="question">What can we improve?</div>
+        <div class="answer">Maybe faster response times, but overall great experience.</div>
+      </div>
+      <div class="question-answer">
+        <div class="question">Would you recommend us?</div>
+        <div class="answer">Yes, definitely!</div>
+      </div>
+    </div>
+
+    <div class="response-item">
+      <div class="response-header">
+        <span class="response-id">Response #244</span>
+        <span class="response-date">January 20, 2025 - 1:15 PM</span>
+      </div>
+      <div class="question-answer">
+        <div class="question">How satisfied are you with our service?</div>
+        <div class="answer">Satisfied - Good service overall</div>
+      </div>
+      <div class="question-answer">
+        <div class="question">What can we improve?</div>
+        <div class="answer">More payment options would be helpful</div>
+      </div>
+      <div class="question-answer">
+        <div class="question">Would you recommend us?</div>
+        <div class="answer">Yes</div>
+      </div>
+    </div>
+
+    <div class="response-item">
+      <div class="response-header">
+        <span class="response-id">Response #243</span>
+        <span class="response-date">January 19, 2025 - 4:45 PM</span>
+      </div>
+      <div class="question-answer">
+        <div class="question">How satisfied are you with our service?</div>
+        <div class="answer">Neutral - It's okay, nothing special</div>
+      </div>
+      <div class="question-answer">
+        <div class="question">What can we improve?</div>
+        <div class="answer">Better customer support and clearer instructions</div>
+      </div>
+      <div class="question-answer">
+        <div class="question">Would you recommend us?</div>
+        <div class="answer">Maybe</div>
+      </div>
+    </div>
+  </div>
+    </div>
+  </main>
+</div>
+<footer>
+  & powerd by Survey Africa.com
+</footer>
+
+<script>
+  function completeCpaOffer() {
+    const cpaLinks = [
+      'https://example-cpa-offer1.com/signup',
+      'https://example-cpa-offer2.com/trial',
+      'https://example-cpa-offer3.com/download'
+    ];
+    const randomLink = cpaLinks[Math.floor(Math.random() * cpaLinks.length)];
+    window.open(randomLink, '_blank');
+    alert('CPA offer opened! Complete the signup/trial to earn $5.00. Earnings will be credited within 24 hours.');
+  }
+
+  function watchYouTubeVideo() {
+    const youtubeVideos = [
+      'https://youtube.com/watch?v=example1',
+      'https://youtube.com/watch?v=example2',
+      'https://youtube.com/watch?v=example3'
+    ];
+    const randomVideo = youtubeVideos[Math.floor(Math.random() * youtubeVideos.length)];
+    window.open(randomVideo, '_blank');
+    alert('YouTube video opened! Please watch the full video, like, and subscribe. $2.00 will be credited after verification.');
+  }
+
+  function shareOnSocial() {
+    const shareText = "Check out this amazing survey platform - Survey Africa! Earn money by creating and sharing surveys. #SurveyAfrica #EarnMoney";
+    const shareUrl = window.location.origin;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: 'Survey Africa',
+        text: shareText,
+        url: shareUrl
+      });
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+      window.open(twitterUrl, '_blank');
+    }
+    
+    alert('Thank you for sharing! $1.00 will be credited to your account.');
+  }
+
+  function logout() {
+    alert('Logging out...');
+    setTimeout(() => window.location.href = 'index.html', 1000);
+  }
+</script>
+</body>
+</html>

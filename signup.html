@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Join Survey Africa - Create powerful surveys for African communities">
+  <meta name="keywords" content="surveys, Africa, data collection, analytics">
+  <title>Signup • Survey Africa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/logo.css">
+  <style>
+    :root {
+      --primary: #00cec9;
+      --secondary: #fd79a8;
+      --accent: #00b894;
+      --text: rgba(255,255,255,0.9);
+      --text-muted: rgba(255,255,255,0.6);
+      --glass-bg: rgba(255,255,255,0.1);
+      --glass-border: rgba(255,255,255,0.2);
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    header {
+      position: fixed;
+      width: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      z-index: 999;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .brand .logo-mark {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--primary);
+      padding: 12px 24px;
+      border: 2px solid var(--primary);
+      border-radius: 14px;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,206,201,0.3);
+      display: inline-block;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .brand .logo-mark:hover {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-color: transparent;
+      box-shadow: 0 6px 30px rgba(0,206,201,0.6);
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    nav ul li a {
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 0;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: var(--primary);
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    /* Enhanced Main Container */
+    .main-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 120px auto 60px;
+      max-width: 1200px;
+      width: 90%;
+      gap: 60px;
+    }
+
+    /* Enhanced Left Content */
+    .left-content {
+      flex: 1;
+      min-width: 320px;
+      border: 2px solid var(--glass-border);
+      box-shadow: 0 10px 30px var(--shadow);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 50px 40px;
+      margin: 20px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .left-content:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    .left-content h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .left-content p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 30px;
+      color: var(--text);
+    }
+
+    /* Enhanced Features List */
+    .features {
+      list-style: none;
+      margin-top: 25px;
+    }
+
+    .features li {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 15px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .features li:hover {
+      transform: translateX(5px);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .features li::before {
+      content: "✔";
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* Enhanced Signup Form */
+    .signup-container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      padding: 50px 40px;
+      border-radius: 20px;
+      border: 2px solid var(--glass-border);
+      flex: 1;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 8px 32px var(--shadow);
+      text-align: center;
+      transition: transform 0.4s ease;
+    }
+
+    .signup-container:hover {
+      transform: translateY(-5px);
+    }
+
+    .signup-container h2 {
+      margin-bottom: 30px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--glass-border);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 0 4px rgba(0,206,201,0.1);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .signup-button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,206,201,0.4);
+    }
+
+    .signup-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,206,201,0.6);
+    }
+
+    .signup-button:active {
+      transform: translateY(1px);
+    }
+
+    .login-link {
+      margin-top: 25px;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    .login-link a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .login-link a:hover {
+      color: var(--secondary);
+      text-decoration: underline;
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 16px;
+      background: white;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #333;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .google-btn:hover {
+      background: #f8f9fa;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Enhanced Footer */
+    footer {
+      text-align: center;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+      padding: 20px;
+      font-size: 1rem;
+      margin-top: auto;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    /* Enhanced Responsive Design */
+    @media (max-width: 1024px) {
+      .main-container {
+        gap: 40px;
+      }
+      
+      .left-content {
+        padding: 40px 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .left-content {
+        margin: 20px 0;
+        padding: 30px 25px;
+      }
+      
+      .features li {
+        justify-content: center;
+      }
+      
+      .signup-container {
+        max-width: 100%;
+        padding: 40px 30px;
+      }
+      
+      nav ul {
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 15px 20px;
+      }
+      
+      .brand .logo-mark {
+        font-size: 1.4rem;
+        padding: 8px 15px;
+      }
+      
+      nav ul {
+        gap: 15px;
+      }
+      
+      .left-content h1 {
+        font-size: 2rem;
+      }
+      
+      .features li {
+        font-size: 1rem;
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="brand">
+      <span class="logo-mark">SA</span>
+      <span>Survey Africa</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-container">
+    <!-- Left info content -->
+    <div class="left-content">
+      <h1>Join Survey Africa</h1>
+      <p>
+        Be part of the movement empowering Africa through data.  
+        Create your free account and start building powerful surveys
+        tailored for African communities.
+      </p>
+      <ul class="features">
+        <li>🌍 Multilingual survey support</li>
+        <li>📊 Real-time analytics dashboard</li>
+        <li>🔒 Secure data storage</li>
+        <li>🤝 Collaboration tools</li>
+      </ul>
+    </div>
+
+    <!-- Signup form -->
+    <div class="signup-container">
+      <h2>Create Your Account</h2>
+      <form>
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Choose a username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+        </div>
+
+        <button type="submit" class="signup-button">Sign Up</button>
+      </form>
+
+      <div style="margin: 20px 0; text-align: center; color: rgba(255,255,255,0.6);">or</div>
+
+      <button type="button" class="google-btn" onclick="signUpWithGoogle()">
+        <i class="fab fa-google"></i> Sign up with Google
+      </button>
+
+      <p class="login-link">
+        Already have an account? <a href="login.html">Log in here</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Survey Africa. Made with ❤️ for Africa. All Rights Reserved.</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/mobile.js"></script>
+  <script>
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.style.cssText = `position:fixed;top:20px;right:20px;background:${type==='success'?'#10b981':'#ef4444'};color:white;padding:15px 20px;border-radius:8px;z-index:1000;`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => document.body.removeChild(toast), 3000);
+    }
+
+    document.querySelector('form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('fullname').value;
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      if (!name || !username || !email || !password || !confirmPassword) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+      
+      if (username.length < 3) {
+        showToast('Username must be at least 3 characters', 'error');
+        return;
+      }
+      
+      if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+        showToast('Username can only contain letters, numbers, and underscores', 'error');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showToast('Passwords do not match!', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, username, email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.token) {
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+          localStorage.setItem('isLoggedIn', 'true');
+          
+          showToast('Account created successfully!', 'success');
+          setTimeout(() => window.location.href = 'dashboard.html', 1500);
+        } else {
+          showToast(data.message || 'Registration failed', 'error');
+        }
+      } catch (error) {
+        showToast('Registration failed. Please try again.', 'error');
+      }
+    });
+
+    // Handle Google OAuth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const user = urlParams.get('user');
+    
+    if (token && user) {
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('currentUser', user);
+      localStorage.setItem('isLoggedIn', 'true');
+      showToast('Google sign-up successful!', 'success');
+      setTimeout(() => window.location.href = 'dashboard.html', 1500);
+    }
+    
+    // Clear URL parameters after processing
+    if (token || user) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    function signUpWithGoogle() {
+      window.location.href = 'http://localhost:5000/api/auth/google';
+    }
+  </script>
+</body>
+</html>

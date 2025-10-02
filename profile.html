@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #111;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  .container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: rgba(11,18,32,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 9px;
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar h2 { 
+    color: #06b6d4; 
+    margin-bottom: 10px; 
+  }
+
+  .sidebar a { 
+    display:block; 
+    color:#c7d2da; 
+    padding:10px 0; 
+    text-decoration:none; 
+  }
+
+  .sidebar a:hover { 
+    color:white; 
+  }
+
+  .main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 20px;
+  }
+
+  .profile-content {
+    color: white;
+  }
+
+  .profile-header {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .avatar-section {
+    margin-bottom: 20px;
+  }
+
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #00cec9, #fd79a8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    margin: 0 auto 15px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .avatar:hover {
+    transform: scale(1.05);
+  }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  .profile-section {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00cec9;
+    margin-bottom: 5px;
+  }
+
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+  }
+
+  .btn-primary {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .achievements {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .achievement-icon {
+    font-size: 2rem;
+    color: #ffd700;
+  }
+
+  @media (max-width: 768px) {
+    .profile-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Survey Africa</h2>
+    <p id="userName">Logged in as: USERNAME</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-surveys.html">My Surveys</a>
+      <a href="quick-survey.html">Create Survey</a>
+      <a href="reports.html">Analytics</a>
+      <a href="billing.html">Earnings</a>
+      <a href="settings.html">Settings</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="profile-content">
+      <div class="profile-header">
+        <div class="avatar-section">
+          <div class="avatar" onclick="changeAvatar()">JD</div>
+          <button class="btn btn-secondary" onclick="changeAvatar()">Change Photo</button>
+        </div>
+        <h1 style="color: #ffd700; margin-bottom: 10px;">John Doe</h1>
+        <p style="color: rgba(255,255,255,0.8);">Survey Creator • Member since January 2025</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">12</div>
+          <p>Surveys Created</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">2,847</div>
+          <p>Total Responses</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">$125.50</div>
+          <p>Total Earnings</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">4.8</div>
+          <p>Avg Rating</p>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-section">
+          <div class="section-title">Personal Information</div>
+          <form>
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" value="John Doe">
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" value="john@example.com">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" value="+234 123 456 7890">
+            </div>
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input type="text" id="location" value="Lagos, Nigeria">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+          </form>
+        </div>
+
+        <div class="profile-section">
+          <div class="section-title">Professional Details</div>
+          <form>
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" value="Tech Solutions Ltd">
+            </div>
+            <div class="form-group">
+              <label for="position">Position</label>
+              <input type="text" id="position" value="Marketing Manager">
+            </div>
+            <div class="form-group">
+              <label for="industry">Industry</label>
+              <select id="industry">
+                <option>Technology</option>
+                <option>Healthcare</option>
+                <option>Education</option>
+                <option>Finance</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="bio">Bio</label>
+              <textarea id="bio" rows="3" placeholder="Tell us about yourself...">Experienced marketing professional passionate about data-driven insights.</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="achievements">
+        <div class="section-title">Achievements & Badges</div>
+        <div class="achievement-item">
+          <div class="achievement-icon">🏆</div>
+          <div>
+            <h4 style="color: #ffd700; margin-bottom: 5px;">Survey Master</h4>
+            <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Created 10+ successful surveys</p>
+          </div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-icon">💰</div>
+          <div>
+            <h4 style="color: #ffd700; margin-bottom: 5px;">Top Earner</h4>
+            <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Earned $100+ through platform tasks</p>
+          </div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-icon">📊</div>
+          <div>
+            <h4 style="color: #ffd700; margin-bottom: 5px;">Data Collector</h4>
+            <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Collected 1000+ survey responses</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  function changeAvatar() {
+    alert('Avatar upload feature coming soon!');
+  }
+
+  function logout() {
+    alert('Logging out...');
+    setTimeout(() => window.location.href = 'index.html', 1000);
+  }
+
+  // Form submissions
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Profile updated successfully!');
+    });
+  });
+</script>
+</body>
+</html>

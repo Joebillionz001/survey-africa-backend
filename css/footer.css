@@ -1,0 +1,23 @@
+/* Global Footer Styles for Survey Africa */
+footer {
+  text-align: center;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.9);
+  padding: 20px;
+  font-size: 1rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+footer p {
+  margin: 0;
+  color: rgba(255,255,255,0.8);
+}
+
+@media (max-width: 768px) {
+  footer {
+    padding: 15px;
+    font-size: 14px;
+  }
+}

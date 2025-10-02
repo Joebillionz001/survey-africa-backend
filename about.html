@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us • Survey Africa</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    header {
+      position: fixed;
+      width: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 999;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .brand .logo-mark {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #00cec9;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #00cec9;
+    }
+
+    main {
+      padding: 120px 20px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-section {
+      text-align: center;
+      margin-bottom: 4rem;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 3rem;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .hero-section h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .content-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .content-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .content-card h3 {
+      color: #00cec9;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .stats-section {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 3rem;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .stat-item {
+      padding: 1.5rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #00cec9;
+      margin-bottom: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      background: rgba(0,0,0,0.9);
+      padding: 2rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+      
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo-mark">SA</div>
+      <div>Survey Africa</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <h1>About Survey Africa</h1>
+      <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9);">
+        We're on a mission to empower African communities through data-driven insights and meaningful research.
+      </p>
+    </section>
+
+    <div class="content-grid">
+      <div class="content-card">
+        <h3>Our Mission</h3>
+        <p>To democratize data collection across Africa by providing accessible, multilingual survey tools that help organizations, researchers, and communities make informed decisions that drive positive change.</p>
+      </div>
+
+      <div class="content-card">
+        <h3>Our Vision</h3>
+        <p>A connected Africa where every voice is heard, every opinion matters, and data-driven insights fuel sustainable development and growth across all communities.</p>
+      </div>
+
+      <div class="content-card">
+        <h3>Why Africa?</h3>
+        <p>Africa is home to diverse cultures, languages, and perspectives. We believe in creating tools that respect this diversity while enabling meaningful data collection that represents the true voice of African communities.</p>
+      </div>
+
+      <div class="content-card">
+        <h3>Our Approach</h3>
+        <p>We combine cutting-edge technology with deep understanding of African contexts, ensuring our platform works seamlessly across different languages, cultures, and technological environments.</p>
+      </div>
+    </div>
+
+    <section class="stats-section">
+      <h2 style="color: #00cec9; font-size: 2rem; margin-bottom: 1rem;">Our Impact</h2>
+      <p>Since our launch, we've been proud to serve communities across Africa</p>
+      
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">50K+</div>
+          <p>Surveys Created</p>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">2M+</div>
+          <p>Responses Collected</p>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">25+</div>
+          <p>Languages Supported</p>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">54</div>
+          <p>African Countries</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Survey Africa. Made with ❤️ for Africa.</p>
+  </footer>
+</body>
+</html>

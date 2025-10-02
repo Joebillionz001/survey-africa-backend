@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integrations • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #111;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  .container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: rgba(11,18,32,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 9px;
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar h2 { 
+    color: #06b6d4; 
+    margin-bottom: 10px; 
+  }
+
+  .sidebar a { 
+    display:block; 
+    color:#c7d2da; 
+    padding:10px 0; 
+    text-decoration:none; 
+  }
+
+  .sidebar a:hover { 
+    color:white; 
+  }
+
+  .main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 20px;
+  }
+
+  .integrations-content {
+    color: white;
+  }
+
+  .header {
+    margin-bottom: 30px;
+  }
+
+  .header h1 {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin: 0;
+  }
+
+  .categories {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .category-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .category-btn.active {
+    background: #00cec9;
+  }
+
+  .integrations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+  }
+
+  .integration-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .integration-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .integration-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .integration-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  .integration-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffd700;
+  }
+
+  .integration-desc {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .integration-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .status-connected {
+    background: #22c55e;
+    color: white;
+  }
+
+  .status-available {
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .connected-integrations {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 30px;
+  }
+
+  .connected-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .connected-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  @media (max-width: 768px) {
+    .integrations-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .categories {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Survey Africa</h2>
+    <p id="userName">Logged in as: USERNAME</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-surveys.html">My Surveys</a>
+      <a href="quick-survey.html">Create Survey</a>
+      <a href="reports.html">Analytics</a>
+      <a href="billing.html">Earnings</a>
+      <a href="settings.html">Settings</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="integrations-content">
+      <div class="header">
+        <h1>Integrations</h1>
+        <p>Connect Survey Africa with your favorite tools and services</p>
+      </div>
+
+      <div class="connected-integrations">
+        <h3 style="color: #ffd700; margin-bottom: 20px;">Connected Integrations</h3>
+        
+        <div class="connected-item">
+          <div class="connected-info">
+            <div class="integration-logo" style="background: #4285f4;">📊</div>
+            <div>
+              <h4 style="color: white; margin: 0;">Google Sheets</h4>
+              <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 14px;">Auto-sync survey responses</p>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-secondary" onclick="configureIntegration('sheets')">Configure</button>
+            <button class="btn" style="background: #ef4444; color: white; margin-left: 5px;" onclick="disconnectIntegration('sheets')">Disconnect</button>
+          </div>
+        </div>
+
+        <div class="connected-item">
+          <div class="connected-info">
+            <div class="integration-logo" style="background: #ff6900;">⚡</div>
+            <div>
+              <h4 style="color: white; margin: 0;">Zapier</h4>
+              <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 14px;">Automate workflows</p>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-secondary" onclick="configureIntegration('zapier')">Configure</button>
+            <button class="btn" style="background: #ef4444; color: white; margin-left: 5px;" onclick="disconnectIntegration('zapier')">Disconnect</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="categories">
+        <button class="category-btn active" onclick="filterIntegrations('all')">All</button>
+        <button class="category-btn" onclick="filterIntegrations('productivity')">Productivity</button>
+        <button class="category-btn" onclick="filterIntegrations('analytics')">Analytics</button>
+        <button class="category-btn" onclick="filterIntegrations('communication')">Communication</button>
+        <button class="category-btn" onclick="filterIntegrations('crm')">CRM</button>
+      </div>
+
+      <div class="integrations-grid" id="integrationsGrid">
+        <!-- Integrations will be populated by JavaScript -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const integrations = [
+    {
+      id: 'slack',
+      name: 'Slack',
+      category: 'communication',
+      logo: '💬',
+      description: 'Get instant notifications about new survey responses in your Slack channels.',
+      connected: false
+    },
+    {
+      id: 'mailchimp',
+      name: 'Mailchimp',
+      category: 'communication',
+      logo: '📧',
+      description: 'Automatically add survey respondents to your email marketing lists.',
+      connected: false
+    },
+    {
+      id: 'hubspot',
+      name: 'HubSpot',
+      category: 'crm',
+      logo: '🔗',
+      description: 'Sync survey data with your HubSpot CRM and create targeted campaigns.',
+      connected: false
+    },
+    {
+      id: 'salesforce',
+      name: 'Salesforce',
+      category: 'crm',
+      logo: '☁️',
+      description: 'Integrate survey responses with your Salesforce customer records.',
+      connected: false
+    },
+    {
+      id: 'googleanalytics',
+      name: 'Google Analytics',
+      category: 'analytics',
+      logo: '📈',
+      description: 'Track survey completion rates and user behavior with Google Analytics.',
+      connected: false
+    },
+    {
+      id: 'microsoft365',
+      name: 'Microsoft 365',
+      category: 'productivity',
+      logo: '📋',
+      description: 'Export survey data to Excel and integrate with Microsoft Teams.',
+      connected: false
+    },
+    {
+      id: 'trello',
+      name: 'Trello',
+      category: 'productivity',
+      logo: '📌',
+      description: 'Create Trello cards automatically from survey feedback and responses.',
+      connected: false
+    },
+    {
+      id: 'webhook',
+      name: 'Webhooks',
+      category: 'productivity',
+      logo: '🔗',
+      description: 'Send real-time survey data to any endpoint with custom webhooks.',
+      connected: false
+    },
+    {
+      id: 'discord',
+      name: 'Discord',
+      category: 'communication',
+      logo: '🎮',
+      description: 'Get survey notifications and updates in your Discord server.',
+      connected: false
+    },
+    {
+      id: 'airtable',
+      name: 'Airtable',
+      category: 'productivity',
+      logo: '🗃️',
+      description: 'Organize and analyze survey data in flexible Airtable databases.',
+      connected: false
+    }
+  ];
+
+  function renderIntegrations(filteredIntegrations = integrations) {
+    const grid = document.getElementById('integrationsGrid');
+    grid.innerHTML = filteredIntegrations.map(integration => `
+      <div class="integration-card" data-category="${integration.category}">
+        <div class="integration-header">
+          <div class="integration-logo">${integration.logo}</div>
+          <div class="integration-title">${integration.name}</div>
+        </div>
+        <div class="integration-desc">${integration.description}</div>
+        <div class="integration-status">
+          <span class="status-badge ${integration.connected ? 'status-connected' : 'status-available'}">
+            ${integration.connected ? 'Connected' : 'Available'}
+          </span>
+          <button class="btn ${integration.connected ? 'btn-secondary' : 'btn-primary'}" 
+                  onclick="${integration.connected ? 'configureIntegration' : 'connectIntegration'}('${integration.id}')">
+            ${integration.connected ? 'Configure' : 'Connect'}
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterIntegrations(category) {
+    // Update active button
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filter integrations
+    const filtered = category === 'all' ? integrations : integrations.filter(i => i.category === category);
+    renderIntegrations(filtered);
+  }
+
+  function connectIntegration(id) {
+    const integration = integrations.find(i => i.id === id);
+    if (integration) {
+      alert(`Connecting to ${integration.name}...`);
+      // Simulate connection
+      setTimeout(() => {
+        integration.connected = true;
+        renderIntegrations();
+        alert(`Successfully connected to ${integration.name}!`);
+      }, 1500);
+    }
+  }
+
+  function configureIntegration(id) {
+    alert(`Opening configuration for ${id}...`);
+  }
+
+  function disconnectIntegration(id) {
+    if (confirm('Are you sure you want to disconnect this integration?')) {
+      alert(`Disconnected from ${id}`);
+      // In real app, would update the integration status
+    }
+  }
+
+  function logout() {
+    alert('Logging out...');
+    setTimeout(() => window.location.href = 'index.html', 1000);
+  }
+
+  renderIntegrations();
+</script>
+</body>
+</html>

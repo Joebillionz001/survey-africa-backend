@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Take Survey • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  .survey-header {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .survey-title {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin-bottom: 15px;
+  }
+
+  .survey-description {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 20px;
+  }
+
+  .survey-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .question-container {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 20px;
+  }
+
+  .question-number {
+    color: #22c55e;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .question-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 20px;
+  }
+
+  .question-required {
+    color: #ef4444;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .answer-input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .answer-input::placeholder {
+    color: rgba(255,255,255,0.6);
+  }
+
+  .answer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .option-item:hover {
+    background: rgba(255,255,255,0.1);
+  }
+
+  .option-item input[type="radio"],
+  .option-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .rating-scale {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rating-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 60px;
+  }
+
+  .rating-item:hover {
+    background: rgba(255,255,255,0.1);
+  }
+
+  .rating-item.selected {
+    background: #22c55e;
+  }
+
+  .rating-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .rating-label {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+  }
+
+  .btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+    margin-bottom: 30px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #10b981);
+    transition: width 0.3s ease;
+  }
+
+  .completion-screen {
+    text-align: center;
+    padding: 50px 30px;
+  }
+
+  .completion-icon {
+    font-size: 4rem;
+    color: #22c55e;
+    margin-bottom: 20px;
+  }
+
+  .completion-title {
+    font-size: 2rem;
+    color: #ffd700;
+    margin-bottom: 15px;
+  }
+
+  .completion-message {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 30px;
+  }
+
+  .earning-info {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+
+  .earning-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #22c55e;
+  }
+
+  @media (max-width: 768px) {
+    .survey-info {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .rating-scale {
+      flex-direction: column;
+    }
+    
+    .navigation {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<script src="js/app.js"></script>
+<div class="container">
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+  </div>
+
+  <div class="survey-header">
+    <div class="survey-title" id="surveyTitle">Loading Survey...</div>
+    <div class="survey-description" id="surveyDescription">Please wait while we load the survey questions.</div>
+    <div class="survey-info">
+      <span><i class="fas fa-clock"></i> Est. 5-10 minutes</span>
+      <span><i class="fas fa-users"></i> <span id="responseCount">0</span> responses</span>
+      <span><i class="fas fa-dollar-sign"></i> Earn $0.50 upon completion</span>
+    </div>
+  </div>
+
+  <div id="surveyContent">
+    <!-- Survey questions will be loaded here -->
+  </div>
+
+  <div class="navigation">
+    <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
+      <i class="fas fa-arrow-left"></i> Previous
+    </button>
+    <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">
+      Next <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+let currentSurvey = null;
+let currentQuestionIndex = 0;
+let answers = {};
+
+// Get survey ID from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const surveyId = urlParams.get('id') || 'survey_001';
+
+// Load survey data
+function loadSurvey() {
+  if (app && app.surveys) {
+    currentSurvey = app.surveys.find(s => s.id === surveyId);
+  }
+  
+  // Fallback survey if not found
+  if (!currentSurvey) {
+    currentSurvey = {
+      id: 'survey_001',
+      title: 'Customer Satisfaction Survey',
+      description: 'Help us improve our services by sharing your feedback',
+      responses: 156,
+      questions: [
+        {
+          id: 'q1',
+          type: 'rating',
+          text: 'How satisfied are you with our service overall?',
+          required: true
+        },
+        {
+          id: 'q2',
+          type: 'multiple',
+          text: 'Which features do you use most often?',
+          options: ['Dashboard', 'Survey Builder', 'Analytics', 'Reports', 'Mobile App'],
+          required: true
+        },
+        {
+          id: 'q3',
+          type: 'text',
+          text: 'What improvements would you like to see?',
+          required: false
+        },
+        {
+          id: 'q4',
+          type: 'yes-no',
+          text: 'Would you recommend our service to others?',
+          required: true
+        }
+      ]
+    };
+  }
+  
+  // Update survey header
+  document.getElementById('surveyTitle').textContent = currentSurvey.title;
+  document.getElementById('surveyDescription').textContent = currentSurvey.description;
+  document.getElementById('responseCount').textContent = currentSurvey.responses || 0;
+  
+  // Show first question
+  showQuestion(0);
+}
+
+function showQuestion(index) {
+  if (!currentSurvey || !currentSurvey.questions) return;
+  
+  const question = currentSurvey.questions[index];
+  if (!question) return;
+  
+  currentQuestionIndex = index;
+  
+  // Update progress
+  const progress = ((index + 1) / currentSurvey.questions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  
+  // Generate question HTML
+  let questionHTML = `
+    <div class="question-container">
+      <div class="question-number">Question ${index + 1} of ${currentSurvey.questions.length}</div>
+      <div class="question-text">${question.text}</div>
+      ${question.required ? '<div class="question-required">* This question is required</div>' : ''}
+  `;
+  
+  switch (question.type) {
+    case 'text':
+      questionHTML += `
+        <textarea class="answer-input" id="answer-${question.id}" placeholder="Enter your answer here..." rows="4">${answers[question.id] || ''}</textarea>
+      `;
+      break;
+      
+    case 'multiple':
+      questionHTML += '<div class="answer-options">';
+      question.options.forEach((option, i) => {
+        const checked = answers[question.id] === option ? 'checked' : '';
+        questionHTML += `
+          <div class="option-item" onclick="selectOption('${question.id}', '${option}')">
+            <input type="radio" name="${question.id}" value="${option}" ${checked}>
+            <label>${option}</label>
+          </div>
+        `;
+      });
+      questionHTML += '</div>';
+      break;
+      
+    case 'rating':
+      questionHTML += '<div class="rating-scale">';
+      for (let i = 1; i <= 5; i++) {
+        const selected = answers[question.id] == i ? 'selected' : '';
+        const labels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+        questionHTML += `
+          <div class="rating-item ${selected}" onclick="selectRating('${question.id}', ${i})">
+            <div class="rating-number">${i}</div>
+            <div class="rating-label">${labels[i-1]}</div>
+          </div>
+        `;
+      }
+      questionHTML += '</div>';
+      break;
+      
+    case 'yes-no':
+      const yesChecked = answers[question.id] === 'Yes' ? 'checked' : '';
+      const noChecked = answers[question.id] === 'No' ? 'checked' : '';
+      questionHTML += `
+        <div class="answer-options">
+          <div class="option-item" onclick="selectOption('${question.id}', 'Yes')">
+            <input type="radio" name="${question.id}" value="Yes" ${yesChecked}>
+            <label>Yes</label>
+          </div>
+          <div class="option-item" onclick="selectOption('${question.id}', 'No')">
+            <input type="radio" name="${question.id}" value="No" ${noChecked}>
+            <label>No</label>
+          </div>
+        </div>
+      `;
+      break;
+  }
+  
+  questionHTML += '</div>';
+  
+  document.getElementById('surveyContent').innerHTML = questionHTML;
+  
+  // Update navigation buttons
+  document.getElementById('prevBtn').disabled = index === 0;
+  
+  const nextBtn = document.getElementById('nextBtn');
+  if (index === currentSurvey.questions.length - 1) {
+    nextBtn.innerHTML = 'Submit Survey <i class="fas fa-check"></i>';
+  } else {
+    nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+  }
+}
+
+function selectOption(questionId, value) {
+  answers[questionId] = value;
+  // Update radio button
+  const radio = document.querySelector(`input[name="${questionId}"][value="${value}"]`);
+  if (radio) radio.checked = true;
+}
+
+function selectRating(questionId, rating) {
+  answers[questionId] = rating;
+  // Update visual selection
+  document.querySelectorAll('.rating-item').forEach(item => {
+    item.classList.remove('selected');
+  });
+  event.currentTarget.classList.add('selected');
+}
+
+function previousQuestion() {
+  if (currentQuestionIndex > 0) {
+    // Save current answer
+    saveCurrentAnswer();
+    showQuestion(currentQuestionIndex - 1);
+  }
+}
+
+function nextQuestion() {
+  // Save current answer
+  saveCurrentAnswer();
+  
+  // Validate required questions
+  const currentQuestion = currentSurvey.questions[currentQuestionIndex];
+  if (currentQuestion.required && !answers[currentQuestion.id]) {
+    alert('Please answer this required question before continuing.');
+    return;
+  }
+  
+  if (currentQuestionIndex < currentSurvey.questions.length - 1) {
+    showQuestion(currentQuestionIndex + 1);
+  } else {
+    submitSurvey();
+  }
+}
+
+function saveCurrentAnswer() {
+  const currentQuestion = currentSurvey.questions[currentQuestionIndex];
+  
+  if (currentQuestion.type === 'text') {
+    const textarea = document.getElementById(`answer-${currentQuestion.id}`);
+    if (textarea) {
+      answers[currentQuestion.id] = textarea.value;
+    }
+  }
+}
+
+function submitSurvey() {
+  // Submit to app if available
+  if (app) {
+    app.submitResponse(currentSurvey.id, answers);
+  }
+  
+  // Show completion screen
+  showCompletionScreen();
+}
+
+function showCompletionScreen() {
+  document.getElementById('progressFill').style.width = '100%';
+  
+  const completionHTML = `
+    <div class="question-container completion-screen">
+      <div class="completion-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="completion-title">Thank You!</div>
+      <div class="completion-message">
+        Your responses have been submitted successfully. Your feedback helps us improve our services.
+      </div>
+      <div class="earning-info">
+        <div class="earning-amount">+$0.50 Earned!</div>
+        <p>Your earnings have been added to your account.</p>
+      </div>
+      <div style="margin-top: 30px;">
+        <a href="index.html" class="btn btn-primary">
+          <i class="fas fa-home"></i> Return Home
+        </a>
+        <a href="my-surveys.html" class="btn btn-secondary" style="margin-left: 15px;">
+          <i class="fas fa-chart-bar"></i> View More Surveys
+        </a>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('surveyContent').innerHTML = completionHTML;
+  document.querySelector('.navigation').style.display = 'none';
+}
+
+// Initialize survey
+loadSurvey();
+</script>
+</body>
+</html>

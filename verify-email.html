@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification • Survey Africa</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+    .container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 50px 40px;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      color: white;
+    }
+    .logo { font-size: 2rem; font-weight: bold; color: #00cec9; margin-bottom: 30px; }
+    .success { color: #10b981; }
+    .error { color: #ef4444; }
+    .btn {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">Survey Africa</div>
+    <div id="message">Verifying your email...</div>
+    <a href="login.html" class="btn" id="loginBtn" style="display:none;">Go to Login</a>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    async function verifyEmail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      
+      if (!token) {
+        document.getElementById('message').innerHTML = '<div class="error">Invalid verification link</div>';
+        return;
+      }
+      
+      try {
+        const response = await fetch(`http://localhost:5000/api/auth/verify-email/${token}`);
+        const data = await response.json();
+        
+        if (response.ok) {
+          document.getElementById('message').innerHTML = '<div class="success"><h2>✓ Email Verified!</h2><p>Your account has been successfully verified.</p></div>';
+          document.getElementById('loginBtn').style.display = 'inline-block';
+        } else {
+          document.getElementById('message').innerHTML = `<div class="error">Verification failed: ${data.message}</div>`;
+        }
+      } catch (error) {
+        document.getElementById('message').innerHTML = '<div class="error">Verification failed. Please try again.</div>';
+      }
+    }
+    
+    verifyEmail();
+  </script>
+</body>
+</html>

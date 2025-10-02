@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey Builder • Survey Africa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #111;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+  }
+
+  .container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: rgba(11,18,32,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 9px;
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar h2 { 
+    color: #06b6d4; 
+    margin-bottom: 10px; 
+  }
+
+  .sidebar a { 
+    display:block; 
+    color:#c7d2da; 
+    padding:10px 0; 
+    text-decoration:none; 
+  }
+
+  .sidebar a:hover { 
+    color:white; 
+  }
+
+  .main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 20px;
+  }
+
+  .builder-content {
+    color: white;
+  }
+
+  .builder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .builder-header h1 {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin: 0;
+  }
+
+  .builder-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .builder-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr 300px;
+    gap: 20px;
+    height: calc(100vh - 150px);
+  }
+
+  .question-types {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    overflow-y: auto;
+  }
+
+  .question-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .question-type:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(5px);
+  }
+
+  .survey-canvas {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    overflow-y: auto;
+  }
+
+  .survey-title-section {
+    margin-bottom: 30px;
+  }
+
+  .survey-title-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.9);
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .survey-desc-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    font-size: 14px;
+    resize: vertical;
+    height: 80px;
+  }
+
+  .question-item {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .question-item.selected {
+    border-color: #00cec9;
+  }
+
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .question-number {
+    background: #00cec9;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .question-actions {
+    display: flex;
+    gap: 5px;
+  }
+
+  .action-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .edit-btn { background: #3b82f6; color: white; }
+  .delete-btn { background: #ef4444; color: white; }
+  .copy-btn { background: #f59e0b; color: white; }
+
+  .question-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .options-container {
+    margin-top: 15px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .option-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.9);
+  }
+
+  footer{
+    margin-bottom: 100px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: capitalize;
+    background-color: #06b6d4;
+    margin: 30px;
+    padding: 20px;
+    background: transparent;
+    color: #06b6d4;
+
+  }
+  .properties-panel {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    overflow-y: auto;
+  }
+
+  .property-group {
+    margin-bottom: 20px;
+  }
+
+  .property-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #ffd700;
+  }
+
+  .property-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.9);
+    font-size: 14px;
+  }
+
+  .add-question-btn {
+    width: 100%;
+    padding: 15px;
+    border: 2px dashed rgba(255,255,255,0.3);
+    border-radius: 10px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .add-question-btn:hover {
+    border-color: #00cec9;
+    background: rgba(0,206,201,0.1);
+  }
+
+  @media (max-width: 1024px) {
+    .builder-layout {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+    
+    .question-types,
+    .properties-panel {
+      order: 2;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Survey Africa</h2>
+    <p id="userName">Logged in as: USERNAME</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-surveys.html">My Surveys</a>
+      <a href="quick-survey.html">Create Survey</a>
+      <a href="reports.html">Analytics</a>
+      <a href="billing.html">Earnings</a>
+      <a href="settings.html">Settings</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="builder-content">
+      <div class="builder-header">
+        <h1>Survey Builder</h1>
+        <div class="builder-actions">
+          <button class="btn btn-secondary" onclick="previewSurvey()">
+            <i class="fas fa-eye"></i> Preview
+          </button>
+          <button class="btn btn-secondary" onclick="saveDraft()">
+            <i class="fas fa-save"></i> Save Draft
+          </button>
+          <button class="btn btn-primary" onclick="publishSurvey()">
+            <i class="fas fa-rocket"></i> Publish
+          </button>
+        </div>
+      </div>
+
+      <div class="builder-layout">
+        <div class="question-types">
+          <h3 style="color: #ffd700; margin-bottom: 15px;">Question Types</h3>
+          
+          <div class="question-type" onclick="addQuestion('multiple-choice')">
+            <i class="fas fa-list-ul"></i>
+            <span>Multiple Choice</span>
+          </div>
+          
+          <div class="question-type" onclick="addQuestion('text')">
+            <i class="fas fa-font"></i>
+            <span>Text Input</span>
+          </div>
+          
+          <div class="question-type" onclick="addQuestion('rating')">
+            <i class="fas fa-star"></i>
+            <span>Rating Scale</span>
+          </div>
+          
+          <div class="question-type" onclick="addQuestion('yes-no')">
+            <i class="fas fa-check-circle"></i>
+            <span>Yes/No</span>
+          </div>
+          
+          <div class="question-type" onclick="addQuestion('dropdown')">
+            <i class="fas fa-chevron-down"></i>
+            <span>Dropdown</span>
+          </div>
+          
+          <div class="question-type" onclick="addQuestion('checkbox')">
+            <i class="fas fa-check-square"></i>
+            <span>Checkboxes</span>
+          </div>
+          
+          <div class="question-type" onclick="addQuestion('date')">
+            <i class="fas fa-calendar"></i>
+            <span>Date Picker</span>
+          </div>
+          
+          <div class="question-type" onclick="addQuestion('file')">
+            <i class="fas fa-upload"></i>
+            <span>File Upload</span>
+          </div>
+        </div>
+
+        <div class="survey-canvas" id="surveyCanvas">
+          <div class="survey-title-section">
+            <input type="text" class="survey-title-input" placeholder="Enter survey title..." value="Untitled Survey">
+            <textarea class="survey-desc-input" placeholder="Enter survey description..."></textarea>
+          </div>
+          
+          <div id="questionsContainer">
+            <!-- Questions will be added here -->
+          </div>
+          
+          <button class="add-question-btn" onclick="showQuestionTypes()">
+            <i class="fas fa-plus"></i> Add Question
+          </button>
+        </div>
+
+        <div class="properties-panel">
+          <h3 style="color: #ffd700; margin-bottom: 15px;">Properties</h3>
+          
+          <div class="property-group">
+            <label class="property-label">Question Text</label>
+            <input type="text" class="property-input" id="questionText" placeholder="Enter question...">
+          </div>
+          
+          <div class="property-group">
+            <label class="property-label">Required</label>
+            <select class="property-input" id="questionRequired">
+              <option value="false">Optional</option>
+              <option value="true">Required</option>
+            </select>
+          </div>
+          
+          <div class="property-group">
+            <label class="property-label">Help Text</label>
+            <textarea class="property-input" id="questionHelp" placeholder="Additional instructions..." rows="3"></textarea>
+          </div>
+          
+          <div class="property-group" id="optionsGroup" style="display: none;">
+            <label class="property-label">Options</label>
+            <div id="optionsList">
+              <!-- Options will be added here -->
+            </div>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="addOption()">
+              <i class="fas fa-plus"></i> Add Option
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<footer>
+  & powerd buy Survey Afirca.com
+</footer>
+
+<script>
+  let questionCounter = 0;
+  let selectedQuestion = null;
+
+  function addQuestion(type) {
+    questionCounter++;
+    const container = document.getElementById('questionsContainer');
+    
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question-item';
+    questionDiv.id = `question-${questionCounter}`;
+    questionDiv.onclick = () => selectQuestion(questionCounter);
+    
+    let questionContent = '';
+    
+    switch(type) {
+      case 'multiple-choice':
+        questionContent = `
+          <div class="question-header">
+            <div class="question-number">${questionCounter}</div>
+            <div class="question-actions">
+              <button class="action-btn edit-btn" onclick="editQuestion(${questionCounter})"><i class="fas fa-edit"></i></button>
+              <button class="action-btn copy-btn" onclick="copyQuestion(${questionCounter})"><i class="fas fa-copy"></i></button>
+              <button class="action-btn delete-btn" onclick="deleteQuestion(${questionCounter})"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <input type="text" class="question-input" placeholder="Enter your question..." value="What is your opinion?">
+          <div class="options-container">
+            <div class="option-item">
+              <input type="radio" disabled>
+              <input type="text" class="option-input" value="Option 1">
+            </div>
+            <div class="option-item">
+              <input type="radio" disabled>
+              <input type="text" class="option-input" value="Option 2">
+            </div>
+          </div>
+        `;
+        break;
+      case 'text':
+        questionContent = `
+          <div class="question-header">
+            <div class="question-number">${questionCounter}</div>
+            <div class="question-actions">
+              <button class="action-btn edit-btn" onclick="editQuestion(${questionCounter})"><i class="fas fa-edit"></i></button>
+              <button class="action-btn copy-btn" onclick="copyQuestion(${questionCounter})"><i class="fas fa-copy"></i></button>
+              <button class="action-btn delete-btn" onclick="deleteQuestion(${questionCounter})"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <input type="text" class="question-input" placeholder="Enter your question..." value="Please provide your feedback">
+          <textarea class="property-input" placeholder="Your answer here..." rows="3" disabled style="width: 100%; margin-top: 10px;"></textarea>
+        `;
+        break;
+      case 'rating':
+        questionContent = `
+          <div class="question-header">
+            <div class="question-number">${questionCounter}</div>
+            <div class="question-actions">
+              <button class="action-btn edit-btn" onclick="editQuestion(${questionCounter})"><i class="fas fa-edit"></i></button>
+              <button class="action-btn copy-btn" onclick="copyQuestion(${questionCounter})"><i class="fas fa-copy"></i></button>
+              <button class="action-btn delete-btn" onclick="deleteQuestion(${questionCounter})"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <input type="text" class="question-input" placeholder="Enter your question..." value="Rate your experience">
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            ${[1,2,3,4,5].map(i => `<span style="font-size: 24px; color: #ffd700; cursor: pointer;">⭐</span>`).join('')}
+          </div>
+        `;
+        break;
+      default:
+        questionContent = `
+          <div class="question-header">
+            <div class="question-number">${questionCounter}</div>
+            <div class="question-actions">
+              <button class="action-btn edit-btn" onclick="editQuestion(${questionCounter})"><i class="fas fa-edit"></i></button>
+              <button class="action-btn copy-btn" onclick="copyQuestion(${questionCounter})"><i class="fas fa-copy"></i></button>
+              <button class="action-btn delete-btn" onclick="deleteQuestion(${questionCounter})"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <input type="text" class="question-input" placeholder="Enter your question..." value="New Question">
+        `;
+    }
+    
+    questionDiv.innerHTML = questionContent;
+    container.appendChild(questionDiv);
+    
+    selectQuestion(questionCounter);
+  }
+
+  function selectQuestion(id) {
+    // Remove selection from all questions
+    document.querySelectorAll('.question-item').forEach(q => q.classList.remove('selected'));
+    
+    // Select current question
+    document.getElementById(`question-${id}`).classList.add('selected');
+    selectedQuestion = id;
+    
+    // Update properties panel
+    updatePropertiesPanel(id);
+  }
+
+  function updatePropertiesPanel(id) {
+    const question = document.getElementById(`question-${id}`);
+    const questionInput = question.querySelector('.question-input');
+    
+    document.getElementById('questionText').value = questionInput.value;
+  }
+
+  function deleteQuestion(id) {
+    if (confirm('Are you sure you want to delete this question?')) {
+      document.getElementById(`question-${id}`).remove();
+    }
+  }
+
+  function copyQuestion(id) {
+    // Implementation for copying question
+    alert('Question copied!');
+  }
+
+  function editQuestion(id) {
+    selectQuestion(id);
+  }
+
+  function showQuestionTypes() {
+    alert('Click on a question type from the left panel to add it to your survey.');
+  }
+
+  function addOption() {
+    alert('Add option functionality - would add new option to selected multiple choice question');
+  }
+
+  function previewSurvey() {
+    alert('Opening survey preview...');
+  }
+
+  function saveDraft() {
+    alert('Survey saved as draft!');
+  }
+
+  function publishSurvey() {
+    alert('Survey published successfully!');
+  }
+
+  function logout() {
+    alert('Logging out...');
+    setTimeout(() => window.location.href = 'index.html', 1000);
+  }
+</script>
+</body>
+</html>
