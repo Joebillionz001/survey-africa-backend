@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Payment Account • Survey Africa</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      position: relative;
+      color: white;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .account-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 15px;
+      border: 2px solid rgba(255,255,255,0.2);
+      text-align: center;
+    }
+    h1 { color: #00cec9; margin-bottom: 20px; }
+    .account-number {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    .account-number h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .bank-info {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    .copy-btn {
+      background: #00cec9;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .feature-list {
+      text-align: left;
+      margin: 20px 0;
+    }
+    .feature-list li {
+      margin: 10px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .feature-list li::before {
+      content: "✅";
+      position: absolute;
+      left: 0;
+    }
+    .warning {
+      background: rgba(255, 193, 7, 0.2);
+      border: 1px solid #ffc107;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="account-card">
+      <h1>🏦 Your Dedicated Account</h1>
+      <p>A unique account number has been created for your affiliate purchases</p>
+      
+      <div class="account-number">
+        <h2 id="accountNumber">Loading...</h2>
+        <p>Account Number</p>
+        <button class="copy-btn" onclick="copyAccount()">Copy Account</button>
+      </div>
+      
+      <div class="bank-info">
+        <h3>Bank Details</h3>
+        <p><strong>Bank Name:</strong> <span id="bankName">Loading...</span></p>
+        <p><strong>Account Name:</strong> <span id="accountName">Loading...</span></p>
+        <button class="copy-btn" onclick="copyBankDetails()">Copy Bank Details</button>
+      </div>
+      
+      <div class="warning">
+        <h4>⚠️ Important Notice</h4>
+        <p>This account is exclusively for affiliate purchases. Any funds sent to this account will be automatically processed for your referral commissions.</p>
+      </div>
+      
+      <div class="feature-list">
+        <h3>Account Features:</h3>
+        <ul>
+          <li>Instant payment processing</li>
+          <li>Automatic commission calculation</li>
+          <li>Real-time transaction notifications</li>
+          <li>Secure Paystack integration</li>
+          <li>24/7 transaction monitoring</li>
+        </ul>
+      </div>
+      
+      <div style="margin-top: 30px;">
+        <h3>How to Use:</h3>
+        <div style="text-align: left; margin-top: 15px;">
+          <p><strong>1.</strong> Share this account number with your referrals</p>
+          <p><strong>2.</strong> When they make payments to this account, you earn commission</p>
+          <p><strong>3.</strong> Commissions are credited to your wallet instantly</p>
+          <p><strong>4.</strong> Track all transactions in your dashboard</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 30px;">
+        <button class="copy-btn" onclick="shareAccount()" style="background: #25D366;">
+          📱 Share via WhatsApp
+        </button>
+        <button class="copy-btn" onclick="window.location.href='dashboard.html'">
+          🏠 Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/tracking.js"></script>
+  <script>
+    async function generateAccount() {
+      try {
+        // Check if user is logged in
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/paystack/create-account`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          document.getElementById('accountNumber').textContent = data.accountNumber;
+          document.getElementById('bankName').textContent = data.bankName;
+          document.getElementById('accountName').textContent = data.accountName;
+          
+          // Store account details
+          localStorage.setItem('userAccount', JSON.stringify(data));
+          
+          // Track account creation
+          if (typeof tracking !== 'undefined') {
+            tracking.track('paystack_account_created', {
+              accountNumber: data.accountNumber,
+              bankName: data.bankName
+            });
+          }
+        } else {
+          const errorData = await response.json();
+          document.getElementById('accountNumber').textContent = 'Generation Failed';
+          document.getElementById('bankName').textContent = 'Error';
+          document.getElementById('accountName').textContent = errorData.error || 'Unknown error';
+        }
+      } catch (error) {
+        console.error('Account generation failed:', error);
+        document.getElementById('accountNumber').textContent = 'Connection Error';
+        document.getElementById('bankName').textContent = 'Check internet connection';
+        document.getElementById('accountName').textContent = 'Try again later';
+      }
+    }
+    
+    function copyAccount() {
+      const accountNumber = document.getElementById('accountNumber').textContent;
+      navigator.clipboard.writeText(accountNumber).then(() => {
+        const btn = event.target;
+        btn.textContent = 'Copied!';
+        btn.style.background = '#10b981';
+        
+        // Track copy action
+        if (typeof tracking !== 'undefined') {
+          tracking.track('account_number_copied', { accountNumber });
+        }
+        
+        setTimeout(() => {
+          btn.textContent = 'Copy Account';
+          btn.style.background = '#00cec9';
+        }, 2000);
+      });
+    }
+    
+    function copyBankDetails() {
+      const accountNumber = document.getElementById('accountNumber').textContent;
+      const bankName = document.getElementById('bankName').textContent;
+      const accountName = document.getElementById('accountName').textContent;
+      
+      const details = `Account Number: ${accountNumber}\nBank: ${bankName}\nAccount Name: ${accountName}`;
+      
+      navigator.clipboard.writeText(details).then(() => {
+        const btn = event.target;
+        btn.textContent = 'Copied!';
+        btn.style.background = '#10b981';
+        
+        setTimeout(() => {
+          btn.textContent = 'Copy Bank Details';
+          btn.style.background = '#00cec9';
+        }, 2000);
+      });
+    }
+    
+    function shareAccount() {
+      const accountNumber = document.getElementById('accountNumber').textContent;
+      const bankName = document.getElementById('bankName').textContent;
+      const accountName = document.getElementById('accountName').textContent;
+      
+      const message = `🏦 My Survey Africa Payment Account:\n\nAccount Number: ${accountNumber}\nBank: ${bankName}\nAccount Name: ${accountName}\n\nSend payments to this account for instant processing!`;
+      
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      
+      // Track share action
+      if (typeof tracking !== 'undefined') {
+        tracking.track('account_shared_whatsapp', { accountNumber });
+      }
+      
+      window.open(whatsappUrl, '_blank');
+    }
+    
+    // Generate account on page load
+    generateAccount();
+  </script>
+</body>
+</html>

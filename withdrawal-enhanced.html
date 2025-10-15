@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdraw Earnings - Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/mobile-enhanced.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    .navbar {
+      background: rgba(255,255,255,0.95);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .header {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .balance-amount {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .methods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .method-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 2px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .method-card:hover {
+      border-color: #00cec9;
+      transform: translateY(-5px);
+    }
+
+    .method-card.selected {
+      border-color: #00cec9;
+      background: rgba(0,206,201,0.1);
+    }
+
+    .method-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #00cec9;
+    }
+
+    .method-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .method-details {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 1rem;
+    }
+
+    .method-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .withdrawal-form {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.2);
+      display: none;
+    }
+
+    .withdrawal-form.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #00cec9;
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .amount-suggestions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .amount-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .amount-btn:hover {
+      background: rgba(0,206,201,0.3);
+      border-color: #00cec9;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .withdrawal-summary {
+      background: rgba(255,255,255,0.05);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      border-left: 4px solid #00cec9;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-row.total {
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .history-section {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-top: 2rem;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background: #fbbf24;
+      color: #92400e;
+    }
+
+    .status-completed {
+      background: #10b981;
+      color: #065f46;
+    }
+
+    .status-failed {
+      background: #ef4444;
+      color: #991b1b;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1rem;
+      }
+      
+      .methods-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .balance-amount {
+        font-size: 2.5rem;
+      }
+      
+      .amount-suggestions {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <a href="dashboard.html">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+    </div>
+    <div>
+      <a href="billing.html">Earnings History</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-money-bill-wave"></i> Withdraw Earnings</h1>
+      <p>Choose your preferred withdrawal method and cash out your earnings</p>
+    </div>
+
+    <div class="balance-card">
+      <div class="balance-amount" id="availableBalance">$0.00</div>
+      <p>Available for Withdrawal</p>
+      <small>Minimum withdrawal: $5.00</small>
+    </div>
+
+    <div class="methods-grid" id="methodsGrid">
+      <!-- Payment methods will be loaded here -->
+    </div>
+
+    <div class="withdrawal-form" id="withdrawalForm">
+      <h3>Withdrawal Details</h3>
+      <form id="withdrawForm">
+        <div class="form-group">
+          <label for="amount">Amount to Withdraw</label>
+          <input type="number" id="amount" placeholder="Enter amount" min="5" step="0.01" required>
+          <div class="amount-suggestions">
+            <button type="button" class="amount-btn" onclick="setAmount(10)">$10</button>
+            <button type="button" class="amount-btn" onclick="setAmount(25)">$25</button>
+            <button type="button" class="amount-btn" onclick="setAmount(50)">$50</button>
+            <button type="button" class="amount-btn" onclick="setAmount(100)">$100</button>
+            <button type="button" class="amount-btn" onclick="setAmount('all')">All</button>
+          </div>
+        </div>
+
+        <div id="accountFields">
+          <!-- Dynamic fields based on selected method -->
+        </div>
+
+        <div class="withdrawal-summary" id="withdrawalSummary" style="display: none;">
+          <div class="summary-row">
+            <span>Withdrawal Amount:</span>
+            <span id="summaryAmount">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Processing Fee:</span>
+            <span id="summaryFee">$0.00</span>
+          </div>
+          <div class="summary-row total">
+            <span>You'll Receive:</span>
+            <span id="summaryTotal">$0.00</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+          <button type="button" class="btn btn-secondary" onclick="cancelWithdrawal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Process Withdrawal</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="history-section">
+      <h3>Withdrawal History</h3>
+      <div id="withdrawalHistory">
+        <div style="text-align: center; padding: 2rem; opacity: 0.7;">
+          <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+          <p>Loading withdrawal history...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script>
+    let paymentMethods = [];
+    let selectedMethod = null;
+    let userBalance = 0;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUserBalance();
+      loadPaymentMethods();
+      loadWithdrawalHistory();
+    });
+
+    async function loadUserBalance() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+      userBalance = currentUser.totalEarnings || 0;
+      document.getElementById('availableBalance').textContent = `$${userBalance.toFixed(2)}`;
+    }
+
+    async function loadPaymentMethods() {
+      try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/payments/methods`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          paymentMethods = await response.json();
+          displayPaymentMethods();
+        }
+      } catch (error) {
+        console.error('Error loading payment methods:', error);
+        // Fallback to mock data
+        paymentMethods = [
+          {
+            id: 'paypal',
+            name: 'PayPal',
+            description: 'Instant withdrawal to PayPal account',
+            minAmount: 5,
+            fee: 0,
+            processingTime: 'Instant',
+            fields: [{ name: 'email', label: 'PayPal Email', type: 'email', required: true }]
+          }
+        ];
+        displayPaymentMethods();
+      }
+    }
+
+    function displayPaymentMethods() {
+      const grid = document.getElementById('methodsGrid');
+      grid.innerHTML = paymentMethods.map(method => `
+        <div class="method-card" onclick="selectMethod('${method.id}')">
+          <div class="method-icon">
+            <i class="fas fa-${getMethodIcon(method.id)}"></i>
+          </div>
+          <div class="method-name">${method.name}</div>
+          <div class="method-details">${method.description}</div>
+          <div class="method-info">
+            <span>Min: $${method.minAmount}</span>
+            <span>Fee: $${method.fee}</span>
+            <span>${method.processingTime}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getMethodIcon(methodId) {
+      const icons = {
+        paypal: 'paypal',
+        paystack: 'university',
+        bank: 'building-columns'
+      };
+      return icons[methodId] || 'credit-card';
+    }
+
+    function selectMethod(methodId) {
+      selectedMethod = paymentMethods.find(m => m.id === methodId);
+      
+      // Update UI
+      document.querySelectorAll('.method-card').forEach(card => card.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      
+      // Show form
+      document.getElementById('withdrawalForm').classList.add('active');
+      
+      // Generate form fields
+      generateAccountFields();
+    }
+
+    function generateAccountFields() {
+      const container = document.getElementById('accountFields');
+      container.innerHTML = selectedMethod.fields.map(field => `
+        <div class="form-group">
+          <label for="${field.name}">${field.label}</label>
+          ${field.type === 'select' ? 
+            `<select id="${field.name}" ${field.required ? 'required' : ''}>
+              <option value="">Select ${field.label}</option>
+            </select>` :
+            `<input type="${field.type}" id="${field.name}" placeholder="Enter ${field.label}" ${field.required ? 'required' : ''}>`
+          }
+        </div>
+      `).join('');
+    }
+
+    function setAmount(value) {
+      const amountInput = document.getElementById('amount');
+      if (value === 'all') {
+        amountInput.value = userBalance.toFixed(2);
+      } else {
+        amountInput.value = Math.min(value, userBalance).toFixed(2);
+      }
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const amount = parseFloat(document.getElementById('amount').value) || 0;
+      const fee = selectedMethod ? selectedMethod.fee : 0;
+      const total = amount - fee;
+
+      document.getElementById('summaryAmount').textContent = `$${amount.toFixed(2)}`;
+      document.getElementById('summaryFee').textContent = `$${fee.toFixed(2)}`;
+      document.getElementById('summaryTotal').textContent = `$${total.toFixed(2)}`;
+      document.getElementById('withdrawalSummary').style.display = amount > 0 ? 'block' : 'none';
+    }
+
+    document.getElementById('amount').addEventListener('input', updateSummary);
+
+    document.getElementById('withdrawForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const amount = parseFloat(document.getElementById('amount').value);
+      
+      if (amount < selectedMethod.minAmount) {
+        alert(`Minimum withdrawal amount is $${selectedMethod.minAmount}`);
+        return;
+      }
+      
+      if (amount > userBalance) {
+        alert('Insufficient balance');
+        return;
+      }
+
+      // Collect account details
+      const accountDetails = {};
+      selectedMethod.fields.forEach(field => {
+        accountDetails[field.name] = document.getElementById(field.name).value;
+      });
+
+      try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/payments/withdraw`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            amount,
+            method: selectedMethod.id,
+            accountDetails
+          })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          alert('Withdrawal request submitted successfully!');
+          
+          // Update user balance
+          const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+          currentUser.totalEarnings -= amount;
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          if (sessionStorage.getItem('currentUser')) {
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+          }
+          
+          // Refresh page
+          window.location.reload();
+        } else {
+          alert(result.message || 'Withdrawal failed');
+        }
+      } catch (error) {
+        console.error('Withdrawal error:', error);
+        alert('Withdrawal failed. Please try again.');
+      }
+    });
+
+    function cancelWithdrawal() {
+      document.getElementById('withdrawalForm').classList.remove('active');
+      document.querySelectorAll('.method-card').forEach(card => card.classList.remove('selected'));
+      selectedMethod = null;
+    }
+
+    async function loadWithdrawalHistory() {
+      try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/payments/withdrawals`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const withdrawals = await response.json();
+          displayWithdrawalHistory(withdrawals);
+        }
+      } catch (error) {
+        document.getElementById('withdrawalHistory').innerHTML = `
+          <div style="text-align: center; padding: 2rem; opacity: 0.7;">
+            <p>No withdrawal history found</p>
+          </div>
+        `;
+      }
+    }
+
+    function displayWithdrawalHistory(withdrawals) {
+      const container = document.getElementById('withdrawalHistory');
+      
+      if (withdrawals.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 2rem; opacity: 0.7;">
+            <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <p>No withdrawals yet</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = withdrawals.map(withdrawal => `
+        <div class="history-item">
+          <div>
+            <div style="font-weight: 600;">$${withdrawal.amount.toFixed(2)}</div>
+            <div style="font-size: 0.9rem; opacity: 0.8;">${withdrawal.method.toUpperCase()} • ${new Date(withdrawal.createdAt).toLocaleDateString()}</div>
+          </div>
+          <div class="status-badge status-${withdrawal.status}">
+            ${withdrawal.status.replace('_', ' ').toUpperCase()}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Check if user is logged in
+    if (!localStorage.getItem('currentUser') && !sessionStorage.getItem('currentUser')) {
+      alert('Please login to access withdrawals');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

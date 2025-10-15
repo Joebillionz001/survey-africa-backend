@@ -340,29 +340,14 @@
   <script src="js/app.js"></script>
   <script src="js/mobile.js"></script>
   <script>
-    // Daily tasks
-    const dailyTasks = [
-      { id: 'daily_1', title: 'Complete Daily Survey', description: 'Answer 5 quick questions', payout: 0.50, completed: false },
-      { id: 'daily_2', title: 'Share on Social Media', description: 'Share Survey Africa on your social media', payout: 0.25, completed: false },
-      { id: 'daily_3', title: 'Invite a Friend', description: 'Send invitation to a friend', payout: 1.00, completed: false },
-      { id: 'daily_4', title: 'Rate Our App', description: 'Leave a 5-star review on app store', payout: 0.75, completed: false }
-    ];
+    // Daily tasks - loaded from backend
+    let dailyTasks = [];
 
-    // CPA Offers
-    const cpaOffers = [
-      { id: 'cpa_1', title: 'Sign up for Free Trial', description: 'Register for streaming service trial', payout: 2.50, url: 'https://example.com/offer1' },
-      { id: 'cpa_2', title: 'Download Mobile Game', description: 'Install and play for 5 minutes', payout: 1.75, url: 'https://example.com/offer2' },
-      { id: 'cpa_3', title: 'Complete Survey', description: 'Fill out market research survey', payout: 3.00, url: 'https://example.com/offer3' },
-      { id: 'cpa_4', title: 'Subscribe to Newsletter', description: 'Join email list for deals', payout: 0.50, url: 'https://example.com/offer4' }
-    ];
+    // CPA Offers - loaded from backend
+    let cpaOffers = [];
 
-    // YouTube Tasks
-    const youtubeTasks = [
-      { id: 'yt_1', title: 'Tech Review Channel', description: 'Watch latest smartphone review', payout: 1.00, duration: '10:30', views: '125K', url: 'https://youtube.com/watch?v=example1' },
-      { id: 'yt_2', title: 'Cooking Tutorial', description: 'Learn to make African cuisine', payout: 0.75, duration: '15:45', views: '89K', url: 'https://youtube.com/watch?v=example2' },
-      { id: 'yt_3', title: 'Business Tips', description: 'Entrepreneurship advice for Africa', payout: 1.25, duration: '8:20', views: '67K', url: 'https://youtube.com/watch?v=example3' },
-      { id: 'yt_4', title: 'Music Video', description: 'Latest Afrobeats hit', payout: 0.50, duration: '4:15', views: '234K', url: 'https://youtube.com/watch?v=example4' }
-    ];
+    // YouTube Tasks - loaded from backend
+    let youtubeTasks = [];
 
     function renderDailyTasks() {
       const container = document.getElementById('dailyTasks');

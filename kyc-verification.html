@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KYC Verification • Survey Africa</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      position: relative;
+      color: white;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .kyc-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 15px;
+      border: 2px solid rgba(255,255,255,0.2);
+      margin-bottom: 20px;
+    }
+    h1 { color: #00cec9; text-align: center; margin-bottom: 30px; }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 16px;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #00cec9;
+    }
+    .file-upload {
+      border: 2px dashed rgba(255,255,255,0.3);
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .file-upload:hover {
+      border-color: #00cec9;
+      background: rgba(0,206,201,0.1);
+    }
+    .btn {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+    .progress {
+      background: rgba(255,255,255,0.2);
+      height: 6px;
+      border-radius: 3px;
+      margin-bottom: 30px;
+    }
+    .progress-bar {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ KYC Verification</h1>
+    <p style="text-align: center; margin-bottom: 30px;">Complete verification to unlock withdrawals and higher earning limits</p>
+    
+    <div class="progress">
+      <div class="progress-bar" id="progressBar" style="width: 33%"></div>
+    </div>
+    
+    <div class="kyc-card">
+      <!-- Step 1: Personal Information -->
+      <div class="step active" id="step1">
+        <h2>Step 1: Personal Information</h2>
+        <div class="form-group">
+          <label>Full Legal Name</label>
+          <input type="text" id="fullName" placeholder="As shown on ID document" required>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="dateOfBirth" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="phoneNumber" placeholder="+234 xxx xxx xxxx" required>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select id="country" required>
+            <option value="">Select Country</option>
+            <option value="NG">Nigeria</option>
+            <option value="GH">Ghana</option>
+            <option value="KE">Kenya</option>
+            <option value="ZA">South Africa</option>
+            <option value="UG">Uganda</option>
+            <option value="TZ">Tanzania</option>
+          </select>
+        </div>
+        <button class="btn" onclick="nextStep(2)">Continue</button>
+      </div>
+      
+      <!-- Step 2: Address Information -->
+      <div class="step" id="step2">
+        <h2>Step 2: Address Information</h2>
+        <div class="form-group">
+          <label>Street Address</label>
+          <input type="text" id="streetAddress" required>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" id="city" required>
+        </div>
+        <div class="form-group">
+          <label>State/Province</label>
+          <input type="text" id="state" required>
+        </div>
+        <div class="form-group">
+          <label>Postal Code</label>
+          <input type="text" id="postalCode" required>
+        </div>
+        <button class="btn" onclick="nextStep(3)">Continue</button>
+      </div>
+      
+      <!-- Step 3: Document Upload -->
+      <div class="step" id="step3">
+        <h2>Step 3: Identity Verification</h2>
+        <div class="form-group">
+          <label>ID Document Type</label>
+          <select id="idType" required>
+            <option value="">Select ID Type</option>
+            <option value="passport">International Passport</option>
+            <option value="national_id">National ID Card</option>
+            <option value="drivers_license">Driver's License</option>
+            <option value="voters_card">Voter's Card</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Upload ID Document (Front)</label>
+          <div class="file-upload" onclick="document.getElementById('idFront').click()">
+            <input type="file" id="idFront" accept="image/*" style="display: none;" onchange="handleFileUpload(this, 'idFrontPreview')">
+            <p>📄 Click to upload front of ID</p>
+            <div id="idFrontPreview"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Upload ID Document (Back)</label>
+          <div class="file-upload" onclick="document.getElementById('idBack').click()">
+            <input type="file" id="idBack" accept="image/*" style="display: none;" onchange="handleFileUpload(this, 'idBackPreview')">
+            <p>📄 Click to upload back of ID</p>
+            <div id="idBackPreview"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Selfie with ID</label>
+          <div class="file-upload" onclick="document.getElementById('selfie').click()">
+            <input type="file" id="selfie" accept="image/*" style="display: none;" onchange="handleFileUpload(this, 'selfiePreview')">
+            <p>🤳 Click to upload selfie holding your ID</p>
+            <div id="selfiePreview"></div>
+          </div>
+        </div>
+        <button class="btn" onclick="submitKYC()">Submit for Verification</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script>
+    function nextStep(step) {
+      // Hide current step
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      
+      // Show next step
+      document.getElementById(`step${step}`).classList.add('active');
+      
+      // Update progress
+      const progress = (step / 3) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+    }
+    
+    function handleFileUpload(input, previewId) {
+      const file = input.files[0];
+      if (file) {
+        const preview = document.getElementById(previewId);
+        preview.innerHTML = `✅ ${file.name} uploaded`;
+        preview.style.color = '#00cec9';
+      }
+    }
+    
+    async function submitKYC() {
+      const formData = new FormData();
+      
+      // Personal info
+      formData.append('fullName', document.getElementById('fullName').value);
+      formData.append('dateOfBirth', document.getElementById('dateOfBirth').value);
+      formData.append('phoneNumber', document.getElementById('phoneNumber').value);
+      formData.append('country', document.getElementById('country').value);
+      
+      // Address info
+      formData.append('streetAddress', document.getElementById('streetAddress').value);
+      formData.append('city', document.getElementById('city').value);
+      formData.append('state', document.getElementById('state').value);
+      formData.append('postalCode', document.getElementById('postalCode').value);
+      
+      // Documents
+      formData.append('idType', document.getElementById('idType').value);
+      formData.append('idFront', document.getElementById('idFront').files[0]);
+      formData.append('idBack', document.getElementById('idBack').files[0]);
+      formData.append('selfie', document.getElementById('selfie').files[0]);
+      
+      try {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/kyc/submit`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` },
+          body: formData
+        });
+        
+        if (response.ok) {
+          alert('KYC submitted successfully! We will review within 24-48 hours.');
+          window.location.href = 'dashboard.html';
+        } else {
+          alert('KYC submission failed. Please try again.');
+        }
+      } catch (error) {
+        alert('Submission failed. Please check your connection.');
+      }
+    }
+  </script>
+</body>
+</html>

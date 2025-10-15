@@ -1,495 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Survey • Survey Africa</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    color: white;
-    position: relative;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: -1;
-  }
-
-  .container {
-    display: flex;
-    min-height: 100vh;
-  }
-
-  .sidebar {
-    width: 240px;
-    background: rgba(11,18,32,0.5);
-    backdrop-filter: blur(8px);
-    color: white;
-    padding: 20px;
-    position: fixed;
-    height: 100vh;
-    overflow: auto;
-  }
-
-  .sidebar h2 { 
-    color: #06b6d4; 
-    margin-bottom: 20px; 
-  }
-
-  .sidebar a { 
-    display: block; 
-    color: #c7d2da; 
-    padding: 10px 0; 
-    text-decoration: none; 
-  }
-
-  .sidebar a:hover { 
-    color: white; 
-  }
-
-  .main {
-    flex: 1;
-    margin-left: 240px;
-    padding: 30px;
-  }
-
-  .header {
-    margin-bottom: 30px;
-  }
-
-  .header h1 {
-    font-size: 2.5rem;
-    color: #ffd700;
-    margin: 0;
-  }
-
-  .form-container {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    padding: 30px;
-    border-radius: 15px;
-    border: 1px solid rgba(255,255,255,0.2);
-    max-width: 800px;
-  }
-
-  .form-group {
-    margin-bottom: 25px;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #ffd700;
-  }
-
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    font-size: 16px;
-  }
-
-  .form-group input::placeholder,
-  .form-group textarea::placeholder {
-    color: rgba(255,255,255,0.6);
-  }
-
-  .questions-section {
-    margin-top: 30px;
-  }
-
-  .question-item {
-    background: rgba(255,255,255,0.05);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-
-  .question-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-
-  .btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-  }
-
-  .btn-primary {
-    background: #10b981;
-    color: white;
-  }
-
-  .btn-secondary {
-    background: #6b7280;
-    color: white;
-  }
-
-  .btn-danger {
-    background: #ef4444;
-    color: white;
-  }
-
-  .btn:hover {
-    transform: translateY(-2px);
-  }
-
-  .options-container {
-    margin-top: 15px;
-  }
-
-  .option-input {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-  }
-
-  .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #10b981;
-    color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    z-index: 1000;
-    transform: translateX(400px);
-    transition: transform 0.3s ease;
-  }
-
-  .toast.show {
-    transform: translateX(0);
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-    
-    .sidebar {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Survey - Survey Africa</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: auto;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
     }
-    
-    .main {
-      margin-left: 0;
+
+    .redirect-container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 3rem;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+      text-align: center;
+      max-width: 500px;
     }
-  }
-</style>
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #00cec9;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
 <body>
-<script src="js/app.js"></script>
-<div class="container">
-  <aside class="sidebar">
-    <h2>Survey Africa</h2>
-    <p id="userName">Logged in as: </p>
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="my-surveys.html">My Surveys</a>
-      <a href="quick-survey.html">Create Survey</a>
-      <a href="reports.html">Analytics</a>
-      <a href="billing.html">Earnings</a>
-      <a href="settings.html">Settings</a>
-      <a href="index.html" onclick="logout()">Logout</a>
-    </nav>
-  </aside>
+  <div class="redirect-container">
+    <h1>Enhanced Survey Builder</h1>
+    <p>We've upgraded our survey builder with more features and better mobile support!</p>
+    <a href="enhanced-survey-builder.html" class="btn">Go to Enhanced Builder</a>
+  </div>
 
-  <main class="main">
-    <div class="header">
-      <h1><i class="fas fa-plus-circle"></i> Create New Survey</h1>
-    </div>
-
-    <div class="form-container">
-      <form id="surveyForm">
-        <div class="form-group">
-          <label for="surveyTitle">Survey Title *</label>
-          <input type="text" id="surveyTitle" placeholder="Enter survey title" required>
-        </div>
-
-        <div class="form-group">
-          <label for="surveyDescription">Description</label>
-          <textarea id="surveyDescription" rows="3" placeholder="Describe your survey purpose"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="surveyCategory">Category</label>
-          <select id="surveyCategory">
-            <option value="customer-feedback">Customer Feedback</option>
-            <option value="market-research">Market Research</option>
-            <option value="product-development">Product Development</option>
-            <option value="employee-satisfaction">Employee Satisfaction</option>
-            <option value="academic-research">Academic Research</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div class="questions-section">
-          <h3 style="color: #ffd700; margin-bottom: 20px;">Survey Questions</h3>
-          <div id="questionsContainer">
-            <!-- Questions will be added here -->
-          </div>
-          
-          <button type="button" class="btn btn-secondary" onclick="addQuestion()">
-            <i class="fas fa-plus"></i> Add Question
-          </button>
-        </div>
-
-        <div style="margin-top: 30px; display: flex; gap: 15px;">
-          <button type="submit" class="btn btn-primary">
-            <i class="fas fa-save"></i> Create Survey
-          </button>
-          <button type="button" class="btn btn-secondary" onclick="saveDraft()">
-            <i class="fas fa-file-alt"></i> Save as Draft
-          </button>
-        </div>
-      </form>
-    </div>
-  </main>
-</div>
-
-<script>
-let questionCount = 0;
-
-// Update user info
-if (app) {
-  document.getElementById('userName').textContent = `Logged in as: ${app.currentUser.name}`;
-}
-
-function addQuestion() {
-  questionCount++;
-  const container = document.getElementById('questionsContainer');
-  
-  const questionDiv = document.createElement('div');
-  questionDiv.className = 'question-item';
-  questionDiv.id = `question-${questionCount}`;
-  
-  questionDiv.innerHTML = `
-    <div class="question-header">
-      <h4 style="color: #ffd700; margin: 0;">Question ${questionCount}</h4>
-      <button type="button" class="btn btn-danger" onclick="removeQuestion(${questionCount})" style="padding: 5px 10px; font-size: 12px;">
-        <i class="fas fa-trash"></i>
-      </button>
-    </div>
-    
-    <div class="form-group">
-      <label>Question Text *</label>
-      <input type="text" id="questionText-${questionCount}" placeholder="Enter your question" required>
-    </div>
-    
-    <div class="form-group">
-      <label>Question Type</label>
-      <select id="questionType-${questionCount}" onchange="handleQuestionTypeChange(${questionCount})">
-        <option value="text">Text Answer</option>
-        <option value="multiple">Multiple Choice</option>
-        <option value="rating">Rating Scale</option>
-        <option value="yes-no">Yes/No</option>
-      </select>
-    </div>
-    
-    <div id="optionsContainer-${questionCount}" class="options-container" style="display: none;">
-      <!-- Options will be added here for multiple choice -->
-    </div>
-    
-    <div class="form-group">
-      <label>
-        <input type="checkbox" id="required-${questionCount}" style="width: auto; margin-right: 8px;">
-        Required Question
-      </label>
-    </div>
-  `;
-  
-  container.appendChild(questionDiv);
-}
-
-function removeQuestion(questionId) {
-  const questionDiv = document.getElementById(`question-${questionId}`);
-  if (questionDiv) {
-    questionDiv.remove();
-  }
-}
-
-function handleQuestionTypeChange(questionId) {
-  const questionType = document.getElementById(`questionType-${questionId}`).value;
-  const optionsContainer = document.getElementById(`optionsContainer-${questionId}`);
-  
-  if (questionType === 'multiple') {
-    optionsContainer.style.display = 'block';
-    optionsContainer.innerHTML = `
-      <label style="color: #ffd700; font-weight: bold;">Answer Options</label>
-      <div id="options-${questionId}">
-        <div class="option-input">
-          <input type="text" placeholder="Option 1" style="flex: 1;">
-          <button type="button" class="btn btn-danger" onclick="removeOption(this)" style="padding: 5px 10px; font-size: 12px;">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="option-input">
-          <input type="text" placeholder="Option 2" style="flex: 1;">
-          <button type="button" class="btn btn-danger" onclick="removeOption(this)" style="padding: 5px 10px; font-size: 12px;">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-      </div>
-      <button type="button" class="btn btn-secondary" onclick="addOption(${questionId})" style="padding: 8px 16px; font-size: 14px; margin-top: 10px;">
-        <i class="fas fa-plus"></i> Add Option
-      </button>
-    `;
-  } else {
-    optionsContainer.style.display = 'none';
-  }
-}
-
-function addOption(questionId) {
-  const optionsDiv = document.getElementById(`options-${questionId}`);
-  const optionCount = optionsDiv.children.length + 1;
-  
-  const optionDiv = document.createElement('div');
-  optionDiv.className = 'option-input';
-  optionDiv.innerHTML = `
-    <input type="text" placeholder="Option ${optionCount}" style="flex: 1;">
-    <button type="button" class="btn btn-danger" onclick="removeOption(this)" style="padding: 5px 10px; font-size: 12px;">
-      <i class="fas fa-times"></i>
-    </button>
-  `;
-  
-  optionsDiv.appendChild(optionDiv);
-}
-
-function removeOption(button) {
-  button.parentElement.remove();
-}
-
-function showToast(message, type = 'success') {
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  
-  setTimeout(() => toast.classList.add('show'), 100);
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => document.body.removeChild(toast), 300);
-  }, 3000);
-}
-
-function saveDraft() {
-  const surveyData = collectSurveyData();
-  if (surveyData && app) {
-    surveyData.status = 'draft';
-    app.createSurvey(surveyData);
-    showToast('Survey saved as draft!', 'success');
-    setTimeout(() => window.location.href = 'my-surveys.html', 1500);
-  }
-}
-
-function collectSurveyData() {
-  const title = document.getElementById('surveyTitle').value;
-  const description = document.getElementById('surveyDescription').value;
-  const category = document.getElementById('surveyCategory').value;
-  
-  if (!title.trim()) {
-    showToast('Please enter a survey title', 'error');
-    return null;
-  }
-  
-  const questions = [];
-  const questionItems = document.querySelectorAll('.question-item');
-  
-  questionItems.forEach((item, index) => {
-    const questionId = item.id.split('-')[1];
-    const questionText = document.getElementById(`questionText-${questionId}`).value;
-    const questionType = document.getElementById(`questionType-${questionId}`).value;
-    const required = document.getElementById(`required-${questionId}`).checked;
-    
-    if (!questionText.trim()) {
-      showToast(`Please enter text for question ${index + 1}`, 'error');
-      return null;
-    }
-    
-    const question = {
-      id: `q${questionId}`,
-      type: questionType,
-      text: questionText,
-      required: required
-    };
-    
-    if (questionType === 'multiple') {
-      const optionInputs = item.querySelectorAll(`#options-${questionId} input`);
-      const options = Array.from(optionInputs)
-        .map(input => input.value.trim())
-        .filter(option => option);
-      
-      if (options.length < 2) {
-        showToast(`Question ${index + 1} needs at least 2 options`, 'error');
-        return null;
-      }
-      
-      question.options = options;
-    }
-    
-    questions.push(question);
-  });
-  
-  if (questions.length === 0) {
-    showToast('Please add at least one question', 'error');
-    return null;
-  }
-  
-  return {
-    title,
-    description,
-    category,
-    questions
-  };
-}
-
-document.getElementById('surveyForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const surveyData = collectSurveyData();
-  if (surveyData && app) {
-    surveyData.status = 'active';
-    const newSurvey = app.createSurvey(surveyData);
-    showToast('Survey created successfully!', 'success');
-    setTimeout(() => window.location.href = 'my-surveys.html', 1500);
-  }
-});
-
-function logout() {
-  if (app) {
-    app.logout();
-  }
-}
-
-// Add first question by default
-addQuestion();
-</script>
+  <script>
+    // Auto redirect after 3 seconds
+    setTimeout(() => {
+      window.location.href = 'enhanced-survey-builder.html';
+    }, 3000);
+  </script>
 </body>
 </html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00cec9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #00cec9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stat-card i {
+      font-size: 3rem;
+      color: #00cec9;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card h3 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .table th {
+      background: #f8f9fa;
+      font-weight: 600;
+    }
+
+    .table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge-warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .error {
+      color: #dc3545;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">Survey Africa Admin</div>
+    <div class="nav-links">
+      <a href="admin-dashboard.html">Dashboard</a>
+      <a href="index.html">Home</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <i class="fas fa-users"></i>
+        <h3 id="totalUsers">-</h3>
+        <p>Total Users</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-poll"></i>
+        <h3 id="totalSurveys">-</h3>
+        <p>Total Surveys</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-chart-line"></i>
+        <h3 id="totalResponses">-</h3>
+        <p>Total Responses</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-dollar-sign"></i>
+        <h3 id="totalEarnings">-</h3>
+        <p>Total Earnings</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Survey Management</h2>
+      <a href="create-survey.html" class="btn btn-primary mb-3">Create New Survey</a>
+      <div id="surveysLoading" class="loading">Loading surveys...</div>
+      <div id="surveysError" class="error" style="display: none;"></div>
+      <div id="surveysTable" style="display: none;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Reward Amount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="surveysTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('jwt');
+
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    function logout() {
+      localStorage.removeItem('jwt');
+      window.location.href = 'index.html';
+    }
+
+    async function loadSurveys() {
+      try {
+        const response = await fetch('backend/api/survey/read.php', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const tbody = document.getElementById('surveysTableBody');
+          tbody.innerHTML = data.records.map(survey => `
+                    <tr>
+                        <td>${survey.title}</td>
+                        <td>${survey.description}</td>
+                        <td>$${parseFloat(survey.reward_amount).toFixed(2)}</td>
+                        <td>
+                            <a href="view-survey.html?id=${survey.id}" class="btn btn-info btn-sm">View</a>
+                            <a href="edit-survey.html?id=${survey.id}" class="btn btn-warning btn-sm">Edit</a>
+                            <button class="btn btn-danger btn-sm" onclick="deleteSurvey(${survey.id})">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+          document.getElementById('surveysLoading').style.display = 'none';
+          document.getElementById('surveysTable').style.display = 'block';
+        } else {
+          throw new Error('Failed to load surveys');
+        }
+      } catch (error) {
+        document.getElementById('surveysLoading').style.display = 'none';
+        document.getElementById('surveysError').style.display = 'block';
+        document.getElementById('surveysError').textContent = 'Error loading surveys';
+      }
+    }
+
+    async function deleteSurvey(surveyId) {
+      if (!confirm('Are you sure you want to delete this survey?')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`backend/api/survey/delete.php`, {
+          method: 'POST', // Changed to POST to send a body
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ id: surveyId })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.message === "Survey was deleted.") {
+            alert('Survey deleted successfully.');
+            loadSurveys();
+          } else {
+            alert('Error deleting survey: ' + data.message);
+          }
+        } else {
+          throw new Error('Failed to delete survey');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the survey.');
+      }
+    }
+
+    loadSurveys();
+  </script>
+</body>
+
+</html>

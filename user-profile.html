@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Survey Africa</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-enhanced.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Survey Africa 🌍</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="surveys.html">Surveys</a></li>
+                <li><a href="marketplace.html">Marketplace</a></li>
+                <li><a href="live-dashboard.html">Live</a></li>
+                <li><a href="user-profile.html" class="active">Profile</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <div class="avatar-circle" id="user-avatar">
+                    <span id="avatar-initials">U</span>
+                </div>
+                <div class="level-badge" id="user-level">Level 1</div>
+            </div>
+            <div class="profile-info">
+                <h1 id="username">Loading...</h1>
+                <p class="join-date">Member since <span id="join-date">...</span></p>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-value" id="total-earnings">$0.00</span>
+                        <span class="stat-label">Total Earnings</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="total-points">0</span>
+                        <span class="stat-label">Points</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="surveys-completed">0</span>
+                        <span class="stat-label">Surveys</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="achievements-section">
+            <h2>Achievements</h2>
+            <div id="achievements-grid" class="achievements-grid">
+                <!-- Achievements will be populated here -->
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <h2>Progress to Next Level</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="level-progress"></div>
+            </div>
+            <p id="progress-text">0 / 1000 points to Level 2</p>
+        </div>
+
+        <!-- Activity Timeline -->
+        <div class="activity-section">
+            <h2>Recent Activity</h2>
+            <div id="activity-timeline" class="activity-timeline">
+                <!-- Activity will be populated here -->
+            </div>
+        </div>
+
+        <!-- Social Sharing -->
+        <div class="sharing-section">
+            <h2>Share Your Success</h2>
+            <div class="share-buttons">
+                <button class="share-btn twitter" onclick="shareToTwitter()">Share on Twitter</button>
+                <button class="share-btn facebook" onclick="shareToFacebook()">Share on Facebook</button>
+                <button class="share-btn whatsapp" onclick="shareToWhatsApp()">Share on WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        let currentUser = null;
+
+        async function loadUserProfile() {
+            try {
+                const token = localStorage.getItem('token');
+                const userId = localStorage.getItem('userId');
+                
+                const response = await fetch(`${API_BASE_URL}/api/social/profile/${userId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    currentUser = await response.json();
+                    displayProfile(currentUser);
+                    loadAchievements();
+                    loadActivity();
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+            }
+        }
+
+        function displayProfile(user) {
+            document.getElementById('username').textContent = user.username;
+            document.getElementById('join-date').textContent = new Date(user.joinDate).toLocaleDateString();
+            document.getElementById('total-earnings').textContent = `$${user.totalEarnings.toFixed(2)}`;
+            document.getElementById('total-points').textContent = user.totalPoints.toLocaleString();
+            document.getElementById('user-level').textContent = `Level ${user.level}`;
+            
+            // Set avatar initials
+            document.getElementById('avatar-initials').textContent = user.username.charAt(0).toUpperCase();
+            
+            // Update progress bar
+            const currentLevelPoints = (user.level - 1) * 1000;
+            const nextLevelPoints = user.level * 1000;
+            const progress = ((user.totalPoints - currentLevelPoints) / (nextLevelPoints - currentLevelPoints)) * 100;
+            
+            document.getElementById('level-progress').style.width = `${Math.min(progress, 100)}%`;
+            document.getElementById('progress-text').textContent = 
+                `${user.totalPoints - currentLevelPoints} / ${nextLevelPoints - currentLevelPoints} points to Level ${user.level + 1}`;
+        }
+
+        function loadAchievements() {
+            const achievements = [
+                { id: 'first_survey', name: 'First Survey', description: 'Complete your first survey', earned: true },
+                { id: 'early_bird', name: 'Early Bird', description: 'Complete 5 surveys before 9 AM', earned: false },
+                { id: 'streak_master', name: 'Streak Master', description: 'Complete surveys for 7 days straight', earned: true },
+                { id: 'big_earner', name: 'Big Earner', description: 'Earn $100 total', earned: false }
+            ];
+
+            document.getElementById('achievements-grid').innerHTML = achievements.map(achievement => `
+                <div class="achievement-card ${achievement.earned ? 'earned' : 'locked'}">
+                    <div class="achievement-icon">${achievement.earned ? '🏆' : '🔒'}</div>
+                    <h3>${achievement.name}</h3>
+                    <p>${achievement.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function loadActivity() {
+            const activities = [
+                { type: 'survey', message: 'Completed "Customer Satisfaction Survey"', time: '2 hours ago' },
+                { type: 'achievement', message: 'Earned "Streak Master" achievement', time: '1 day ago' },
+                { type: 'earning', message: 'Earned $2.50 from CPA offer', time: '2 days ago' }
+            ];
+
+            document.getElementById('activity-timeline').innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon ${activity.type}"></div>
+                    <div class="activity-content">
+                        <p>${activity.message}</p>
+                        <small>${activity.time}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function shareToTwitter() {
+            const text = `I just earned $${currentUser.totalEarnings.toFixed(2)} on Survey Africa! 🌍 Join me and start earning today!`;
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=https://surveyafrica.netlify.app`;
+            window.open(url, '_blank');
+        }
+
+        function shareToFacebook() {
+            const url = `https://www.facebook.com/sharer/sharer.php?u=https://surveyafrica.netlify.app`;
+            window.open(url, '_blank');
+        }
+
+        function shareToWhatsApp() {
+            const text = `I just earned $${currentUser.totalEarnings.toFixed(2)} on Survey Africa! 🌍 Join me: https://surveyafrica.netlify.app`;
+            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
+    </script>
+
+    <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .profile-avatar {
+            position: relative;
+        }
+        
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .level-badge {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: #FF9800;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .achievement-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .achievement-card.earned {
+            border: 2px solid #4CAF50;
+        }
+        
+        .achievement-card.locked {
+            opacity: 0.6;
+        }
+        
+        .achievement-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            transition: width 0.3s;
+        }
+        
+        .activity-timeline {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .activity-icon.survey { background: #4CAF50; }
+        .activity-icon.achievement { background: #FF9800; }
+        .activity-icon.earning { background: #2196F3; }
+        
+        .share-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .share-btn.twitter { background: #1DA1F2; }
+        .share-btn.facebook { background: #4267B2; }
+        .share-btn.whatsapp { background: #25D366; }
+    </style>
+</body>
+</html>

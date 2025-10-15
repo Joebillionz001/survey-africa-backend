@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Survey Builder - Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .builder-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr 300px;
+      gap: 2rem;
+    }
+
+    .sidebar {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 15px;
+      height: fit-content;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .main-builder {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .question-type {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .question-type:hover {
+      border-color: #00cec9;
+      background: #f0fdfa;
+    }
+
+    .question-type.active {
+      border-color: #00cec9;
+      background: #e6fffa;
+    }
+
+    .question-item {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      border-left: 4px solid #00cec9;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #00cec9;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #00cec9;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #00b4a6;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #00cec9;
+      transition: width 0.3s;
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .rating-stars i {
+      font-size: 1.5rem;
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .rating-stars i.active {
+      color: #fbbf24;
+    }
+
+    @media (max-width: 768px) {
+      .builder-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .header {
+        padding: 1.5rem;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .sidebar {
+        order: 2;
+      }
+      
+      .main-builder {
+        order: 1;
+      }
+      
+      .question-type {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+      
+      .question-item {
+        padding: 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+      }
+      
+      .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+      
+      .question-type {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+      }
+      
+      .question-type i {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Enhanced Survey Builder</h1>
+      <p>Create responsive surveys with advanced question types</p>
+    </div>
+
+    <div class="builder-grid">
+      <!-- Question Types Sidebar -->
+      <div class="sidebar">
+        <h3>Question Types</h3>
+        <div class="question-types">
+          <div class="question-type" data-type="text">
+            <i class="fas fa-font"></i>
+            <span>Text Input</span>
+          </div>
+          <div class="question-type" data-type="textarea">
+            <i class="fas fa-align-left"></i>
+            <span>Long Text</span>
+          </div>
+          <div class="question-type" data-type="multiple">
+            <i class="fas fa-list"></i>
+            <span>Multiple Choice</span>
+          </div>
+          <div class="question-type" data-type="checkbox">
+            <i class="fas fa-check-square"></i>
+            <span>Checkboxes</span>
+          </div>
+          <div class="question-type" data-type="rating">
+            <i class="fas fa-star"></i>
+            <span>Star Rating</span>
+          </div>
+          <div class="question-type" data-type="scale">
+            <i class="fas fa-sliders-h"></i>
+            <span>Scale (1-10)</span>
+          </div>
+          <div class="question-type" data-type="date">
+            <i class="fas fa-calendar"></i>
+            <span>Date Picker</span>
+          </div>
+          <div class="question-type" data-type="email">
+            <i class="fas fa-envelope"></i>
+            <span>Email</span>
+          </div>
+          <div class="question-type" data-type="phone">
+            <i class="fas fa-phone"></i>
+            <span>Phone Number</span>
+          </div>
+          <div class="question-type" data-type="file">
+            <i class="fas fa-upload"></i>
+            <span>File Upload</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Builder -->
+      <div class="main-builder">
+        <div class="form-group">
+          <label>Survey Title</label>
+          <input type="text" id="surveyTitle" placeholder="Enter survey title">
+        </div>
+        
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="surveyDescription" placeholder="Enter survey description"></textarea>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+
+        <div id="questionsContainer">
+          <!-- Questions will be added here -->
+        </div>
+
+        <button class="btn btn-primary" onclick="addQuestion()">
+          <i class="fas fa-plus"></i> Add Question
+        </button>
+      </div>
+
+      <!-- Preview Sidebar -->
+      <div class="sidebar">
+        <h3>Preview</h3>
+        <div id="surveyPreview">
+          <p>Add questions to see preview</p>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+          <button class="btn btn-primary" onclick="saveSurvey()">
+            <i class="fas fa-save"></i> Save Survey
+          </button>
+          <button class="btn btn-secondary" onclick="previewSurvey()" style="margin-top: 0.5rem; width: 100%;">
+            <i class="fas fa-eye"></i> Full Preview
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script>
+    let questions = [];
+    let currentQuestionId = 1;
+
+    // Question type templates
+    const questionTemplates = {
+      text: { type: 'text', text: '', placeholder: 'Enter your answer', required: false },
+      textarea: { type: 'textarea', text: '', placeholder: 'Enter detailed response', required: false },
+      multiple: { type: 'multiple', text: '', options: ['Option 1', 'Option 2'], required: false },
+      checkbox: { type: 'checkbox', text: '', options: ['Option 1', 'Option 2'], required: false },
+      rating: { type: 'rating', text: '', maxRating: 5, required: false },
+      scale: { type: 'scale', text: '', minValue: 1, maxValue: 10, required: false },
+      date: { type: 'date', text: '', required: false },
+      email: { type: 'email', text: '', required: false },
+      phone: { type: 'phone', text: '', required: false },
+      file: { type: 'file', text: '', acceptedTypes: 'image/*', required: false }
+    };
+
+    // Add question type click handlers
+    document.querySelectorAll('.question-type').forEach(type => {
+      type.addEventListener('click', () => {
+        document.querySelectorAll('.question-type').forEach(t => t.classList.remove('active'));
+        type.classList.add('active');
+      });
+    });
+
+    function addQuestion() {
+      const activeType = document.querySelector('.question-type.active');
+      if (!activeType) {
+        alert('Please select a question type first');
+        return;
+      }
+
+      const questionType = activeType.dataset.type;
+      const template = { ...questionTemplates[questionType] };
+      template.id = `q${currentQuestionId++}`;
+      template.text = `Question ${questions.length + 1}`;
+      
+      questions.push(template);
+      renderQuestions();
+      updatePreview();
+      updateProgress();
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = questions.map((q, index) => `
+        <div class="question-item" data-question-id="${q.id}">
+          <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+            <h4>Question ${index + 1}</h4>
+            <button class="btn btn-danger" onclick="removeQuestion('${q.id}')" style="margin-left: auto;">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          
+          <div class="form-group">
+            <label>Question Text</label>
+            <input type="text" value="${q.text}" onchange="updateQuestion('${q.id}', 'text', this.value)">
+          </div>
+
+          ${renderQuestionSpecificFields(q)}
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" ${q.required ? 'checked' : ''} onchange="updateQuestion('${q.id}', 'required', this.checked)">
+              Required
+            </label>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderQuestionSpecificFields(question) {
+      switch (question.type) {
+        case 'multiple':
+        case 'checkbox':
+          return `
+            <div class="form-group">
+              <label>Options</label>
+              ${question.options.map((opt, i) => `
+                <input type="text" value="${opt}" onchange="updateQuestionOption('${question.id}', ${i}, this.value)" style="margin-bottom: 0.5rem;">
+              `).join('')}
+              <button class="btn btn-secondary" onclick="addOption('${question.id}')">Add Option</button>
+            </div>
+          `;
+        case 'rating':
+          return `
+            <div class="form-group">
+              <label>Max Rating</label>
+              <select onchange="updateQuestion('${question.id}', 'maxRating', parseInt(this.value))">
+                ${[3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${question.maxRating === n ? 'selected' : ''}>${n} Stars</option>`).join('')}
+              </select>
+            </div>
+          `;
+        case 'scale':
+          return `
+            <div class="form-group">
+              <label>Scale Range</label>
+              <input type="number" value="${question.minValue}" onchange="updateQuestion('${question.id}', 'minValue', parseInt(this.value))" placeholder="Min">
+              <input type="number" value="${question.maxValue}" onchange="updateQuestion('${question.id}', 'maxValue', parseInt(this.value))" placeholder="Max">
+            </div>
+          `;
+        case 'file':
+          return `
+            <div class="form-group">
+              <label>Accepted File Types</label>
+              <select onchange="updateQuestion('${question.id}', 'acceptedTypes', this.value)">
+                <option value="image/*" ${question.acceptedTypes === 'image/*' ? 'selected' : ''}>Images</option>
+                <option value=".pdf" ${question.acceptedTypes === '.pdf' ? 'selected' : ''}>PDF</option>
+                <option value=".doc,.docx" ${question.acceptedTypes === '.doc,.docx' ? 'selected' : ''}>Documents</option>
+                <option value="*" ${question.acceptedTypes === '*' ? 'selected' : ''}>All Files</option>
+              </select>
+            </div>
+          `;
+        default:
+          return '';
+      }
+    }
+
+    function updateQuestion(id, field, value) {
+      const question = questions.find(q => q.id === id);
+      if (question) {
+        question[field] = value;
+        updatePreview();
+      }
+    }
+
+    function updateQuestionOption(id, optionIndex, value) {
+      const question = questions.find(q => q.id === id);
+      if (question && question.options) {
+        question.options[optionIndex] = value;
+        updatePreview();
+      }
+    }
+
+    function addOption(id) {
+      const question = questions.find(q => q.id === id);
+      if (question && question.options) {
+        question.options.push(`Option ${question.options.length + 1}`);
+        renderQuestions();
+        updatePreview();
+      }
+    }
+
+    function removeQuestion(id) {
+      questions = questions.filter(q => q.id !== id);
+      renderQuestions();
+      updatePreview();
+      updateProgress();
+    }
+
+    function updatePreview() {
+      const preview = document.getElementById('surveyPreview');
+      const title = document.getElementById('surveyTitle').value || 'Survey Title';
+      const description = document.getElementById('surveyDescription').value || 'Survey Description';
+      
+      preview.innerHTML = `
+        <h4>${title}</h4>
+        <p style="margin-bottom: 1rem;">${description}</p>
+        ${questions.map((q, i) => `
+          <div style="margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+            <strong>${i + 1}. ${q.text}</strong>
+            ${q.required ? '<span style="color: red;">*</span>' : ''}
+            ${renderPreviewInput(q)}
+          </div>
+        `).join('')}
+      `;
+    }
+
+    function renderPreviewInput(question) {
+      switch (question.type) {
+        case 'text':
+        case 'email':
+        case 'phone':
+          return `<input type="${question.type}" placeholder="${question.placeholder || ''}" style="width: 100%; margin-top: 0.5rem; padding: 0.5rem;">`;
+        case 'textarea':
+          return `<textarea placeholder="${question.placeholder || ''}" style="width: 100%; margin-top: 0.5rem; padding: 0.5rem;"></textarea>`;
+        case 'multiple':
+          return question.options.map(opt => `<div><input type="radio" name="${question.id}"> ${opt}</div>`).join('');
+        case 'checkbox':
+          return question.options.map(opt => `<div><input type="checkbox"> ${opt}</div>`).join('');
+        case 'rating':
+          return `<div class="rating-stars">${Array(question.maxRating).fill().map(() => '<i class="fas fa-star"></i>').join('')}</div>`;
+        case 'scale':
+          return `<input type="range" min="${question.minValue}" max="${question.maxValue}" style="width: 100%;">`;
+        case 'date':
+          return `<input type="date" style="width: 100%; margin-top: 0.5rem; padding: 0.5rem;">`;
+        case 'file':
+          return `<input type="file" accept="${question.acceptedTypes}" style="width: 100%; margin-top: 0.5rem;">`;
+        default:
+          return '';
+      }
+    }
+
+    function updateProgress() {
+      const progress = Math.min((questions.length / 5) * 100, 100);
+      document.querySelector('.progress-fill').style.width = `${progress}%`;
+    }
+
+    async function saveSurvey() {
+      const title = document.getElementById('surveyTitle').value;
+      const description = document.getElementById('surveyDescription').value;
+      
+      if (!title || questions.length === 0) {
+        alert('Please add a title and at least one question');
+        return;
+      }
+
+      const surveyData = {
+        title,
+        description,
+        questions,
+        status: 'active'
+      };
+
+      try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/surveys`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(surveyData)
+        });
+
+        if (response.ok) {
+          alert('Survey saved successfully!');
+          window.location.href = 'dashboard.html';
+        } else {
+          alert('Error saving survey');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error saving survey');
+      }
+    }
+
+    function previewSurvey() {
+      const title = document.getElementById('surveyTitle').value || 'Survey Preview';
+      const description = document.getElementById('surveyDescription').value || '';
+      
+      const surveyData = { title, description, questions };
+      localStorage.setItem('previewSurvey', JSON.stringify(surveyData));
+      window.open('survey-preview.html', '_blank');
+    }
+
+    // Auto-save functionality
+    setInterval(() => {
+      const title = document.getElementById('surveyTitle').value;
+      const description = document.getElementById('surveyDescription').value;
+      if (title || description || questions.length > 0) {
+        localStorage.setItem('draftSurvey', JSON.stringify({ title, description, questions }));
+      }
+    }, 30000);
+
+    // Load draft on page load
+    window.addEventListener('load', () => {
+      const draft = localStorage.getItem('draftSurvey');
+      if (draft) {
+        const data = JSON.parse(draft);
+        document.getElementById('surveyTitle').value = data.title || '';
+        document.getElementById('surveyDescription').value = data.description || '';
+        questions = data.questions || [];
+        renderQuestions();
+        updatePreview();
+        updateProgress();
+      }
+    });
+  </script>
+</body>
+</html>

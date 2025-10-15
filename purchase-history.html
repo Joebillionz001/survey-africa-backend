@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase History - Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/mobile-enhanced.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    .navbar {
+      background: rgba(255,255,255,0.95);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .header {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .stat-card h3 {
+      font-size: 2rem;
+      color: #00cec9;
+      margin-bottom: 0.5rem;
+    }
+
+    .purchases-list {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .purchase-item {
+      padding: 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: background 0.3s;
+    }
+
+    .purchase-item:hover {
+      background: #f8f9fa;
+    }
+
+    .purchase-item:last-child {
+      border-bottom: none;
+    }
+
+    .purchase-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .purchase-details {
+      flex: 1;
+    }
+
+    .purchase-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .purchase-meta {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .purchase-price {
+      font-weight: bold;
+      color: #00cec9;
+    }
+
+    .purchase-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-processing {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-shipped {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-delivered {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      color: #e5e7eb;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #00cec9;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #00b4a6;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+      }
+      
+      .container {
+        padding: 0 1rem;
+        margin: 1rem auto;
+      }
+      
+      .header {
+        padding: 1.5rem;
+      }
+      
+      .header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+      
+      .stat-card {
+        padding: 1rem;
+      }
+      
+      .stat-card h3 {
+        font-size: 1.5rem;
+      }
+      
+      .purchase-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      
+      .purchase-details {
+        text-align: center;
+      }
+      
+      .purchase-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .purchase-item {
+        padding: 0.75rem;
+      }
+      
+      .purchase-title {
+        font-size: 0.9rem;
+      }
+      
+      .purchase-meta {
+        font-size: 0.8rem;
+      }
+      
+      .empty-state {
+        padding: 2rem 1rem;
+      }
+      
+      .empty-state i {
+        font-size: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <a href="marketplace.html" style="text-decoration: none; color: #00cec9; font-weight: bold;">
+        <i class="fas fa-store"></i> Marketplace
+      </a>
+    </div>
+    <div>
+      <a href="dashboard.html" style="text-decoration: none; color: #333;">Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <h1>Purchase History</h1>
+      <p>Track your orders and purchases made with Survey Africa earnings</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <h3 id="totalPurchases">0</h3>
+        <p>Total Purchases</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="totalSpent">$0.00</h3>
+        <p>Total Spent</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="activePurchases">0</h3>
+        <p>Active Orders</p>
+      </div>
+    </div>
+
+    <div class="purchases-list" id="purchasesList">
+      <!-- Purchases will be loaded here -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPurchaseHistory();
+    });
+
+    function loadPurchaseHistory() {
+      const purchases = JSON.parse(localStorage.getItem('purchases') || '[]');
+      
+      if (purchases.length === 0) {
+        showEmptyState();
+        return;
+      }
+
+      updateStats(purchases);
+      displayPurchases(purchases);
+    }
+
+    function updateStats(purchases) {
+      const totalPurchases = purchases.length;
+      const totalSpent = purchases.reduce((sum, purchase) => sum + purchase.price, 0);
+      const activePurchases = purchases.filter(p => p.status !== 'delivered').length;
+
+      document.getElementById('totalPurchases').textContent = totalPurchases;
+      document.getElementById('totalSpent').textContent = `$${totalSpent.toFixed(2)}`;
+      document.getElementById('activePurchases').textContent = activePurchases;
+    }
+
+    function displayPurchases(purchases) {
+      const partnerColors = {
+        shopify: '#96bf48',
+        jumia: '#f68b1e',
+        alibaba: '#ff6a00'
+      };
+
+      const partnerIcons = {
+        shopify: 'S',
+        jumia: 'J',
+        alibaba: 'A'
+      };
+
+      const statusClasses = {
+        processing: 'status-processing',
+        shipped: 'status-shipped',
+        delivered: 'status-delivered'
+      };
+
+      const purchasesList = document.getElementById('purchasesList');
+      purchasesList.innerHTML = purchases.map(purchase => {
+        const date = new Date(purchase.date).toLocaleDateString();
+        const partnerColor = partnerColors[purchase.partner] || '#6c757d';
+        const partnerIcon = partnerIcons[purchase.partner] || purchase.partner.charAt(0).toUpperCase();
+        const statusClass = statusClasses[purchase.status] || 'status-processing';
+
+        return `
+          <div class="purchase-item">
+            <div class="purchase-icon" style="background: ${partnerColor};">
+              ${partnerIcon}
+            </div>
+            <div class="purchase-details">
+              <div class="purchase-title">${purchase.product}</div>
+              <div class="purchase-meta">
+                ${purchase.partner.charAt(0).toUpperCase() + purchase.partner.slice(1)} • ${date}
+              </div>
+              <div class="purchase-price">$${purchase.price.toFixed(2)}</div>
+            </div>
+            <div class="purchase-status ${statusClass}">
+              ${purchase.status}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showEmptyState() {
+      const purchasesList = document.getElementById('purchasesList');
+      purchasesList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-shopping-bag"></i>
+          <h3>No Purchases Yet</h3>
+          <p>Start shopping with your Survey Africa earnings!</p>
+          <a href="marketplace.html" class="btn btn-primary" style="margin-top: 1rem;">
+            <i class="fas fa-store"></i> Visit Marketplace
+          </a>
+        </div>
+      `;
+
+      // Reset stats
+      document.getElementById('totalPurchases').textContent = '0';
+      document.getElementById('totalSpent').textContent = '$0.00';
+      document.getElementById('activePurchases').textContent = '0';
+    }
+
+    // Simulate order status updates
+    function simulateOrderUpdates() {
+      const purchases = JSON.parse(localStorage.getItem('purchases') || '[]');
+      let updated = false;
+
+      purchases.forEach(purchase => {
+        const daysSinceOrder = Math.floor((Date.now() - new Date(purchase.date).getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (purchase.status === 'processing' && daysSinceOrder >= 1) {
+          purchase.status = 'shipped';
+          updated = true;
+        } else if (purchase.status === 'shipped' && daysSinceOrder >= 3) {
+          purchase.status = 'delivered';
+          updated = true;
+        }
+      });
+
+      if (updated) {
+        localStorage.setItem('purchases', JSON.stringify(purchases));
+        loadPurchaseHistory();
+      }
+    }
+
+    // Check for order updates every minute
+    setInterval(simulateOrderUpdates, 60000);
+    
+    // Run initial check
+    simulateOrderUpdates();
+
+    // Check if user is logged in
+    if (!localStorage.getItem('currentUser') && !sessionStorage.getItem('currentUser')) {
+      alert('Please login to view purchase history');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

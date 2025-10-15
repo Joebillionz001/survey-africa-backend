@@ -35,6 +35,12 @@ class SurveyApp {
       localStorage.setItem('isLoggedIn', 'true');
       this.currentUser = result.user;
       localStorage.setItem('currentUser', JSON.stringify(result.user));
+      
+      // Track login
+      if (typeof tracking !== 'undefined') {
+        tracking.trackUserLogin(email);
+      }
+      
       await this.loadUserData();
       return { success: true, user: result.user };
     } catch (error) {
@@ -48,6 +54,12 @@ class SurveyApp {
       localStorage.setItem('isLoggedIn', 'true');
       this.currentUser = result.user;
       localStorage.setItem('currentUser', JSON.stringify(result.user));
+      
+      // Track registration
+      if (typeof tracking !== 'undefined') {
+        tracking.trackUserRegistration(userData);
+      }
+      
       await this.loadUserData();
       return { success: true, user: result.user };
     } catch (error) {
@@ -66,15 +78,7 @@ class SurveyApp {
   }
 
   getDefaultUsers() {
-    return [{
-      id: 'user_001',
-      name: 'Demo User',
-      email: null,
-      joinDate: '2024-01-15',
-      totalEarnings: 247.50,
-      referrals: 8,
-      surveysCompleted: 23
-    }];
+    return [];
   }
 
   // Survey Management
@@ -89,33 +93,7 @@ class SurveyApp {
   }
 
   getDefaultSurveys() {
-    return [
-      {
-        id: 'survey_001',
-        title: 'Customer Satisfaction Survey',
-        description: 'Help us improve our services',
-        status: 'active',
-        responses: 156,
-        created: '2024-01-20',
-        earnings: 78.00,
-        questions: [
-          { id: 'q1', type: 'rating', text: 'How satisfied are you with our service?', required: true },
-          { id: 'q2', type: 'text', text: 'What can we improve?', required: false }
-        ]
-      },
-      {
-        id: 'survey_002',
-        title: 'Product Feedback Survey',
-        description: 'Share your thoughts on our new product',
-        status: 'active',
-        responses: 89,
-        created: '2024-01-25',
-        earnings: 44.50,
-        questions: [
-          { id: 'q1', type: 'multiple', text: 'Which features do you use most?', options: ['Feature A', 'Feature B', 'Feature C'], required: true }
-        ]
-      }
-    ];
+    return [];
   }
 
   async createSurvey(surveyData) {
@@ -131,27 +109,59 @@ class SurveyApp {
 
   // CPA Offers
   getCPAOffers() {
-    return [
-      { id: 'cpa_1', title: 'Sign up for Free Trial', description: 'Register for streaming service trial', payout: 2.50, url: 'https://example.com/offer1' },
-      { id: 'cpa_2', title: 'Download Mobile Game', description: 'Install and play for 5 minutes', payout: 1.75, url: 'https://example.com/offer2' },
-      { id: 'cpa_3', title: 'Complete Survey', description: 'Fill out market research survey', payout: 3.00, url: 'https://example.com/offer3' },
-      { id: 'cpa_4', title: 'Subscribe to Newsletter', description: 'Join email list for deals', payout: 0.50, url: 'https://example.com/offer4' }
-    ];
+    return [];
   }
 
   // YouTube Tasks
   getYouTubeTasks() {
-    return [
-      { id: 'yt_1', title: 'Tech Review Channel', description: 'Watch latest smartphone review', payout: 1.00, duration: '10:30', views: '125K', url: 'https://youtube.com/watch?v=example1' },
-      { id: 'yt_2', title: 'Cooking Tutorial', description: 'Learn to make African cuisine', payout: 0.75, duration: '15:45', views: '89K', url: 'https://youtube.com/watch?v=example2' },
-      { id: 'yt_3', title: 'Business Tips', description: 'Entrepreneurship advice for Africa', payout: 1.25, duration: '8:20', views: '67K', url: 'https://youtube.com/watch?v=example3' },
-      { id: 'yt_4', title: 'Music Video', description: 'Latest Afrobeats hit', payout: 0.50, duration: '4:15', views: '234K', url: 'https://youtube.com/watch?v=example4' }
-    ];
+    return [];
+  }
+
+  async init() {
+    this.setupEventListeners();
+    this.updateUI();
+    this.handleOAuthRedirect(); // Handle OAuth redirect parameters
+    if (this.currentUser) {
+      await this.loadUserData();
+    }
+  }
+
+  // Handle Google OAuth redirect
+  async handleOAuthRedirect() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const userId = urlParams.get('userId');
+
+    if (token && userId) {
+      try {
+        // Fetch user data using the token and userId
+        const user = await api.getCurrentUser(); // This will use the token set by setAuthSession
+        if (user) {
+          await api.setAuthSession(token, user); // Set session with fetched user data
+          this.currentUser = user;
+          localStorage.setItem('isLoggedIn', 'true');
+          this.updateUI();
+          showToast('Logged in successfully via Google!', 'success');
+        } else {
+          showToast('Failed to retrieve user data after Google login.', 'error');
+        }
+      } catch (error) {
+        console.error('Error handling Google OAuth redirect:', error);
+        showToast('Error during Google login.', 'error');
+      } finally {
+        // Clean up URL parameters to prevent re-processing on refresh
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete('token');
+        newUrl.searchParams.delete('userId');
+        window.history.replaceState({}, document.title, newUrl.toString());
+      }
+    }
   }
 
   async getBitLabsSurveys() {
     try {
-      const response = await fetch('http://localhost:5000/api/external-surveys/bitlabs', {
+      // Use centralized API_CONFIG.BASE_URL
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/external-surveys/bitlabs`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
       });
       return await response.json();
@@ -172,11 +182,13 @@ class SurveyApp {
 
   // Analytics
   getAnalytics() {
+    const responses = this.loadResponses();
+    const earnings = this.loadEarnings();
     return {
       totalSurveys: this.surveys.length,
-      totalResponses: 428,
+      totalResponses: responses.length,
       totalEarnings: this.currentUser?.totalEarnings || 0,
-      activeUsers: 1247
+      activeUsers: this.getUsers().length
     };
   }
 
@@ -242,9 +254,30 @@ class SurveyApp {
   }
 
   logout() {
+    // Track logout
+    if (typeof tracking !== 'undefined') {
+      tracking.trackUserLogout();
+    }
+    
     api.logout();
     localStorage.removeItem('isLoggedIn');
     window.location.href = 'index.html';
+  }
+
+  handleGetStartedRedirect() {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      window.location.href = 'dashboard.html';
+    } else {
+      window.location.href = 'signup.html';
+    }
+  }
+
+  handleLoginRedirect() {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      window.location.href = 'dashboard.html';
+    } else {
+      window.location.href = 'login.html';
+    }
   }
 
   async loadUserData() {
@@ -285,8 +318,14 @@ class SurveyApp {
     return div.innerHTML;
   }
 
-  setupEventListeners() {}
-  loadResponses() { return []; }
+  setupEventListeners() {
+    // Event listeners setup
+  }
+  
+  loadResponses() { 
+    return []; 
+  }
+  
   loadEarnings() { 
     try {
       const earnings = localStorage.getItem('userEarnings');

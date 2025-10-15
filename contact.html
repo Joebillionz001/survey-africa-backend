@@ -280,7 +280,7 @@
           <div class="contact-icon">📧</div>
           <div class="contact-details">
             <h4>Email</h4>
-            <p>hello@surveyafrica.com</p>
+            <p>surveyafrica2@gmail.com</p>
           </div>
         </div>
 
@@ -315,11 +315,71 @@
     <p>© 2025 Survey Africa. Made with ❤️ for Africa.</p>
   </footer>
 
+  <script src="js/config.js"></script>
+  <script src="js/validation.js"></script>
   <script>
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    function showMessage(message, type = 'success') {
+      const alertDiv = document.createElement('div');
+      alertDiv.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 9999;
+        padding: 15px 20px; border-radius: 8px; color: white;
+        background: ${type === 'success' ? '#22c55e' : '#ef4444'};
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      `;
+      alertDiv.textContent = message;
+      document.body.appendChild(alertDiv);
+      
+      setTimeout(() => document.body.removeChild(alertDiv), 5000);
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-      this.reset();
+      
+      const formData = {
+        name: InputValidator.sanitizeHTML(document.getElementById('name').value.trim()),
+        email: InputValidator.sanitizeHTML(document.getElementById('email').value.trim()),
+        subject: InputValidator.sanitizeHTML(document.getElementById('subject').value.trim()),
+        message: InputValidator.sanitizeHTML(document.getElementById('message').value.trim())
+      };
+      
+      // Validate inputs
+      if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+        showMessage('Please fill in all fields', 'error');
+        return;
+      }
+      
+      if (!InputValidator.validateEmail(formData.email)) {
+        showMessage('Please enter a valid email address', 'error');
+        return;
+      }
+      
+      // Show loading state
+      const submitBtn = document.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+      
+      try {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/contact/send`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showMessage(result.message, 'success');
+          this.reset();
+        } else {
+          showMessage(result.message || 'Failed to send message', 'error');
+        }
+      } catch (error) {
+        showMessage('Network error. Please try again.', 'error');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
     });
   </script>
 </body>

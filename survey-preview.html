@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Preview - Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
+      position: relative;
+      padding: 1rem;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    .survey-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .survey-header {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .survey-body {
+      padding: 2rem;
+    }
+
+    .progress-container {
+      margin-bottom: 2rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #00cec9;
+      transition: width 0.3s;
+      width: 0%;
+    }
+
+    .progress-text {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .question-card {
+      background: #f8f9fa;
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      border-left: 4px solid #00cec9;
+      display: none;
+    }
+
+    .question-card.active {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .question-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .required {
+      color: #dc3545;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #00cec9;
+    }
+
+    .radio-group,
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .radio-option,
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      min-height: 44px; /* Touch-friendly */
+    }
+
+    .radio-option:hover,
+    .checkbox-option:hover {
+      border-color: #00cec9;
+      background: #f0fdfa;
+    }
+
+    .radio-option.selected,
+    .checkbox-option.selected {
+      border-color: #00cec9;
+      background: #e6fffa;
+    }
+
+    .rating-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .rating-star {
+      font-size: 2rem;
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: color 0.3s;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rating-star.active {
+      color: #fbbf24;
+    }
+
+    .scale-container {
+      margin: 1rem 0;
+    }
+
+    .scale-input {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s;
+      min-height: 44px;
+    }
+
+    .btn-primary {
+      background: #00cec9;
+      color: white;
+      flex: 1;
+    }
+
+    .btn-primary:hover {
+      background: #00b4a6;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .completion-screen {
+      text-align: center;
+      padding: 3rem 2rem;
+      display: none;
+    }
+
+    .completion-screen.active {
+      display: block;
+    }
+
+    .completion-icon {
+      font-size: 4rem;
+      color: #00cec9;
+      margin-bottom: 1rem;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #dc3545;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .auto-save {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .auto-save.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .survey-container {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+      }
+      
+      .survey-body {
+        padding: 1rem;
+      }
+      
+      .question-card {
+        padding: 1.5rem;
+      }
+      
+      .navigation-buttons {
+        flex-direction: column;
+      }
+      
+      .rating-container {
+        gap: 0.5rem;
+      }
+      
+      .rating-star {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auto-save" id="autoSave">
+    <i class="fas fa-save"></i> Auto-saved
+  </div>
+
+  <div class="survey-container">
+    <div class="survey-header">
+      <h1 id="surveyTitle">Survey Title</h1>
+      <p id="surveyDescription">Survey Description</p>
+    </div>
+
+    <div class="survey-body">
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">Question 1 of 5</div>
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+
+      <div id="questionsContainer">
+        <!-- Questions will be rendered here -->
+      </div>
+
+      <div class="completion-screen" id="completionScreen">
+        <div class="completion-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Thank You!</h2>
+        <p>Your responses have been submitted successfully.</p>
+        <p><strong>You earned $0.50!</strong></p>
+        <button class="btn btn-primary" onclick="window.close()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script>
+    let surveyData = {};
+    let currentQuestionIndex = 0;
+    let responses = {};
+    let questions = [];
+
+    // Load survey data
+    window.addEventListener('load', () => {
+      const previewData = localStorage.getItem('previewSurvey');
+      if (previewData) {
+        surveyData = JSON.parse(previewData);
+        questions = surveyData.questions || [];
+        initializeSurvey();
+      } else {
+        // Load from URL params if available
+        const urlParams = new URLSearchParams(window.location.search);
+        const surveyId = urlParams.get('id');
+        if (surveyId) {
+          loadSurveyFromAPI(surveyId);
+        }
+      }
+    });
+
+    async function loadSurveyFromAPI(surveyId) {
+      try {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/surveys/${surveyId}`);
+        if (response.ok) {
+          surveyData = await response.json();
+          questions = surveyData.questions || [];
+          initializeSurvey();
+        }
+      } catch (error) {
+        console.error('Error loading survey:', error);
+      }
+    }
+
+    function initializeSurvey() {
+      document.getElementById('surveyTitle').textContent = surveyData.title || 'Survey';
+      document.getElementById('surveyDescription').textContent = surveyData.description || '';
+      
+      renderQuestions();
+      showQuestion(0);
+      updateProgress();
+      
+      // Load saved responses
+      const saved = localStorage.getItem(`survey_${surveyData.id}_responses`);
+      if (saved) {
+        responses = JSON.parse(saved);
+        populateResponses();
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = questions.map((question, index) => `
+        <div class="question-card" id="question_${index}">
+          <div class="question-title">
+            ${question.text}
+            ${question.required ? '<span class="required">*</span>' : ''}
+          </div>
+          ${renderQuestionInput(question, index)}
+          <div class="navigation-buttons">
+            ${index > 0 ? `<button class="btn btn-secondary" onclick="previousQuestion()">Previous</button>` : '<div></div>'}
+            ${index < questions.length - 1 ? 
+              `<button class="btn btn-primary" onclick="nextQuestion()">Next</button>` :
+              `<button class="btn btn-primary" onclick="submitSurvey()">Submit</button>`
+            }
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderQuestionInput(question, index) {
+      switch (question.type) {
+        case 'text':
+        case 'email':
+        case 'phone':
+          return `<input type="${question.type}" class="form-control" id="response_${index}" placeholder="${question.placeholder || 'Enter your answer'}">`;
+        
+        case 'textarea':
+          return `<textarea class="form-control" id="response_${index}" rows="4" placeholder="${question.placeholder || 'Enter your detailed response'}"></textarea>`;
+        
+        case 'date':
+          return `<input type="date" class="form-control" id="response_${index}">`;
+        
+        case 'multiple':
+          return `
+            <div class="radio-group" id="response_${index}">
+              ${question.options.map((option, optIndex) => `
+                <div class="radio-option" onclick="selectRadio(${index}, ${optIndex})">
+                  <input type="radio" name="question_${index}" value="${option}" id="radio_${index}_${optIndex}">
+                  <label for="radio_${index}_${optIndex}">${option}</label>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        
+        case 'checkbox':
+          return `
+            <div class="checkbox-group" id="response_${index}">
+              ${question.options.map((option, optIndex) => `
+                <div class="checkbox-option" onclick="toggleCheckbox(${index}, ${optIndex})">
+                  <input type="checkbox" value="${option}" id="checkbox_${index}_${optIndex}">
+                  <label for="checkbox_${index}_${optIndex}">${option}</label>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        
+        case 'rating':
+          return `
+            <div class="rating-container" id="response_${index}">
+              ${Array(question.maxRating || 5).fill().map((_, i) => `
+                <div class="rating-star" onclick="setRating(${index}, ${i + 1})">
+                  <i class="fas fa-star"></i>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        
+        case 'scale':
+          return `
+            <div class="scale-container">
+              <input type="range" class="scale-input form-control" id="response_${index}" 
+                     min="${question.minValue || 1}" max="${question.maxValue || 10}" 
+                     oninput="updateScaleValue(${index}, this.value)">
+              <div class="scale-labels">
+                <span>${question.minValue || 1}</span>
+                <span id="scale_value_${index}">${Math.round((question.minValue || 1) + (question.maxValue || 10)) / 2}</span>
+                <span>${question.maxValue || 10}</span>
+              </div>
+            </div>
+          `;
+        
+        case 'file':
+          return `<input type="file" class="form-control" id="response_${index}" accept="${question.acceptedTypes || '*'}">`;
+        
+        default:
+          return `<input type="text" class="form-control" id="response_${index}">`;
+      }
+    }
+
+    function showQuestion(index) {
+      document.querySelectorAll('.question-card').forEach(card => card.classList.remove('active'));
+      document.getElementById(`question_${index}`).classList.add('active');
+      currentQuestionIndex = index;
+      updateProgress();
+    }
+
+    function nextQuestion() {
+      if (validateCurrentQuestion()) {
+        saveCurrentResponse();
+        if (currentQuestionIndex < questions.length - 1) {
+          showQuestion(currentQuestionIndex + 1);
+        }
+      }
+    }
+
+    function previousQuestion() {
+      saveCurrentResponse();
+      if (currentQuestionIndex > 0) {
+        showQuestion(currentQuestionIndex - 1);
+      }
+    }
+
+    function validateCurrentQuestion() {
+      const question = questions[currentQuestionIndex];
+      if (!question.required) return true;
+
+      const response = getCurrentResponse();
+      if (!response || (Array.isArray(response) && response.length === 0)) {
+        showError('This question is required');
+        return false;
+      }
+      
+      hideError();
+      return true;
+    }
+
+    function getCurrentResponse() {
+      const question = questions[currentQuestionIndex];
+      const element = document.getElementById(`response_${currentQuestionIndex}`);
+      
+      switch (question.type) {
+        case 'multiple':
+          const selectedRadio = document.querySelector(`input[name="question_${currentQuestionIndex}"]:checked`);
+          return selectedRadio ? selectedRadio.value : null;
+        
+        case 'checkbox':
+          const selectedCheckboxes = document.querySelectorAll(`#response_${currentQuestionIndex} input[type="checkbox"]:checked`);
+          return Array.from(selectedCheckboxes).map(cb => cb.value);
+        
+        case 'rating':
+          return responses[currentQuestionIndex] || null;
+        
+        default:
+          return element ? element.value : null;
+      }
+    }
+
+    function saveCurrentResponse() {
+      const response = getCurrentResponse();
+      responses[currentQuestionIndex] = response;
+      
+      // Auto-save to localStorage
+      localStorage.setItem(`survey_${surveyData.id}_responses`, JSON.stringify(responses));
+      showAutoSave();
+    }
+
+    function populateResponses() {
+      Object.keys(responses).forEach(index => {
+        const question = questions[index];
+        const response = responses[index];
+        
+        if (!response) return;
+        
+        switch (question.type) {
+          case 'multiple':
+            const radio = document.querySelector(`input[name="question_${index}"][value="${response}"]`);
+            if (radio) {
+              radio.checked = true;
+              radio.closest('.radio-option').classList.add('selected');
+            }
+            break;
+          
+          case 'checkbox':
+            response.forEach(value => {
+              const checkbox = document.querySelector(`#response_${index} input[value="${value}"]`);
+              if (checkbox) {
+                checkbox.checked = true;
+                checkbox.closest('.checkbox-option').classList.add('selected');
+              }
+            });
+            break;
+          
+          case 'rating':
+            setRating(index, response);
+            break;
+          
+          default:
+            const element = document.getElementById(`response_${index}`);
+            if (element) element.value = response;
+        }
+      });
+    }
+
+    function selectRadio(questionIndex, optionIndex) {
+      const container = document.getElementById(`response_${questionIndex}`);
+      container.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+      container.children[optionIndex].classList.add('selected');
+      
+      const radio = document.getElementById(`radio_${questionIndex}_${optionIndex}`);
+      radio.checked = true;
+    }
+
+    function toggleCheckbox(questionIndex, optionIndex) {
+      const checkbox = document.getElementById(`checkbox_${questionIndex}_${optionIndex}`);
+      const option = checkbox.closest('.checkbox-option');
+      
+      checkbox.checked = !checkbox.checked;
+      option.classList.toggle('selected', checkbox.checked);
+    }
+
+    function setRating(questionIndex, rating) {
+      const container = document.getElementById(`response_${questionIndex}`);
+      const stars = container.querySelectorAll('.rating-star');
+      
+      stars.forEach((star, index) => {
+        star.classList.toggle('active', index < rating);
+      });
+      
+      responses[questionIndex] = rating;
+    }
+
+    function updateScaleValue(questionIndex, value) {
+      document.getElementById(`scale_value_${questionIndex}`).textContent = value;
+    }
+
+    function updateProgress() {
+      const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+      document.getElementById('progressText').textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+    }
+
+    function showError(message) {
+      const errorEl = document.getElementById('errorMessage');
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+    }
+
+    function hideError() {
+      document.getElementById('errorMessage').style.display = 'none';
+    }
+
+    function showAutoSave() {
+      const autoSave = document.getElementById('autoSave');
+      autoSave.classList.add('show');
+      setTimeout(() => autoSave.classList.remove('show'), 2000);
+    }
+
+    async function submitSurvey() {
+      if (!validateCurrentQuestion()) return;
+      
+      saveCurrentResponse();
+      
+      try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+        
+        const submissionData = {
+          surveyId: surveyData.id,
+          answers: responses,
+          userId: currentUser.id
+        };
+
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/responses`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(submissionData)
+        });
+
+        if (response.ok) {
+          // Clear saved responses
+          localStorage.removeItem(`survey_${surveyData.id}_responses`);
+          
+          // Show completion screen
+          document.querySelector('.survey-body').style.display = 'none';
+          document.getElementById('completionScreen').classList.add('active');
+        } else {
+          showError('Error submitting survey. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error submitting survey:', error);
+        showError('Error submitting survey. Please try again.');
+      }
+    }
+
+    // Touch gestures for mobile
+    let startX = 0;
+    let startY = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    });
+
+    document.addEventListener('touchend', (e) => {
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      const diffX = startX - endX;
+      const diffY = startY - endY;
+
+      // Only trigger swipe if horizontal movement is greater than vertical
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (diffX > 0 && currentQuestionIndex < questions.length - 1) {
+          // Swipe left - next question
+          nextQuestion();
+        } else if (diffX < 0 && currentQuestionIndex > 0) {
+          // Swipe right - previous question
+          previousQuestion();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

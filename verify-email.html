@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Verification • Survey Africa</title>
+  <title>Verify Email • Survey Africa</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -26,7 +26,7 @@
     .container {
       background: rgba(255,255,255,0.1);
       backdrop-filter: blur(15px);
-      padding: 50px 40px;
+      padding: 40px;
       border-radius: 20px;
       border: 2px solid rgba(255,255,255,0.2);
       max-width: 500px;
@@ -34,55 +34,106 @@
       text-align: center;
       color: white;
     }
-    .logo { font-size: 2rem; font-weight: bold; color: #00cec9; margin-bottom: 30px; }
-    .success { color: #10b981; }
-    .error { color: #ef4444; }
+    .icon { font-size: 4rem; color: #00cec9; margin-bottom: 20px; }
+    h1 { color: #00cec9; margin-bottom: 20px; }
+    p { margin-bottom: 15px; line-height: 1.6; }
     .btn {
       background: linear-gradient(135deg, #00cec9, #fd79a8);
       color: white;
       padding: 12px 24px;
       border: none;
       border-radius: 8px;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
     }
+    .btn:hover { transform: translateY(-2px); }
+    .resend-timer { color: #ccc; font-size: 14px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="logo">Survey Africa</div>
-    <div id="message">Verifying your email...</div>
-    <a href="login.html" class="btn" id="loginBtn" style="display:none;">Go to Login</a>
+    <div class="icon">📧</div>
+    <h1>Verify Your Email</h1>
+    <p>We've sent a verification link to your email address.</p>
+    <p>Please check your inbox and click the link to activate your account.</p>
+    <p><strong>Note:</strong> You must verify your email before you can start earning.</p>
+    
+    <button class="btn" onclick="resendEmail()" id="resendBtn">Resend Email</button>
+    <button class="btn" onclick="checkVerification()">I've Verified</button>
+    
+    <div class="resend-timer" id="timer"></div>
+    
+    <p style="margin-top: 20px;">
+      <a href="login.html" style="color: #00cec9;">Back to Login</a>
+    </p>
   </div>
 
-  <script src="js/api.js"></script>
+  <script src="js/config.js"></script>
   <script>
-    async function verifyEmail() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
+    let resendTimer = 60;
+    
+    function startTimer() {
+      const btn = document.getElementById('resendBtn');
+      const timer = document.getElementById('timer');
       
-      if (!token) {
-        document.getElementById('message').innerHTML = '<div class="error">Invalid verification link</div>';
-        return;
-      }
+      btn.disabled = true;
+      btn.textContent = `Resend in ${resendTimer}s`;
       
+      const interval = setInterval(() => {
+        resendTimer--;
+        btn.textContent = `Resend in ${resendTimer}s`;
+        
+        if (resendTimer <= 0) {
+          clearInterval(interval);
+          btn.disabled = false;
+          btn.textContent = 'Resend Email';
+          resendTimer = 60;
+        }
+      }, 1000);
+    }
+    
+    async function resendEmail() {
       try {
-        const response = await fetch(`http://localhost:5000/api/auth/verify-email/${token}`);
-        const data = await response.json();
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/resend-verification`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          }
+        });
         
         if (response.ok) {
-          document.getElementById('message').innerHTML = '<div class="success"><h2>✓ Email Verified!</h2><p>Your account has been successfully verified.</p></div>';
-          document.getElementById('loginBtn').style.display = 'inline-block';
-        } else {
-          document.getElementById('message').innerHTML = `<div class="error">Verification failed: ${data.message}</div>`;
+          alert('Verification email sent!');
+          startTimer();
         }
       } catch (error) {
-        document.getElementById('message').innerHTML = '<div class="error">Verification failed. Please try again.</div>';
+        alert('Failed to resend email');
       }
     }
     
-    verifyEmail();
+    async function checkVerification() {
+      try {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/check-verification`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+        });
+        
+        const data = await response.json();
+        
+        if (data.verified) {
+          alert('Email verified successfully!');
+          window.location.href = 'dashboard.html';
+        } else {
+          alert('Email not verified yet. Please check your inbox.');
+        }
+      } catch (error) {
+        alert('Verification check failed');
+      }
+    }
+    
+    // Auto-check verification every 30 seconds
+    setInterval(checkVerification, 30000);
+    startTimer();
   </script>
 </body>
 </html>

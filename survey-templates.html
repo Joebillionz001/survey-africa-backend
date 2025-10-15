@@ -1,371 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Survey Templates • Survey Africa</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    color: #111;
-    position: relative;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: -1;
-  }
-
-  .container {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: row;
-  }
-
-  .sidebar {
-    width: 240px;
-    background: rgba(11,18,32,0.5);
-    backdrop-filter: blur(8px);
-    color: white;
-    padding: 9px;
-    position: fixed;
-    height: 100vh;
-    overflow: auto;
-  }
-
-  .sidebar h2 { 
-    color: #06b6d4; 
-    margin-bottom: 10px; 
-  }
-
-  .sidebar a { 
-    display:block; 
-    color:#c7d2da; 
-    padding:10px 0; 
-    text-decoration:none; 
-  }
-
-  .sidebar a:hover { 
-    color:white; 
-  }
-
-  .main {
-    flex: 1;
-    margin-left: 240px;
-    padding: 20px;
-  }
-
-  .templates-content {
-    color: white;
-  }
-
-  .header {
-    margin-bottom: 30px;
-  }
-
-  .header h1 {
-    font-size: 2.5rem;
-    color: #ffd700;
-    margin: 0;
-  }
-
-  .categories {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-  }
-
-  .category-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .category-btn.active {
-    background: #00cec9;
-  }
-
-  .category-btn:hover {
-    background: rgba(255,255,255,0.2);
-  }
-
-  .templates-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-  }
-
-  .template-card {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    padding: 25px;
-    border-radius: 15px;
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: transform 0.3s ease;
-  }
-
-  .template-card:hover {
-    transform: translateY(-5px);
-  }
-
-  .template-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 15px;
-  }
-
-  .template-icon {
-    font-size: 2rem;
-    color: #00cec9;
-    margin-bottom: 10px;
-  }
-
-  .template-title {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #ffd700;
-    margin-bottom: 10px;
-  }
-
-  .template-desc {
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 15px;
-    line-height: 1.5;
-  }
-
-  .template-stats {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    font-size: 14px;
-    color: rgba(255,255,255,0.7);
-  }
-
-  .btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    margin-right: 10px;
-  }
-
-  .btn-primary {
-    background: #10b981;
-    color: white;
-  }
-
-  .btn-secondary {
-    background: rgba(255,255,255,0.2);
-    color: white;
-  }
-
-  .btn:hover {
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 768px) {
-    .templates-grid {
-      grid-template-columns: 1fr;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Templates - Survey Africa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/mobile-enhanced.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    .navbar {
+      background: rgba(255,255,255,0.95);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      margin-bottom: 3rem;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
     .categories {
-      flex-direction: column;
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-  }
-</style>
+
+    .category-btn {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+      background: rgba(0,206,201,0.2);
+      border-color: #00cec9;
+      color: #00cec9;
+    }
+
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .template-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .template-card:hover {
+      transform: translateY(-5px);
+      border-color: #00cec9;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .template-icon {
+      font-size: 3rem;
+      color: #00cec9;
+      margin-bottom: 1rem;
+    }
+
+    .template-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .template-description {
+      opacity: 0.8;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .template-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    .template-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background: rgba(0,206,201,0.2);
+      color: #00cec9;
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      border: 1px solid rgba(0,206,201,0.3);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00cec9, #fd79a8);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 25px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1rem;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.6);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #00cec9;
+    }
+
+    .search-box input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .header {
+        padding: 2rem 1rem;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .templates-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .categories {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+      
+      .category-btn {
+        white-space: nowrap;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <aside class="sidebar">
-    <h2>Survey Africa</h2>
-    <p id="userName">Logged in as: USERNAME</p>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="my-surveys.html">My Surveys</a>
-      <a href="quick-survey.html">Create Survey</a>
-      <a href="reports.html">Analytics</a>
-      <a href="billing.html">Earnings</a>
-      <a href="settings.html">Settings</a>
-      <a href="index.html" onclick="logout()">Logout</a>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <div class="templates-content">
-      <div class="header">
-        <h1>Survey Templates</h1>
-        <p>Choose from professionally designed templates to get started quickly</p>
-      </div>
-
-      <div class="categories">
-        <button class="category-btn active" onclick="filterTemplates('all')">All Templates</button>
-        <button class="category-btn" onclick="filterTemplates('customer')">Customer Feedback</button>
-        <button class="category-btn" onclick="filterTemplates('market')">Market Research</button>
-        <button class="category-btn" onclick="filterTemplates('employee')">Employee Surveys</button>
-        <button class="category-btn" onclick="filterTemplates('event')">Event Feedback</button>
-      </div>
-
-      <div class="templates-grid" id="templatesGrid">
-        <!-- Templates will be populated by JavaScript -->
-      </div>
+  <nav class="navbar">
+    <div>
+      <a href="enhanced-survey-builder.html">
+        <i class="fas fa-arrow-left"></i> Back to Builder
+      </a>
     </div>
-  </main>
-</div>
+    <div>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+  </nav>
 
-<script>
-  const templates = [
-    {
-      id: 1,
-      title: "Customer Satisfaction Survey",
-      category: "customer",
-      icon: "😊",
-      description: "Measure customer satisfaction and identify areas for improvement",
-      questions: 8,
-      avgTime: "3 min",
-      uses: 1250
-    },
-    {
-      id: 2,
-      title: "Product Feedback Survey",
-      category: "customer",
-      icon: "📦",
-      description: "Collect detailed feedback about your products or services",
-      questions: 12,
-      avgTime: "5 min",
-      uses: 890
-    },
-    {
-      id: 3,
-      title: "Market Research Survey",
-      category: "market",
-      icon: "📊",
-      description: "Understand market trends and consumer preferences",
-      questions: 15,
-      avgTime: "7 min",
-      uses: 650
-    },
-    {
-      id: 4,
-      title: "Employee Engagement Survey",
-      category: "employee",
-      icon: "👥",
-      description: "Measure employee satisfaction and workplace culture",
-      questions: 20,
-      avgTime: "10 min",
-      uses: 420
-    },
-    {
-      id: 5,
-      title: "Event Feedback Survey",
-      category: "event",
-      icon: "🎉",
-      description: "Gather feedback from event attendees and participants",
-      questions: 10,
-      avgTime: "4 min",
-      uses: 780
-    },
-    {
-      id: 6,
-      title: "Brand Awareness Survey",
-      category: "market",
-      icon: "🏷️",
-      description: "Assess brand recognition and perception in the market",
-      questions: 14,
-      avgTime: "6 min",
-      uses: 340
-    },
-    {
-      id: 7,
-      title: "Website Usability Survey",
-      category: "customer",
-      icon: "💻",
-      description: "Evaluate user experience and website functionality",
-      questions: 11,
-      avgTime: "5 min",
-      uses: 560
-    },
-    {
-      id: 8,
-      title: "Training Evaluation Survey",
-      category: "employee",
-      icon: "📚",
-      description: "Assess the effectiveness of training programs",
-      questions: 9,
-      avgTime: "4 min",
-      uses: 290
+  <div class="container">
+    <div class="header">
+      <h1>Survey Templates</h1>
+      <p>Choose from professionally designed survey templates to get started quickly</p>
+    </div>
+
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search templates...">
+    </div>
+
+    <div class="categories">
+      <button class="category-btn active" data-category="all">All Templates</button>
+      <button class="category-btn" data-category="business">Business</button>
+      <button class="category-btn" data-category="customer">Customer</button>
+      <button class="category-btn" data-category="employee">Employee</button>
+      <button class="category-btn" data-category="market">Market Research</button>
+      <button class="category-btn" data-category="education">Education</button>
+      <button class="category-btn" data-category="event">Event</button>
+      <button class="category-btn" data-category="health">Health</button>
+    </div>
+
+    <div class="templates-grid" id="templatesGrid">
+      <!-- Templates will be loaded here -->
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script>
+    const surveyTemplates = [
+      {
+        id: 'customer-satisfaction',
+        title: 'Customer Satisfaction Survey',
+        description: 'Measure customer satisfaction and identify areas for improvement',
+        category: 'customer',
+        icon: 'fas fa-smile',
+        questions: 8,
+        estimatedTime: '3-5 min',
+        tags: ['satisfaction', 'feedback', 'service'],
+        questions_data: [
+          { type: 'rating', text: 'How satisfied are you with our service?', required: true, scale: 5 },
+          { type: 'multiple', text: 'How did you hear about us?', options: ['Social Media', 'Friend Referral', 'Google Search', 'Advertisement'], required: true },
+          { type: 'text', text: 'What do you like most about our service?', required: false },
+          { type: 'text', text: 'What could we improve?', required: false },
+          { type: 'rating', text: 'How likely are you to recommend us?', required: true, scale: 10 },
+          { type: 'multiple', text: 'Which features do you use most?', options: ['Feature A', 'Feature B', 'Feature C', 'Feature D'], required: false },
+          { type: 'textarea', text: 'Any additional comments?', required: false },
+          { type: 'email', text: 'Email (optional for follow-up)', required: false }
+        ]
+      },
+      {
+        id: 'employee-engagement',
+        title: 'Employee Engagement Survey',
+        description: 'Assess employee satisfaction and engagement levels',
+        category: 'employee',
+        icon: 'fas fa-users',
+        questions: 12,
+        estimatedTime: '5-7 min',
+        tags: ['engagement', 'workplace', 'satisfaction'],
+        questions_data: [
+          { type: 'rating', text: 'How satisfied are you with your current role?', required: true, scale: 5 },
+          { type: 'rating', text: 'How well does your manager support you?', required: true, scale: 5 },
+          { type: 'multiple', text: 'What motivates you most at work?', options: ['Recognition', 'Growth Opportunities', 'Compensation', 'Work-Life Balance'], required: true },
+          { type: 'rating', text: 'How likely are you to recommend this company as a place to work?', required: true, scale: 10 },
+          { type: 'text', text: 'What do you enjoy most about working here?', required: false },
+          { type: 'text', text: 'What would you change about your work environment?', required: false }
+        ]
+      },
+      {
+        id: 'market-research',
+        title: 'Market Research Survey',
+        description: 'Gather insights about market trends and consumer behavior',
+        category: 'market',
+        icon: 'fas fa-chart-line',
+        questions: 10,
+        estimatedTime: '4-6 min',
+        tags: ['market', 'research', 'consumer'],
+        questions_data: [
+          { type: 'multiple', text: 'What is your age group?', options: ['18-24', '25-34', '35-44', '45-54', '55+'], required: true },
+          { type: 'multiple', text: 'What is your monthly income range?', options: ['Under $1000', '$1000-$2500', '$2500-$5000', '$5000+'], required: false },
+          { type: 'checkbox', text: 'Which products do you use regularly?', options: ['Product A', 'Product B', 'Product C', 'Product D'], required: true },
+          { type: 'rating', text: 'How important is price when making purchasing decisions?', required: true, scale: 5 },
+          { type: 'multiple', text: 'Where do you usually shop?', options: ['Online', 'Physical Stores', 'Both Equally'], required: true }
+        ]
+      },
+      {
+        id: 'event-feedback',
+        title: 'Event Feedback Survey',
+        description: 'Collect feedback from event attendees to improve future events',
+        category: 'event',
+        icon: 'fas fa-calendar-alt',
+        questions: 9,
+        estimatedTime: '3-4 min',
+        tags: ['event', 'feedback', 'experience'],
+        questions_data: [
+          { type: 'rating', text: 'How would you rate the overall event?', required: true, scale: 5 },
+          { type: 'rating', text: 'How was the venue?', required: true, scale: 5 },
+          { type: 'rating', text: 'How was the content quality?', required: true, scale: 5 },
+          { type: 'multiple', text: 'How did you hear about this event?', options: ['Social Media', 'Email', 'Website', 'Friend'], required: true },
+          { type: 'text', text: 'What was the best part of the event?', required: false },
+          { type: 'text', text: 'What could be improved?', required: false },
+          { type: 'rating', text: 'Would you attend future events?', required: true, scale: 5 }
+        ]
+      },
+      {
+        id: 'product-feedback',
+        title: 'Product Feedback Survey',
+        description: 'Get detailed feedback on your product features and usability',
+        category: 'business',
+        icon: 'fas fa-box',
+        questions: 11,
+        estimatedTime: '4-6 min',
+        tags: ['product', 'feedback', 'usability'],
+        questions_data: [
+          { type: 'rating', text: 'How easy is our product to use?', required: true, scale: 5 },
+          { type: 'rating', text: 'How well does our product meet your needs?', required: true, scale: 5 },
+          { type: 'multiple', text: 'Which feature do you use most?', options: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4'], required: true },
+          { type: 'checkbox', text: 'What features would you like to see added?', options: ['Feature A', 'Feature B', 'Feature C', 'Feature D'], required: false },
+          { type: 'text', text: 'What problems have you encountered?', required: false }
+        ]
+      },
+      {
+        id: 'website-usability',
+        title: 'Website Usability Survey',
+        description: 'Evaluate your website\'s user experience and identify improvements',
+        category: 'business',
+        icon: 'fas fa-globe',
+        questions: 8,
+        estimatedTime: '3-4 min',
+        tags: ['website', 'usability', 'UX'],
+        questions_data: [
+          { type: 'rating', text: 'How easy was it to find what you were looking for?', required: true, scale: 5 },
+          { type: 'rating', text: 'How would you rate the website design?', required: true, scale: 5 },
+          { type: 'rating', text: 'How fast did the website load?', required: true, scale: 5 },
+          { type: 'multiple', text: 'What device are you using?', options: ['Desktop', 'Mobile', 'Tablet'], required: true },
+          { type: 'text', text: 'What frustrated you most about the website?', required: false },
+          { type: 'text', text: 'What did you like most about the website?', required: false }
+        ]
+      },
+      {
+        id: 'training-evaluation',
+        title: 'Training Evaluation Survey',
+        description: 'Assess the effectiveness of training programs and courses',
+        category: 'education',
+        icon: 'fas fa-graduation-cap',
+        questions: 10,
+        estimatedTime: '4-5 min',
+        tags: ['training', 'education', 'evaluation'],
+        questions_data: [
+          { type: 'rating', text: 'How would you rate the overall training?', required: true, scale: 5 },
+          { type: 'rating', text: 'How relevant was the content to your job?', required: true, scale: 5 },
+          { type: 'rating', text: 'How effective was the instructor?', required: true, scale: 5 },
+          { type: 'multiple', text: 'What was the best part of the training?', options: ['Content', 'Instructor', 'Materials', 'Activities'], required: true },
+          { type: 'text', text: 'What topics should be covered more?', required: false },
+          { type: 'rating', text: 'Would you recommend this training to others?', required: true, scale: 5 }
+        ]
+      },
+      {
+        id: 'health-wellness',
+        title: 'Health & Wellness Survey',
+        description: 'Gather information about health habits and wellness needs',
+        category: 'health',
+        icon: 'fas fa-heartbeat',
+        questions: 12,
+        estimatedTime: '5-7 min',
+        tags: ['health', 'wellness', 'lifestyle'],
+        questions_data: [
+          { type: 'multiple', text: 'How often do you exercise?', options: ['Daily', '3-4 times/week', '1-2 times/week', 'Rarely', 'Never'], required: true },
+          { type: 'rating', text: 'How would you rate your overall health?', required: true, scale: 5 },
+          { type: 'multiple', text: 'How many hours do you sleep per night?', options: ['Less than 6', '6-7', '7-8', '8-9', 'More than 9'], required: true },
+          { type: 'checkbox', text: 'What wellness activities interest you?', options: ['Yoga', 'Meditation', 'Fitness Classes', 'Nutrition Counseling'], required: false },
+          { type: 'rating', text: 'How stressed do you feel on average?', required: true, scale: 5 }
+        ]
+      }
+    ];
+
+    let filteredTemplates = [...surveyTemplates];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      displayTemplates(filteredTemplates);
+      setupEventListeners();
+    });
+
+    function setupEventListeners() {
+      // Category buttons
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          
+          const category = e.target.dataset.category;
+          filterTemplates(category);
+        });
+      });
+
+      // Search input
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        searchTemplates(query);
+      });
     }
-  ];
 
-  function renderTemplates(filteredTemplates = templates) {
-    const grid = document.getElementById('templatesGrid');
-    grid.innerHTML = filteredTemplates.map(template => `
-      <div class="template-card" data-category="${template.category}">
-        <div class="template-header">
-          <div class="template-icon">${template.icon}</div>
+    function filterTemplates(category) {
+      if (category === 'all') {
+        filteredTemplates = [...surveyTemplates];
+      } else {
+        filteredTemplates = surveyTemplates.filter(template => template.category === category);
+      }
+      displayTemplates(filteredTemplates);
+    }
+
+    function searchTemplates(query) {
+      if (!query) {
+        const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+        filterTemplates(activeCategory);
+        return;
+      }
+
+      filteredTemplates = surveyTemplates.filter(template => 
+        template.title.toLowerCase().includes(query) ||
+        template.description.toLowerCase().includes(query) ||
+        template.tags.some(tag => tag.toLowerCase().includes(query))
+      );
+      displayTemplates(filteredTemplates);
+    }
+
+    function displayTemplates(templates) {
+      const grid = document.getElementById('templatesGrid');
+      
+      if (templates.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; opacity: 0.7;">
+            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <h3>No templates found</h3>
+            <p>Try adjusting your search or category filter</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = templates.map(template => `
+        <div class="template-card" onclick="useTemplate('${template.id}')">
+          <div class="template-icon">
+            <i class="${template.icon}"></i>
+          </div>
+          <div class="template-title">${template.title}</div>
+          <div class="template-description">${template.description}</div>
+          <div class="template-meta">
+            <span><i class="fas fa-question-circle"></i> ${template.questions} questions</span>
+            <span><i class="fas fa-clock"></i> ${template.estimatedTime}</span>
+          </div>
+          <div class="template-tags">
+            ${template.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-primary" onclick="event.stopPropagation(); useTemplate('${template.id}')">
+              Use Template
+            </button>
+            <button class="btn btn-secondary" onclick="event.stopPropagation(); previewTemplate('${template.id}')">
+              Preview
+            </button>
+          </div>
         </div>
-        <div class="template-title">${template.title}</div>
-        <div class="template-desc">${template.description}</div>
-        <div class="template-stats">
-          <span><i class="fas fa-question-circle"></i> ${template.questions} questions</span>
-          <span><i class="fas fa-clock"></i> ${template.avgTime}</span>
-          <span><i class="fas fa-users"></i> ${template.uses} uses</span>
-        </div>
-        <div>
-          <button class="btn btn-primary" onclick="useTemplate(${template.id})">
-            <i class="fas fa-play"></i> Use Template
-          </button>
-          <button class="btn btn-secondary" onclick="previewTemplate(${template.id})">
-            <i class="fas fa-eye"></i> Preview
-          </button>
-        </div>
-      </div>
-    `).join('');
-  }
+      `).join('');
+    }
 
-  function filterTemplates(category) {
-    // Update active button
-    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    // Filter templates
-    const filtered = category === 'all' ? templates : templates.filter(t => t.category === category);
-    renderTemplates(filtered);
-  }
+    function useTemplate(templateId) {
+      const template = surveyTemplates.find(t => t.id === templateId);
+      if (!template) return;
 
-  function useTemplate(id) {
-    alert(`Using template ${id}. Redirecting to survey builder...`);
-    setTimeout(() => window.location.href = 'quick-survey.html', 1000);
-  }
+      // Store template data for the survey builder
+      localStorage.setItem('selectedTemplate', JSON.stringify(template));
+      
+      // Redirect to enhanced survey builder
+      window.location.href = 'enhanced-survey-builder.html?template=' + templateId;
+    }
 
-  function previewTemplate(id) {
-    alert(`Previewing template ${id}...`);
-  }
+    function previewTemplate(templateId) {
+      const template = surveyTemplates.find(t => t.id === templateId);
+      if (!template) return;
 
-  function logout() {
-    alert('Logging out...');
-    setTimeout(() => window.location.href = 'index.html', 1000);
-  }
+      // Create preview survey data
+      const previewSurvey = {
+        id: 'preview_' + templateId,
+        title: template.title + ' (Preview)',
+        description: template.description,
+        questions: template.questions_data
+      };
 
-  renderTemplates();
-</script>
+      // Store for preview
+      localStorage.setItem('previewSurvey', JSON.stringify(previewSurvey));
+      
+      // Open preview in new tab
+      window.open('survey-preview.html?preview=true', '_blank');
+    }
+
+    // Check if user is logged in
+    if (!localStorage.getItem('currentUser') && !sessionStorage.getItem('currentUser')) {
+      alert('Please login to access survey templates');
+      window.location.href = 'login.html';
+    }
+  </script>
 </body>
 </html>

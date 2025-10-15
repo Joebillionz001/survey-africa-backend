@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Earnings - Survey Africa</title>
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="withdrawal-container">
+            <div class="withdrawal-header">
+                <h2><i class="fas fa-money-bill-wave"></i> Withdraw Earnings</h2>
+                <div class="balance-info">
+                    <span>Available Balance: </span>
+                    <strong id="user-balance">$0.00</strong>
+                </div>
+            </div>
+
+            <div class="withdrawal-form">
+                <form id="withdrawalForm">
+                    <div class="form-group">
+                        <label>Withdrawal Amount</label>
+                        <div class="amount-input">
+                            <select id="currency" required>
+                                <option value="USD">USD ($)</option>
+                                <option value="NGN">NGN (₦)</option>
+                                <option value="GHS">GHS (₵)</option>
+                                <option value="ZAR">ZAR (R)</option>
+                                <option value="KES">KES (KSh)</option>
+                            </select>
+                            <input type="number" id="amount" placeholder="0.00" min="5" step="0.01" required>
+                        </div>
+                        <small class="min-amount">Minimum: <span id="min-amount">$5.00</span></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Withdrawal Method</label>
+                        <div class="method-options">
+                            <label class="method-option">
+                                <input type="radio" name="method" value="paystack" checked>
+                                <div class="method-card">
+                                    <i class="fas fa-credit-card"></i>
+                                    <span>Paystack</span>
+                                    <small>Fee: 1.5%</small>
+                                </div>
+                            </label>
+                            <label class="method-option">
+                                <input type="radio" name="method" value="bank_transfer">
+                                <div class="method-card">
+                                    <i class="fas fa-university"></i>
+                                    <span>Bank Transfer</span>
+                                    <small>Fee: 2%</small>
+                                </div>
+                            </label>
+                            <label class="method-option">
+                                <input type="radio" name="method" value="mobile_money">
+                                <div class="method-card">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>Mobile Money</span>
+                                    <small>Fee: 1%</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="bank-details" class="form-group" style="display: none;">
+                        <label>Bank Details</label>
+                        <input type="text" id="accountNumber" placeholder="Account Number">
+                        <input type="text" id="bankCode" placeholder="Bank Code">
+                        <input type="text" id="accountName" placeholder="Account Name">
+                    </div>
+
+                    <div id="mobile-details" class="form-group" style="display: none;">
+                        <label>Mobile Money Details</label>
+                        <input type="tel" id="phoneNumber" placeholder="Phone Number">
+                        <select id="provider">
+                            <option value="">Select Provider</option>
+                            <option value="mtn">MTN</option>
+                            <option value="airtel">Airtel</option>
+                            <option value="vodafone">Vodafone</option>
+                        </select>
+                    </div>
+
+                    <div class="fee-summary">
+                        <div class="fee-row">
+                            <span>Amount:</span>
+                            <span id="withdrawal-amount">$0.00</span>
+                        </div>
+                        <div class="fee-row">
+                            <span>Fee:</span>
+                            <span id="withdrawal-fee">$0.00</span>
+                        </div>
+                        <div class="fee-row total">
+                            <span>You'll receive:</span>
+                            <span id="net-amount">$0.00</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="withdraw-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Request Withdrawal
+                    </button>
+                </form>
+            </div>
+
+            <div class="transaction-history">
+                <h3>Recent Transactions</h3>
+                <div id="transaction-list">
+                    <div class="loading">Loading transactions...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        class WithdrawalManager {
+            constructor() {
+                this.limits = {};
+                this.init();
+            }
+
+            async init() {
+                await this.loadLimits();
+                await this.loadBalance();
+                await this.loadTransactions();
+                this.setupEventListeners();
+            }
+
+            async loadLimits() {
+                try {
+                    const response = await api.request('/withdrawals/limits');
+                    this.limits = response;
+                } catch (error) {
+                    console.error('Failed to load limits:', error);
+                }
+            }
+
+            async loadBalance() {
+                try {
+                    const user = await api.getCurrentUser();
+                    document.getElementById('user-balance').textContent = `$${user.totalEarnings.toFixed(2)}`;
+                } catch (error) {
+                    console.error('Failed to load balance:', error);
+                }
+            }
+
+            async loadTransactions() {
+                try {
+                    const response = await api.request('/withdrawals/history?limit=10');
+                    this.displayTransactions(response.transactions);
+                } catch (error) {
+                    document.getElementById('transaction-list').innerHTML = '<div class="error">Failed to load transactions</div>';
+                }
+            }
+
+            setupEventListeners() {
+                const currencySelect = document.getElementById('currency');
+                const amountInput = document.getElementById('amount');
+                const methodInputs = document.querySelectorAll('input[name="method"]');
+                const form = document.getElementById('withdrawalForm');
+
+                currencySelect.addEventListener('change', () => this.updateMinAmount());
+                amountInput.addEventListener('input', () => this.calculateFees());
+                methodInputs.forEach(input => {
+                    input.addEventListener('change', () => {
+                        this.toggleMethodDetails();
+                        this.calculateFees();
+                    });
+                });
+                form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+                this.updateMinAmount();
+            }
+
+            updateMinAmount() {
+                const currency = document.getElementById('currency').value;
+                const minAmount = this.limits.minimums?.[currency] || 5;
+                document.getElementById('min-amount').textContent = `${this.getCurrencySymbol(currency)}${minAmount}`;
+                document.getElementById('amount').min = minAmount;
+            }
+
+            toggleMethodDetails() {
+                const method = document.querySelector('input[name="method"]:checked').value;
+                document.getElementById('bank-details').style.display = method === 'bank_transfer' ? 'block' : 'none';
+                document.getElementById('mobile-details').style.display = method === 'mobile_money' ? 'block' : 'none';
+            }
+
+            calculateFees() {
+                const amount = parseFloat(document.getElementById('amount').value) || 0;
+                const currency = document.getElementById('currency').value;
+                const method = document.querySelector('input[name="method"]:checked').value;
+                
+                const feeRates = { paystack: 0.015, bank_transfer: 0.02, mobile_money: 0.01 };
+                const fee = amount * feeRates[method];
+                const netAmount = amount - fee;
+
+                const symbol = this.getCurrencySymbol(currency);
+                document.getElementById('withdrawal-amount').textContent = `${symbol}${amount.toFixed(2)}`;
+                document.getElementById('withdrawal-fee').textContent = `${symbol}${fee.toFixed(2)}`;
+                document.getElementById('net-amount').textContent = `${symbol}${netAmount.toFixed(2)}`;
+            }
+
+            getCurrencySymbol(currency) {
+                const symbols = { USD: '$', NGN: '₦', GHS: '₵', ZAR: 'R', KES: 'KSh' };
+                return symbols[currency] || '$';
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                const amount = parseFloat(document.getElementById('amount').value);
+                const currency = document.getElementById('currency').value;
+                const method = document.querySelector('input[name="method"]:checked').value;
+                
+                let details = {};
+                if (method === 'bank_transfer') {
+                    details = {
+                        accountNumber: document.getElementById('accountNumber').value,
+                        bankCode: document.getElementById('bankCode').value,
+                        accountName: document.getElementById('accountName').value
+                    };
+                } else if (method === 'mobile_money') {
+                    details = {
+                        phoneNumber: document.getElementById('phoneNumber').value,
+                        provider: document.getElementById('provider').value
+                    };
+                }
+
+                try {
+                    const response = await api.request('/withdrawals', {
+                        method: 'POST',
+                        body: JSON.stringify({ amount, currency, method, details })
+                    });
+
+                    alert('Withdrawal request submitted successfully!');
+                    this.loadBalance();
+                    this.loadTransactions();
+                    document.getElementById('withdrawalForm').reset();
+                } catch (error) {
+                    alert('Withdrawal failed: ' + error.message);
+                }
+            }
+
+            displayTransactions(transactions) {
+                const container = document.getElementById('transaction-list');
+                if (!transactions.length) {
+                    container.innerHTML = '<div class="no-transactions">No transactions yet</div>';
+                    return;
+                }
+
+                container.innerHTML = transactions.map(tx => `
+                    <div class="transaction-item ${tx.status}">
+                        <div class="tx-info">
+                            <span class="tx-type">${tx.type}</span>
+                            <span class="tx-date">${new Date(tx.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div class="tx-amount">
+                            ${this.getCurrencySymbol(tx.currency)}${tx.amount.toFixed(2)}
+                        </div>
+                        <div class="tx-status status-${tx.status}">${tx.status}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        new WithdrawalManager();
+    </script>
+
+    <style>
+        .withdrawal-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .withdrawal-header { text-align: center; margin-bottom: 30px; }
+        .balance-info { font-size: 18px; margin-top: 10px; }
+        .amount-input { display: flex; gap: 10px; }
+        .amount-input select { flex: 0 0 100px; }
+        .amount-input input { flex: 1; }
+        .method-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .method-option input { display: none; }
+        .method-card { border: 2px solid #ddd; padding: 15px; text-align: center; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .method-option input:checked + .method-card { border-color: #007bff; background: #f8f9ff; }
+        .fee-summary { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .fee-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .fee-row.total { font-weight: bold; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
+        .withdraw-btn { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .status-completed { color: #28a745; }
+        .status-pending { color: #ffc107; }
+        .status-failed { color: #dc3545; }
+    </style>
+</body>
+</html>

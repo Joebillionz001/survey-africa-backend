@@ -309,6 +309,8 @@
 <!-- ... rest of head content ... -->
 </head>
 <body>
+<script src="js/config.js"></script>
+<script src="js/tracking.js"></script>
 <script src="js/api.js"></script>
 <script src="js/app.js"></script>
 <script src="js/mobile.js"></script>
@@ -389,6 +391,14 @@
     <div class="section">
       <h3>Recent Surveys</h3>
       <ul class="list" id="recentSurveys"></ul>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="section">
+      <h3>Top Earners</h3>
+      <ul class="list" id="leaderboard">
+        <li>Loading leaderboard...</li>
+      </ul>
     </div>
 
     <!-- Actions -->
@@ -472,20 +482,20 @@
   // Line Chart
   const chartData = [20,45,80,60,110,95,18];
   const chartLabels = ["Aug 1","Aug 8","Aug 15","Aug 22","Sep 1","Sep 10","Sep 18"];
-  new Chart(document.getElementById('lineChart').getContext('2d'), {
-    type:'line',
+      new Chart(document.getElementById('lineChart').getContext('2d'), {
+        type:'line',
     data:{ labels: chartLabels, datasets:[{ label:'Responses', data: chartData, borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.1)', fill:true, tension:0.3 }]},
-    options:{ responsive:true, plugins:{ legend:{ display:false } } }
-  });
-
+        options:{ responsive:true, plugins:{ legend:{ display:false } } }
+      });
+      
   // Pie Chart
   const breakdownData = [240,110,78];
   const breakdownLabels = ["Positive","Neutral","Negative"];
-  new Chart(document.getElementById('pieChart').getContext('2d'), {
-    type:'pie',
+      new Chart(document.getElementById('pieChart').getContext('2d'), {
+        type:'pie',
     data:{ labels: breakdownLabels, datasets:[{ data: breakdownData, backgroundColor:['#34d399','#fbbf24','#f87171'] }]},
-    options:{ responsive:true }
-  });
+        options:{ responsive:true }
+      });
 
 
 

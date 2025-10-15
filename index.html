@@ -67,6 +67,16 @@
       background: rgba(0,206,201,0.1);
     }
 
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
     nav ul {
       list-style: none;
       display: flex;
@@ -203,6 +213,42 @@
     }
 
     @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      nav {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.95);
+        backdrop-filter: blur(15px);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+      
+      nav.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1rem;
+      }
+      
+      nav ul li a {
+        display: block;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-size: 1.1rem;
+      }
+      
       .hero h1 {
         font-size: 2.5rem;
       }
@@ -223,8 +269,6 @@
   </style>
 </head>
 <body>
-<script src="js/app.js"></script>
-<script src="js/mobile.js"></script>
   <header>
     <div class="brand">
       <div class="logo-mark">SA</div>
@@ -282,7 +326,13 @@
     <p>© 2025 Survey Africa. Made with ❤️ for Africa. All Rights Reserved.</p>
   </footer>
   
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/tracking.js"></script>
+  <script src="js/mobile.js"></script>
   <script>
+    // Global navigation functions
     function getStarted() {
       if (localStorage.getItem('isLoggedIn') === 'true') {
         window.location.href = 'dashboard.html';
@@ -297,6 +347,58 @@
       } else {
         window.location.href = 'login.html';
       }
+    }
+    
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+    
+    // PWA install prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      // Show install button
+      const installBtn = document.createElement('button');
+      installBtn.textContent = 'Install App';
+      installBtn.className = 'btn btn-secondary';
+      installBtn.style.position = 'fixed';
+      installBtn.style.bottom = '20px';
+      installBtn.style.right = '20px';
+      installBtn.style.zIndex = '1000';
+      
+      installBtn.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          }
+          deferredPrompt = null;
+          installBtn.remove();
+        });
+      });
+      
+      document.body.appendChild(installBtn);
+    });
+    
+    function toggleMenu() {
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('active');
+    }
+    
+    function closeMenu() {
+      const nav = document.getElementById('nav');
+      nav.classList.remove('active');
     }
   </script>
 </body>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Settings - Survey Africa</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-enhanced.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Survey Africa 🌍</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="user-profile.html">Profile</a></li>
+                <li><a href="security-settings.html" class="active">Security</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Security Settings</h1>
+
+        <!-- Password Section -->
+        <div class="security-section">
+            <h2>Password</h2>
+            <div class="security-card">
+                <div class="security-info">
+                    <h3>Change Password</h3>
+                    <p>Last changed: <span id="last-password-change">Loading...</span></p>
+                </div>
+                <button class="btn-primary" onclick="showPasswordForm()">Change Password</button>
+            </div>
+
+            <div id="password-form" class="form-section" style="display: none;">
+                <form onsubmit="changePassword(event)">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" id="current-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="new-password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="confirm-password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Update Password</button>
+                        <button type="button" class="btn-secondary" onclick="hidePasswordForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Two-Factor Authentication -->
+        <div class="security-section">
+            <h2>Two-Factor Authentication</h2>
+            <div class="security-card">
+                <div class="security-info">
+                    <h3>2FA Protection</h3>
+                    <p>Add an extra layer of security to your account</p>
+                    <div class="status-badge" id="2fa-status">
+                        <span class="status-indicator disabled"></span>
+                        Disabled
+                    </div>
+                </div>
+                <button class="btn-primary" id="2fa-toggle" onclick="toggle2FA()">Enable 2FA</button>
+            </div>
+
+            <div id="2fa-setup" class="form-section" style="display: none;">
+                <h3>Setup Two-Factor Authentication</h3>
+                <div class="setup-steps">
+                    <div class="step">
+                        <h4>Step 1: Install Authenticator App</h4>
+                        <p>Download Google Authenticator, Authy, or similar app on your phone.</p>
+                    </div>
+                    <div class="step">
+                        <h4>Step 2: Scan QR Code</h4>
+                        <div id="qr-code-container">
+                            <img id="qr-code" src="" alt="QR Code" style="display: none;">
+                        </div>
+                        <p>Or enter this code manually: <code id="manual-key"></code></p>
+                    </div>
+                    <div class="step">
+                        <h4>Step 3: Verify Setup</h4>
+                        <form onsubmit="verify2FA(event)">
+                            <div class="form-group">
+                                <label>Enter 6-digit code from your app</label>
+                                <input type="text" id="2fa-token" maxlength="6" pattern="[0-9]{6}" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Verify & Enable</button>
+                                <button type="button" class="btn-secondary" onclick="cancel2FASetup()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Activity -->
+        <div class="security-section">
+            <h2>Login Activity</h2>
+            <div class="security-card">
+                <div class="security-info">
+                    <h3>Recent Login Activity</h3>
+                    <p>Monitor your account access</p>
+                </div>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <strong>Current Session</strong>
+                        <p>Chrome on Windows • <span id="current-location">Loading...</span></p>
+                        <small id="current-time">Now</small>
+                    </div>
+                    <span class="activity-status current">Current</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data & Privacy -->
+        <div class="security-section">
+            <h2>Data & Privacy</h2>
+            <div class="security-card">
+                <div class="security-info">
+                    <h3>Account Data</h3>
+                    <p>Download or delete your account data</p>
+                </div>
+                <div class="data-actions">
+                    <button class="btn-secondary" onclick="downloadData()">Download Data</button>
+                    <button class="btn-danger" onclick="deleteAccount()">Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        let securitySettings = {};
+
+        async function loadSecuritySettings() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/security/settings`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    securitySettings = await response.json();
+                    updateSecurityDisplay();
+                }
+            } catch (error) {
+                console.error('Failed to load security settings:', error);
+            }
+        }
+
+        function updateSecurityDisplay() {
+            // Update password change date
+            const lastChange = new Date(securitySettings.lastPasswordChange).toLocaleDateString();
+            document.getElementById('last-password-change').textContent = lastChange;
+
+            // Update 2FA status
+            const status = document.getElementById('2fa-status');
+            const toggle = document.getElementById('2fa-toggle');
+            
+            if (securitySettings.twoFactorEnabled) {
+                status.innerHTML = '<span class="status-indicator enabled"></span> Enabled';
+                toggle.textContent = 'Disable 2FA';
+                toggle.onclick = disable2FA;
+            } else {
+                status.innerHTML = '<span class="status-indicator disabled"></span> Disabled';
+                toggle.textContent = 'Enable 2FA';
+                toggle.onclick = enable2FA;
+            }
+
+            // Update current time
+            document.getElementById('current-time').textContent = new Date().toLocaleString();
+        }
+
+        function showPasswordForm() {
+            document.getElementById('password-form').style.display = 'block';
+        }
+
+        function hidePasswordForm() {
+            document.getElementById('password-form').style.display = 'none';
+            document.getElementById('password-form').querySelector('form').reset();
+        }
+
+        async function changePassword(event) {
+            event.preventDefault();
+            
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/security/change-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                if (response.ok) {
+                    alert('Password changed successfully');
+                    hidePasswordForm();
+                    loadSecuritySettings();
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Failed to change password');
+                }
+            } catch (error) {
+                alert('Failed to change password');
+            }
+        }
+
+        async function enable2FA() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/security/2fa/enable`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('qr-code').src = data.qrCode;
+                    document.getElementById('qr-code').style.display = 'block';
+                    document.getElementById('manual-key').textContent = data.secret;
+                    document.getElementById('2fa-setup').style.display = 'block';
+                }
+            } catch (error) {
+                alert('Failed to setup 2FA');
+            }
+        }
+
+        async function verify2FA(event) {
+            event.preventDefault();
+            
+            const token = document.getElementById('2fa-token').value;
+            
+            try {
+                const authToken = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/api/security/2fa/verify`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ token })
+                });
+
+                if (response.ok) {
+                    alert('2FA enabled successfully!');
+                    cancel2FASetup();
+                    loadSecuritySettings();
+                } else {
+                    alert('Invalid code. Please try again.');
+                }
+            } catch (error) {
+                alert('Failed to verify 2FA');
+            }
+        }
+
+        function cancel2FASetup() {
+            document.getElementById('2fa-setup').style.display = 'none';
+            document.getElementById('2fa-token').value = '';
+        }
+
+        async function disable2FA() {
+            if (confirm('Are you sure you want to disable 2FA? This will make your account less secure.')) {
+                // Implementation for disabling 2FA
+                alert('2FA disabled');
+                loadSecuritySettings();
+            }
+        }
+
+        function downloadData() {
+            alert('Your data download will be prepared and emailed to you within 24 hours.');
+        }
+
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                if (confirm('This will permanently delete all your data, earnings, and achievements. Continue?')) {
+                    alert('Account deletion request submitted. You will receive a confirmation email.');
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadSecuritySettings);
+    </script>
+
+    <style>
+        .security-section {
+            margin-bottom: 40px;
+        }
+        
+        .security-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .security-info h3 {
+            margin: 0 0 5px 0;
+        }
+        
+        .security-info p {
+            margin: 0;
+            color: #666;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.enabled {
+            background: #4CAF50;
+        }
+        
+        .status-indicator.disabled {
+            background: #f44336;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .setup-steps .step {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .setup-steps .step:last-child {
+            border-bottom: none;
+        }
+        
+        #qr-code {
+            max-width: 200px;
+            margin: 10px 0;
+        }
+        
+        #manual-key {
+            background: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .activity-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-status.current {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        .data-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+    </style>
+</body>
+</html>

@@ -7,7 +7,7 @@
   top: 20px;
   left: 20px;
   z-index: 1001;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   border: none;
   padding: 10px 12px;
@@ -24,7 +24,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
 
@@ -36,52 +36,58 @@
 
 /* Mobile responsive breakpoints */
 @media (max-width: 768px) {
-  .mobile-menu-btn { display: block; }
-  
-  .sidebar { 
-    transform: translateX(-100%); 
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
     width: 280px;
   }
-  
-  .sidebar.mobile-visible { 
-    transform: translateX(0); 
+
+  .sidebar.mobile-visible {
+    transform: translateX(0);
   }
-  
-  .sidebar-overlay.active { 
-    display: block; 
+
+  .sidebar-overlay.active {
+    display: block;
   }
-  
-  .main { 
-    margin-left: 0 !important; 
-    padding-top: 60px; 
+
+  .main {
+    margin-left: 0 !important;
+    padding-top: 60px;
   }
-  
+
   /* Form adjustments */
   .form-group input,
   .form-group textarea,
   .form-group select {
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
+    /* Prevents zoom on iOS */
   }
-  
+
   /* Button adjustments */
-  .btn, .button {
-    min-height: 44px; /* Touch target size */
+  .btn,
+  .button {
+    min-height: 44px;
+    /* Touch target size */
     padding: 12px 20px;
   }
-  
+
   /* Navigation adjustments */
   nav ul {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   /* Card layouts */
-  .stats, .cards {
+  .stats,
+  .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
-  
+
   /* Header adjustments */
   .header {
     flex-direction: column;
@@ -91,37 +97,50 @@
 }
 
 @media (max-width: 480px) {
+
   /* Single column layouts */
-  .stats, .cards {
+  .stats,
+  .cards {
     grid-template-columns: 1fr;
   }
-  
+
   /* Full width elements */
-  .card, .form-group, .actions button {
+  .card,
+  .form-group,
+  .actions button {
     width: 100%;
     margin-bottom: 10px;
   }
-  
+
   /* Smaller text on mobile */
-  h1 { font-size: 1.8rem; }
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
-  
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
   /* Padding adjustments */
-  .container, .main {
+  .container,
+  .main {
     padding: 10px;
   }
-  
+
   /* Search box */
   .search-box {
     max-width: 100%;
   }
-  
+
   /* Quick actions */
   .quick-actions {
     flex-direction: column;
   }
-  
+
   .quick-btn {
     width: 100%;
     margin-bottom: 8px;
@@ -133,7 +152,7 @@
   .sidebar {
     width: 240px;
   }
-  
+
   .main {
     padding-top: 20px;
   }
@@ -144,11 +163,11 @@
   .sidebar {
     width: 200px;
   }
-  
+
   .main {
     margin-left: 200px;
   }
-  
+
   .stats {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -158,13 +177,64 @@
 
 /* Touch-friendly improvements */
 @media (hover: none) and (pointer: coarse) {
+
   .btn:hover,
   .button:hover {
-    transform: none; /* Remove hover animations on touch devices */
+    transform: none;
+    /* Remove hover animations on touch devices */
   }
-  
+
   /* Larger touch targets */
-  a, button, input, select, textarea {
+  a,
+  button,
+  input,
+  select,
+  textarea {
     min-height: 44px;
   }
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.remember-me input {
+  width: auto;
+}
+
+.remember-me label {
+  margin: 0;
+  font-size: 14px;
+}
+
+.login-button-divider {
+  margin: 20px 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.note {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.note a {
+  color: #00cec9;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
 }

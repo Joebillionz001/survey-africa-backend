@@ -37,7 +37,7 @@ A comprehensive survey platform designed to help users earn daily income through
 1. **Survey Completion** - $0.50 per survey
 2. **CPA Offers** - $0.50 - $3.00 per offer
 3. **YouTube Tasks** - $0.50 - $1.25 per video
-4. **Referrals** - $5.00 per friend invited
+4. **Referrals** - $2.00 per friend invited
 5. **Daily Tasks** - Various micro-tasks
 
 ## 🔧 Local Development
