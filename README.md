@@ -103,9 +103,10 @@ npx serve .
 MIT License - see LICENSE file for details
 
 ## 🌟 Support
-
+O
 For support, email lawijustice@gmail.com or create an issue on GitHub.
 
 ---
 
 Made with ❤️ for Africa 🌍
+
