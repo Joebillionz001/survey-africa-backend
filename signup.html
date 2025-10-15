@@ -579,7 +579,8 @@
     }
 
     function signUpWithGoogle() {
-      window.location.href = `${API_CONFIG.BASE_URL}/api/auth/google`;
+      const redirectUri = `${window.location.origin}/signup.html`;
+      window.location.href = `${API_CONFIG.BASE_URL}/api/auth/google?redirect_uri=${encodeURIComponent(redirectUri)}`;
     }
   </script>
 </body>
