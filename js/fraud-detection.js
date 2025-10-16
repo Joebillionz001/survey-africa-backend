@@ -20,7 +20,7 @@ class FraudDetection {
     const behavior = this.userBehavior[userId];
     behavior.actions.push(action);
     behavior.timestamps.push(Date.now());
-    
+
     // Keep only last 100 actions
     if (behavior.actions.length > 100) {
       behavior.actions.shift();
@@ -73,7 +73,7 @@ class FraudDetection {
     };
 
     this.suspiciousPatterns.push(flag);
-    
+
     // Report to server if high severity
     if (flag.severity >= 7) {
       this.reportToServer(flag);
@@ -95,7 +95,7 @@ class FraudDetection {
   async reportToServer(flag) {
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${API_BASE_URL}/api/security/fraud-report`, {
+      await fetch(`${API_CONFIG.BASE_URL}/api/security/fraud-report`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ class FraudDetection {
   // Validate survey response
   validateSurveyResponse(responses, timeSpent) {
     const avgTimePerQuestion = timeSpent / responses.length;
-    
+
     // Flag if too fast (less than 2 seconds per question)
     if (avgTimePerQuestion < 2000) {
       this.trackBehavior('survey_response', {
@@ -139,7 +139,7 @@ class FraudDetection {
   getUserRiskScore(userId) {
     const userFlags = this.suspiciousPatterns.filter(flag => flag.userId === userId);
     const recentFlags = userFlags.filter(flag => Date.now() - flag.timestamp < 24 * 60 * 60 * 1000);
-    
+
     return recentFlags.reduce((score, flag) => score + flag.severity, 0);
   }
 }

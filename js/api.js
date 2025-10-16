@@ -1,9 +1,7 @@
 // API Client for Survey Africa Backend
 class APIClient {
   constructor() {
-    this.baseURL = window.location.hostname === 'localhost' 
-      ? 'http://localhost:5000/api'
-      : 'https://surveyafrica-backend.up.railway.app/api';
+    this.baseURL = `${API_CONFIG.BASE_URL}/api`;
     this.token = typeof localStorage !== 'undefined' ? localStorage.getItem('authToken') : null;
   }
 
@@ -27,7 +25,7 @@ class APIClient {
 
     try {
       const response = await fetch(url, config);
-      
+
       if (!response.ok) {
         let errorMessage = 'API request failed';
         try {
@@ -38,13 +36,13 @@ class APIClient {
         }
         throw new Error(errorMessage);
       }
-      
+
       // Check if response has content
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         return await response.json();
       }
-      
+
       return null;
     } catch (error) {
       console.error('API Error:', error);
@@ -58,13 +56,13 @@ class APIClient {
       method: 'POST',
       body: JSON.stringify(userData)
     });
-    
+
     if (data.token) {
       this.token = data.token;
       localStorage.setItem('authToken', data.token);
       localStorage.setItem('currentUser', JSON.stringify(data.user));
     }
-    
+
     return data;
   }
 
@@ -73,13 +71,13 @@ class APIClient {
       method: 'POST',
       body: JSON.stringify(credentials)
     });
-    
+
     if (data.token) {
       this.token = data.token;
       localStorage.setItem('authToken', data.token);
       localStorage.setItem('currentUser', JSON.stringify(data.user));
     }
-    
+
     return data;
   }
 

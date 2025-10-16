@@ -1,566 +1,682 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Survey Dashboard</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="css/responsive.css">
-<link rel="stylesheet" href="css/footer.css">
-<link rel="stylesheet" href="css/logo.css">
-<style>
-  /* Body & Background */
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    color: #111;
-    position: relative;
-  }
-
-  /* Dark overlay for readability */
-  body::before {
-    content: "";
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.5);
-    z-index: -1;
-  }
-
-  /* Container */
-  .container {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: row;
-  }
-
-  /* Mobile menu button */
-  .mobile-menu-btn {
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1001;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  /* Sidebar overlay */
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
-  }
-
- /* Sidebar with semi-transparent background and blur */
-.sidebar {
-    width: 240px;
-    background: rgba(11,18,32,0.5);
-    backdrop-filter: blur(8px);
-    color: white;
-    padding: 9px;
-    position: fixed;
-    height: 100vh;
-    overflow: auto;
-    transition: transform 0.3s ease;
-    z-index: 1000;
-}
-
-  .sidebar h2 { 
-    color: #06b6d4; 
-    margin-bottom: 10px; 
-  }
-
-  .sidebar a { 
-    display:block; 
-    color:#c7d2da; 
-    padding:10px 0; 
-    text-decoration:none; 
-  }
-
-  .sidebar a:hover { 
-    color:white; 
-  }
-  
-
-  /* Header */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .search-box {
-    position: relative;
-    max-width: 300px;
-    flex: 1;
-  }
-  
-  .search-box input {
-    width: 100%;
-    padding: 10px 40px 10px 15px;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 25px;
-    background: rgba(255,255,255,0.9);
-    font-size: 14px;
-  }
-  
-  .search-box i {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-  }
-  
-  .notifications {
-    position: relative;
-    cursor: pointer;
-    font-size: 20px;
-    color: white;
-    padding: 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-  }
-  
-  .notifications:hover {
-    background: rgba(255,255,255,0.2);
-  }
-  
-  .notification-badge {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: #ef4444;
-    color: white;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Main content */
-  .main {
-    flex: 1;
-    margin-left: 240px;
-    padding: 20px;
-  }
-
-  /* Stats cards */
-  .stats {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  .card {
-    background: rgba(255,255,255,0.85);
-    padding: 15px;
-    border-radius: 8px;
-    flex: 1;
-    min-width: 120px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
-  .card h3 { margin:0 0 5px 0; font-size:14px; color:#6b7280; }
-  .card p { margin:0; font-size:20px; font-weight:bold; }
-
-  /* Sections */
-  .section { margin-bottom:20px; }
-  .section h3 { margin-bottom:10px; }
-
-  /* List items */
-  .list { list-style:none; padding:0; margin:0; }
-  .list li {
-    padding:10px;
-    background: rgba(255,255,255,0.85);
-    margin-bottom:5px;
-    border-radius:6px;
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-  }
-
-  /* Status labels */
-  .status { padding:2px 8px; border-radius:12px; font-size:12px; margin-left:10px; }
-  .status.Active { background:#dcfce7; color:#166534; }
-  .status.Draft { background:#fef3c7; color:#78350f; }
-  .status.Closed { background:#e5e7eb; color:#374151; }
-  
-  /* Loading states */
-  .loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    border-top-color: #3b82f6;
-    animation: spin 1s ease-in-out infinite;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  .hidden { display: none; }
-  
-  /* Toast notifications */
-  .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(34, 197, 94, 0.95);
-    color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 1000;
-    transform: translateX(400px);
-    transition: transform 0.3s ease;
-  }
-  
-  .toast.show {
-    transform: translateX(0);
-  }
-  
-  .toast.error {
-    background: rgba(239, 68, 68, 0.95);
-  }
-
-  /* Action buttons */
-  .actions button {
-    margin-right:10px;
-    margin-top:5px;
-    padding:8px 12px;
-    border:none;
-    border-radius:6px;
-    color:white;
-    cursor:pointer;
-  }
-  .actions .create { background:#10b981; }
-  .actions .analytics { background:#3b82f6; }
-  .actions .export { background:#f59e0b; color:#111; }
-
-  canvas { width:100%; height:250px; border-radius:8px; }
-
-  /* Quick actions */
-  .quick-actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  
-  .quick-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-  }
-  
-  .quick-btn:hover {
-    background: rgba(255,255,255,0.2);
-    transform: translateY(-2px);
-  }
-  
-  /* Responsive */
-  @media(max-width: 768px){
-    .mobile-menu-btn { display: block; }
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.mobile-visible { transform: translateX(0); }
-    .sidebar-overlay.active { display: block; }
-    .main { margin-left: 0; padding-top: 60px; }
-    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .header { flex-direction: column; gap: 10px; }
-  }
-  @media(max-width: 480px){
-    .stats { grid-template-columns: 1fr; }
-    .card { min-width:100%; }
-    .actions button { width:100%; margin-bottom:5px; }
-    .quick-actions { flex-direction: column; }
-    .quick-btn { width: 100%; }
-    .search-box { max-width: 100%; }
-  }
-
-</style>
-<!-- ... rest of head content ... -->
-</head>
-<body>
-<script src="js/config.js"></script>
-<script src="js/tracking.js"></script>
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
-<script src="js/mobile.js"></script>
-<!-- Mobile menu button -->
-<button class="mobile-menu-btn" onclick="toggleSidebar()">
-  <i class="fas fa-bars"></i>
-</button>
-
-<!-- Sidebar overlay -->
-<div class="sidebar-overlay" onclick="closeSidebar()"></div>
-
-<div class="container">
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <span class="logo-mark">SA</span>
-      <span>Survey Africa</span>
-    </div>
-    <div id="userInfo">
-      <img id="userAvatar" src="" alt="Avatar" style="width:40px;height:40px;border-radius:50%;margin-bottom:10px;">
-      <p id="userName">Loading...</p>
-      <p id="userStats" style="font-size:12px;color:#ccc;">Earnings: $0 | Surveys: 0</p>
-    </div>
-    <nav>
-      <a href="index.html"><i class="fas fa-home"></i> Home</a>
-      <a href="dashboard.html" style="color:#ffd700;"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      <a href="my-surveys.html"><i class="fas fa-list"></i> My Surveys</a>
-      <a href="quick-survey.html"><i class="fas fa-plus"></i> Create Survey</a>
-      <a href="reports.html"><i class="fas fa-chart-bar"></i> Analytics</a>
-      <a href="offerwall.html"><i class="fas fa-coins"></i> Earn Money</a>
-      <a href="tasks.html"><i class="fas fa-tasks"></i> All Tasks</a>
-      <a href="billing.html"><i class="fas fa-wallet"></i> Earnings</a>
-      <a href="withdrawal.html"><i class="fas fa-money-bill-wave"></i> Withdraw</a>
-      <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
-      <a href="index.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
-    </nav>
-  </aside>
-
-  <!-- Main -->
-  <main class="main">
-    <div class="header">
-      <h1>Dashboard</h1>
-      <div class="search-box">
-        <input type="text" placeholder="Search surveys..." id="searchInput">
-        <i class="fas fa-search"></i>
-      </div>
-      <div class="notifications" onclick="showNotifications()">
-        <i class="fas fa-bell"></i>
-        <span class="notification-badge">3</span>
-      </div>
-    </div>
-    
-    <div class="quick-actions">
-      <button class="quick-btn" onclick="quickCreate()"><i class="fas fa-plus"></i> Quick Survey</button>
-      <button class="quick-btn" onclick="viewReports()"><i class="fas fa-chart-line"></i> Reports</button>
-      <button class="quick-btn" onclick="manageTeam()"><i class="fas fa-users"></i> Team</button>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats">
-      <div class="card"><h3>Surveys</h3><p id="surveys">0</p></div>
-      <div class="card"><h3>Responses</h3><p id="responses">0</p></div>
-      <div class="card"><h3>Earnings</h3><p id="earnings">$0</p></div>
-      <div class="card"><h3>Active Users</h3><p id="activeUsers">0</p></div>
-    </div>
-
-    <!-- Charts -->
-    <div class="section">
-      <h3>Responses Over Time</h3>
-      <canvas id="lineChart"></canvas>
-    </div>
-    <div class="section">
-      <h3>Response Breakdown</h3>
-      <canvas id="pieChart"></canvas>
-    </div>
-
-    <!-- Recent Surveys -->
-    <div class="section">
-      <h3>Recent Surveys</h3>
-      <ul class="list" id="recentSurveys"></ul>
-    </div>
-
-    <!-- Leaderboard -->
-    <div class="section">
-      <h3>Top Earners</h3>
-      <ul class="list" id="leaderboard">
-        <li>Loading leaderboard...</li>
-      </ul>
-    </div>
-
-    <!-- Actions -->
-    <div class="section actions">
-      <button class="create" onclick="createSurvey()"><i class="fas fa-plus"></i> Create Survey</button>
-      <button class="analytics" onclick="viewAnalytics()"><i class="fas fa-chart-bar"></i> View Analytics</button>
-      <button class="export" onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
-    </div>
-  </main>
-  <!-- ... rest of container content ... -->
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  // Toast notification system
-  function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i> ${message}`;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => toast.classList.add('show'), 100);
-    setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => document.body.removeChild(toast), 300);
-    }, 3000);
-  }
-  
-  // Search functionality
-  document.getElementById('searchInput').addEventListener('input', function(e) {
-    const query = e.target.value.toLowerCase();
-    const surveys = document.querySelectorAll('#recentSurveys li');
-    surveys.forEach(survey => {
-      const text = survey.textContent.toLowerCase();
-      survey.style.display = text.includes(query) ? 'flex' : 'none';
-    });
-  });
-
-  // Initialize app and load user data
-  document.addEventListener('DOMContentLoaded', async function() {
-    try {
-      // Handle Google OAuth callback first
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      const user = urlParams.get('user');
-      
-      if (token && user) {
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('currentUser', user);
-        localStorage.setItem('isLoggedIn', 'true');
-        // Clean URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-      
-      if (!localStorage.getItem('currentUser') && !localStorage.getItem('isLoggedIn')) {
-        window.location.href = 'login.html';
-        return;
-      }
-      
-      const dashboardApp = new SurveyApp();
-      
-      if (dashboardApp.currentUser) {
-        document.getElementById('userName').textContent = `${dashboardApp.currentUser.name} (@${dashboardApp.currentUser.username || 'user'})`;
-        document.getElementById('userAvatar').src = dashboardApp.currentUser.avatar || 'https://ui-avatars.io/api/?name=User&background=10b981&color=fff';
-        document.getElementById('userStats').textContent = `Earnings: $${dashboardApp.currentUser.totalEarnings || 0} | Surveys: ${dashboardApp.currentUser.surveysCompleted || 0}`;
-        
-        // Update stats cards
-        document.getElementById('earnings').textContent = `$${dashboardApp.currentUser.totalEarnings || 0}`;
-        document.getElementById('surveys').textContent = dashboardApp.currentUser.surveysCompleted || 0;
-      } else {
-        window.location.href = 'login.html';
-      }
-    } catch (error) {
-      console.error('Dashboard initialization error:', error);
-      document.getElementById('userName').textContent = 'Error loading user data';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/logo.css">
+  <style>
+    /* Body & Background */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: url('The Best Background Images for Any Project.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: #111;
+      position: relative;
     }
-  });
+
+    /* Dark overlay for readability */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    /* Container */
+    .container {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: row;
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Sidebar overlay */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    /* Sidebar with semi-transparent background and blur */
+    .sidebar {
+      width: 240px;
+      background: rgba(11, 18, 32, 0.5);
+      backdrop-filter: blur(8px);
+      color: white;
+      padding: 9px;
+      position: fixed;
+      height: 100vh;
+      overflow: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .sidebar h2 {
+      color: #06b6d4;
+      margin-bottom: 10px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #c7d2da;
+      padding: 10px 0;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      color: white;
+    }
 
 
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-  // Line Chart
-  const chartData = [20,45,80,60,110,95,18];
-  const chartLabels = ["Aug 1","Aug 8","Aug 15","Aug 22","Sep 1","Sep 10","Sep 18"];
-      new Chart(document.getElementById('lineChart').getContext('2d'), {
-        type:'line',
-    data:{ labels: chartLabels, datasets:[{ label:'Responses', data: chartData, borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.1)', fill:true, tension:0.3 }]},
-        options:{ responsive:true, plugins:{ legend:{ display:false } } }
+    .search-box {
+      position: relative;
+      max-width: 300px;
+      flex: 1;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 40px 10px 15px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+    }
+
+    .search-box i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+    }
+
+    .notifications {
+      position: relative;
+      cursor: pointer;
+      font-size: 20px;
+      color: white;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .notifications:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      margin-left: 240px;
+      padding: 20px;
+    }
+
+    /* Stats cards */
+    .stats {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 15px;
+      border-radius: 8px;
+      flex: 1;
+      min-width: 120px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h3 {
+      margin: 0 0 5px 0;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      margin-bottom: 10px;
+    }
+
+    /* List items */
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .list li {
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.85);
+      margin-bottom: 5px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    /* Status labels */
+    .status {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+
+    .status.Active {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.Draft {
+      background: #fef3c7;
+      color: #78350f;
+    }
+
+    .status.Closed {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    /* Loading states */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #3b82f6;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Toast notifications */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(34, 197, 94, 0.95);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.error {
+      background: rgba(239, 68, 68, 0.95);
+    }
+
+    /* Action buttons */
+    .actions button {
+      margin-right: 10px;
+      margin-top: 5px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .actions .create {
+      background: #10b981;
+    }
+
+    .actions .analytics {
+      background: #3b82f6;
+    }
+
+    .actions .export {
+      background: #f59e0b;
+      color: #111;
+    }
+
+    canvas {
+      width: 100%;
+      height: 250px;
+      border-radius: 8px;
+    }
+
+    /* Quick actions */
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .quick-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .quick-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.mobile-visible {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        padding-top: 60px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-width: 100%;
+      }
+
+      .actions button {
+        width: 100%;
+        margin-bottom: 5px;
+      }
+
+      .quick-actions {
+        flex-direction: column;
+      }
+
+      .quick-btn {
+        width: 100%;
+      }
+
+      .search-box {
+        max-width: 100%;
+      }
+    }
+  </style>
+  <!-- ... rest of head content ... -->
+</head>
+
+<body>
+  <script src="js/config.js"></script>
+  <script src="js/tracking.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/mobile.js"></script>
+  <!-- Mobile menu button -->
+  <button class="mobile-menu-btn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar overlay -->
+  <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="logo-mark">SA</span>
+        <span>Survey Africa</span>
+      </div>
+      <div id="userInfo">
+        <img id="userAvatar" src="" alt="Avatar" style="width:40px;height:40px;border-radius:50%;margin-bottom:10px;">
+        <p id="userName">Loading...</p>
+        <p id="userStats" style="font-size:12px;color:#ccc;">Earnings: $0 | Surveys: 0</p>
+      </div>
+      <nav>
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="dashboard.html" style="color:#ffd700;"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="my-surveys.html"><i class="fas fa-list"></i> My Surveys</a>
+        <a href="quick-survey.html"><i class="fas fa-plus"></i> Create Survey</a>
+        <a href="reports.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+        <a href="offerwall.html"><i class="fas fa-coins"></i> Earn Money</a>
+        <a href="tasks.html"><i class="fas fa-tasks"></i> All Tasks</a>
+        <a href="billing.html"><i class="fas fa-wallet"></i> Earnings</a>
+        <a href="withdrawal.html"><i class="fas fa-money-bill-wave"></i> Withdraw</a>
+        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+        <a href="index.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="header">
+        <h1>Dashboard</h1>
+        <div class="search-box">
+          <input type="text" placeholder="Search surveys..." id="searchInput">
+          <i class="fas fa-search"></i>
+        </div>
+        <div class="notifications" onclick="showNotifications()">
+          <i class="fas fa-bell"></i>
+          <span class="notification-badge">3</span>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button class="quick-btn" onclick="quickCreate()"><i class="fas fa-plus"></i> Quick Survey</button>
+        <button class="quick-btn" onclick="viewReports()"><i class="fas fa-chart-line"></i> Reports</button>
+        <button class="quick-btn" onclick="manageTeam()"><i class="fas fa-users"></i> Team</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="card">
+          <h3>Surveys</h3>
+          <p id="surveys">0</p>
+        </div>
+        <div class="card">
+          <h3>Responses</h3>
+          <p id="responses">0</p>
+        </div>
+        <div class="card">
+          <h3>Earnings</h3>
+          <p id="earnings">$0</p>
+        </div>
+        <div class="card">
+          <h3>Active Users</h3>
+          <p id="activeUsers">0</p>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="section">
+        <h3>Responses Over Time</h3>
+        <canvas id="lineChart"></canvas>
+      </div>
+      <div class="section">
+        <h3>Response Breakdown</h3>
+        <canvas id="pieChart"></canvas>
+      </div>
+
+      <!-- Recent Surveys -->
+      <div class="section">
+        <h3>Recent Surveys</h3>
+        <ul class="list" id="recentSurveys"></ul>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="section">
+        <h3>Top Earners</h3>
+        <ul class="list" id="leaderboard">
+          <li>Loading leaderboard...</li>
+        </ul>
+      </div>
+
+      <!-- Actions -->
+      <div class="section actions">
+        <button class="create" onclick="createSurvey()"><i class="fas fa-plus"></i> Create Survey</button>
+        <button class="analytics" onclick="viewAnalytics()"><i class="fas fa-chart-bar"></i> View Analytics</button>
+        <button class="export" onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
+      </div>
+    </main>
+    <!-- ... rest of container content ... -->
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Toast notification system
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i> ${message}`;
+      document.body.appendChild(toast);
+
+      setTimeout(() => toast.classList.add('show'), 100);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => document.body.removeChild(toast), 300);
+      }, 3000);
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+      const query = e.target.value.toLowerCase();
+      const surveys = document.querySelectorAll('#recentSurveys li');
+      surveys.forEach(survey => {
+        const text = survey.textContent.toLowerCase();
+        survey.style.display = text.includes(query) ? 'flex' : 'none';
       });
-      
-  // Pie Chart
-  const breakdownData = [240,110,78];
-  const breakdownLabels = ["Positive","Neutral","Negative"];
-      new Chart(document.getElementById('pieChart').getContext('2d'), {
-        type:'pie',
-    data:{ labels: breakdownLabels, datasets:[{ data: breakdownData, backgroundColor:['#34d399','#fbbf24','#f87171'] }]},
-        options:{ responsive:true }
-      });
+    });
+
+    // Initialize app and load user data
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        // IMPORTANT: Handle Google OAuth callback *before* any auth checks.
+        const urlParams = new URLSearchParams(window.location.search);
+        const oauthToken = urlParams.get('token');
+        const oauthUser = urlParams.get('user');
+
+        if (oauthToken && oauthUser) {
+          localStorage.setItem('authToken', oauthToken);
+          // The user object is URL-encoded JSON, so we need to decode and parse it.
+          // No need to parse if the backend sends it correctly, but this is safer.
+          localStorage.setItem('currentUser', decodeURIComponent(oauthUser));
+          localStorage.setItem('isLoggedIn', 'true');
+
+          showToast('Google sign-in successful!', 'success');
+
+          // Clean URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // NOW, check for authentication.
+        if (!localStorage.getItem('currentUser') && !localStorage.getItem('isLoggedIn')) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // Initialize the main app. This will load the user from localStorage.
+        const dashboardApp = new SurveyApp();
+        await dashboardApp.init(); // This populates the UI with user data.
+
+        // Final check, in case init fails or user is still null
+        if (!dashboardApp.currentUser) {
+          showToast('Session invalid. Redirecting to login.', 'error');
+          window.location.href = 'login.html';
+        }
+
+      } catch (error) {
+        console.error('Dashboard initialization error:', error);
+        document.getElementById('userName').textContent = 'Error loading user data';
+      }
+    });
 
 
 
-  // Enhanced functions with loading states
-  function logout(){ 
-    showToast('Logging out...', 'success');
-    setTimeout(() => window.location.href = 'index.html', 1500);
-  }
-  
-  function createSurvey(){ 
-    showToast('Redirecting to survey builder...', 'success');
-    setTimeout(() => window.location.href = 'quick-survey.html', 1000);
-  }
-  
-  function viewAnalytics(){ 
-    showToast('Loading analytics...', 'success');
-    setTimeout(() => window.location.href = 'reports.html', 1000);
-  }
-  
-  function exportData(){ 
-    showToast('Preparing export...', 'success');
-    setTimeout(() => showToast('Export completed!', 'success'), 2000);
-  }
-  
-  // New functions
-  function showNotifications() {
-    showToast('You have 3 new survey responses!', 'success');
-  }
-  
-  function quickCreate() {
-    showToast('Opening quick survey template...', 'success');
-    setTimeout(() => window.location.href = 'quick-survey.html', 800);
-  }
-  
-  function viewReports() {
-    showToast('Loading detailed reports...', 'success');
-    setTimeout(() => window.location.href = 'reports.html', 800);
-  }
-  
-  function manageTeam() {
-    showToast('Opening team management...', 'success');
-    setTimeout(() => window.location.href = 'team.html', 800);
-  }
-  
-  // Mobile sidebar functions
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    sidebar.classList.toggle('mobile-visible');
-    overlay.classList.toggle('active');
-  }
-  
-  function closeSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    sidebar.classList.remove('mobile-visible');
-    overlay.classList.remove('active');
-  }
+    // Line Chart
+    const chartData = [20, 45, 80, 60, 110, 95, 18];
+    const chartLabels = ["Aug 1", "Aug 8", "Aug 15", "Aug 22", "Sep 1", "Sep 10", "Sep 18"];
+    new Chart(document.getElementById('lineChart').getContext('2d'), {
+      type: 'line',
+      data: { labels: chartLabels, datasets: [{ label: 'Responses', data: chartData, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', fill: true, tension: 0.3 }] },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
 
-  // Auto-refresh stats every 30 seconds
-  setInterval(() => {
-    const responses = document.getElementById('responses');
-    const current = parseInt(responses.textContent);
-    responses.textContent = current + Math.floor(Math.random() * 3);
-  }, 30000);
-</script>
+    // Pie Chart
+    const breakdownData = [240, 110, 78];
+    const breakdownLabels = ["Positive", "Neutral", "Negative"];
+    new Chart(document.getElementById('pieChart').getContext('2d'), {
+      type: 'pie',
+      data: { labels: breakdownLabels, datasets: [{ data: breakdownData, backgroundColor: ['#34d399', '#fbbf24', '#f87171'] }] },
+      options: { responsive: true }
+    });
+
+
+
+    // Enhanced functions with loading states
+    function logout() {
+      showToast('Logging out...', 'success');
+      setTimeout(() => window.location.href = 'index.html', 1500);
+    }
+
+    function createSurvey() {
+      showToast('Redirecting to survey builder...', 'success');
+      setTimeout(() => window.location.href = 'quick-survey.html', 1000);
+    }
+
+    function viewAnalytics() {
+      showToast('Loading analytics...', 'success');
+      setTimeout(() => window.location.href = 'reports.html', 1000);
+    }
+
+    function exportData() {
+      showToast('Preparing export...', 'success');
+      setTimeout(() => showToast('Export completed!', 'success'), 2000);
+    }
+
+    // New functions
+    function showNotifications() {
+      showToast('You have 3 new survey responses!', 'success');
+    }
+
+    function quickCreate() {
+      showToast('Opening quick survey template...', 'success');
+      setTimeout(() => window.location.href = 'quick-survey.html', 800);
+    }
+
+    function viewReports() {
+      showToast('Loading detailed reports...', 'success');
+      setTimeout(() => window.location.href = 'reports.html', 800);
+    }
+
+    function manageTeam() {
+      showToast('Opening team management...', 'success');
+      setTimeout(() => window.location.href = 'team.html', 800);
+    }
+
+    // Mobile sidebar functions
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      sidebar.classList.toggle('mobile-visible');
+      overlay.classList.toggle('active');
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      sidebar.classList.remove('mobile-visible');
+      overlay.classList.remove('active');
+    }
+
+    // Auto-refresh stats every 30 seconds
+    setInterval(() => {
+      const responses = document.getElementById('responses');
+      const current = parseInt(responses.textContent);
+      responses.textContent = current + Math.floor(Math.random() * 3);
+    }, 30000);
+  </script>
 </body>
+
 </html>

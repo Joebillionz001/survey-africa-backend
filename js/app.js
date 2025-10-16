@@ -35,12 +35,12 @@ class SurveyApp {
       localStorage.setItem('isLoggedIn', 'true');
       this.currentUser = result.user;
       localStorage.setItem('currentUser', JSON.stringify(result.user));
-      
+
       // Track login
       if (typeof tracking !== 'undefined') {
         tracking.trackUserLogin(email);
       }
-      
+
       await this.loadUserData();
       return { success: true, user: result.user };
     } catch (error) {
@@ -54,12 +54,12 @@ class SurveyApp {
       localStorage.setItem('isLoggedIn', 'true');
       this.currentUser = result.user;
       localStorage.setItem('currentUser', JSON.stringify(result.user));
-      
+
       // Track registration
       if (typeof tracking !== 'undefined') {
         tracking.trackUserRegistration(userData);
       }
-      
+
       await this.loadUserData();
       return { success: true, user: result.user };
     } catch (error) {
@@ -115,15 +115,6 @@ class SurveyApp {
   // YouTube Tasks
   getYouTubeTasks() {
     return [];
-  }
-
-  async init() {
-    this.setupEventListeners();
-    this.updateUI();
-    this.handleOAuthRedirect(); // Handle OAuth redirect parameters
-    if (this.currentUser) {
-      await this.loadUserData();
-    }
   }
 
   // Handle Google OAuth redirect
@@ -199,17 +190,17 @@ class SurveyApp {
 
   updateUserInfo() {
     if (!this.currentUser) return;
-    
+
     const userNameElements = document.querySelectorAll('#userName, .user-name');
     userNameElements.forEach(el => {
       if (el) el.textContent = `${this.currentUser.name} (@${this.currentUser.username || 'user'})`;
     });
-    
+
     const avatarElements = document.querySelectorAll('#userAvatar, .user-avatar');
     avatarElements.forEach(el => {
       if (el && this.currentUser.avatar) el.src = this.currentUser.avatar;
     });
-    
+
     const statsElements = document.querySelectorAll('#userStats, .user-stats');
     statsElements.forEach(el => {
       if (el) el.textContent = `Earnings: $${this.currentUser.totalEarnings || 0} | Surveys: ${this.currentUser.surveysCompleted || 0}`;
@@ -218,7 +209,7 @@ class SurveyApp {
 
   updateStats() {
     const analytics = this.getAnalytics();
-    
+
     const elements = {
       surveys: document.getElementById('surveys'),
       responses: document.getElementById('responses'),
@@ -236,16 +227,16 @@ class SurveyApp {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     const icon = type === 'success' ? 'check' : 'exclamation';
-    
+
     const iconElement = document.createElement('i');
     iconElement.className = `fas fa-${icon}-circle`;
-    
+
     const textNode = document.createTextNode(' ' + message);
-    
+
     toast.appendChild(iconElement);
     toast.appendChild(textNode);
     document.body.appendChild(toast);
-    
+
     setTimeout(() => toast.classList.add('show'), 100);
     setTimeout(() => {
       toast.classList.remove('show');
@@ -258,7 +249,7 @@ class SurveyApp {
     if (typeof tracking !== 'undefined') {
       tracking.trackUserLogout();
     }
-    
+
     api.logout();
     localStorage.removeItem('isLoggedIn');
     window.location.href = 'index.html';
@@ -321,12 +312,12 @@ class SurveyApp {
   setupEventListeners() {
     // Event listeners setup
   }
-  
-  loadResponses() { 
-    return []; 
+
+  loadResponses() {
+    return [];
   }
-  
-  loadEarnings() { 
+
+  loadEarnings() {
     try {
       const earnings = localStorage.getItem('userEarnings');
       return earnings ? JSON.parse(earnings) : [];

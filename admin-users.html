@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .admin-container {
+            display: flex;
+        }
+
+        .admin-sidebar {
+            width: 220px;
+            background: #111;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-sidebar h2 {
+            text-align: center;
+            color: #00cec9;
+            margin-bottom: 30px;
+        }
+
+        .admin-sidebar a {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-sidebar a.active,
+        .admin-sidebar a:hover {
+            background: #00cec9;
+            color: #111;
+            font-weight: bold;
+        }
+
+        .admin-main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00cec9, #fd79a8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.3);
+            color: #00cec9;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .actions button {
+            background: none;
+            border: 1px solid #ccc;
+            color: #ccc;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .actions button:hover {
+            background: #00cec9;
+            color: #111;
+            border-color: #00cec9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <h2>Admin Panel</h2>
+            <a href="admin-secret.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="admin-users.html" class="active"><i class="fas fa-users"></i> User Management</a>
+            <a href="#"><i class="fas fa-list-alt"></i> Survey Management</a>
+            <a href="#"><i class="fas fa-shield-alt"></i> Security Logs</a>
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            <hr style="border-color: #333; margin: 20px 0;">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Site</a>
+        </aside>
+
+        <main class="admin-main">
+            <div class="header">
+                <h1><i class="fas fa-users"></i> User Management</h1>
+                <p>View, search, and manage all users on the platform.</p>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Earnings</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading users...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        async function loadUsers() {
+            const userList = document.getElementById('user-list');
+            try {
+                const response = await fetch(`${API_CONFIG.BASE_URL}/api/admin/users`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch users: ${response.statusText}`);
+                }
+
+                const users = await response.json();
+                userList.innerHTML = users.map(user => `
+          <tr>
+            <td><img src="${user.avatar || 'https://via.placeholder.com/40'}" class="user-avatar">${user.name} (@${user.username})</td>
+            <td>${user.email}</td>
+            <td>$${(user.totalEarnings || 0).toFixed(2)}</td>
+            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+            <td class="actions">
+              <button onclick="suspendUser('${user._id}', '${user.name}')">Suspend</button>
+              <button onclick="deleteUser('${user._id}', '${user.name}')" style="color: #ef4444; border-color: #ef4444;">Delete</button>
+            </td>
+          </tr>
+        `).join('');
+            } catch (error) {
+                userList.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444;">${error.message}</td></tr>`;
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadUsers);
+    </script>
+    <script>
+        async function suspendUser(userId, name) {
+            if (!confirm(`Are you sure you want to suspend ${name}?`)) return;
+
+            try {
+                const response = await fetch(`${API_CONFIG.BASE_URL}/api/admin/users/${userId}/suspend`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+                });
+                if (!response.ok) throw new Error('Failed to suspend user.');
+                alert('User suspended successfully.');
+                loadUsers(); // Refresh the list
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        async function deleteUser(userId, name) {
+            if (!confirm(`Are you sure you want to PERMANENTLY DELETE ${name}? This cannot be undone.`)) return;
+
+            try {
+                const response = await fetch(`${API_CONFIG.BASE_URL}/api/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+                });
+                if (!response.ok) throw new Error('Failed to delete user.');
+                alert('User deleted successfully.');
+                loadUsers(); // Refresh the list
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

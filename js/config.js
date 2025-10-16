@@ -1,25 +1,28 @@
+// js/config.js
 // API Configuration
 const API_CONFIG = (() => {
-  const hostname = window.location.hostname;
+  const hostname = window.location.hostname; // e.g., 'localhost', '127.0.0.1', 'your-site.com'
 
-  let backendUrl;
+  // Define backend URLs
+  const localBackend = 'http://localhost:5000';
+  const productionBackend = 'https://surveyafrica-backend.up.railway.app';
 
-  if (hostname.includes('ngrok-free.app') || hostname.includes('ngrok.io')) {
-    // If on ngrok, use the corresponding ngrok backend URL
-    // This assumes the backend is also exposed via ngrok on a different subdomain
-    // or you have a specific backend URL for ngrok testing
-    const backendSubdomain = 'your-backend-ngrok-subdomain'; // Replace with your actual backend ngrok subdomain
-    backendUrl = `https://${backendSubdomain}.ngrok-free.app`;
-  } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    // Local development
-    backendUrl = 'http://localhost:8000'; // Assuming your backend runs on port 8000
-  } else {
-    // Production environment
-    backendUrl = 'https://your-production-backend.com'; // Replace with your production backend URL
-  }
+  // Determine which backend to use
+  const getBaseUrl = () => {
+    // Use local backend for local development
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.endsWith('.local')) {
+      return localBackend;
+    }
+    // Use production backend for all other domains (ngrok, live site, etc.)
+    return productionBackend;
+  };
 
   return {
-    BASE_URL: backendUrl,
-    GOOGLE_CLIENT_ID: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com' // Replace with your Google Client ID
+    BASE_URL: getBaseUrl(),
+    // IMPORTANT: This should be set as an environment variable in your hosting environment (e.g., Netlify).
+    // For local testing, you can temporarily set it here.
+    // NEVER put your Client Secret here. Only the public Client ID is safe for frontend code.
+    // Your Client ID looks like: 'xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com'
+    GOOGLE_CLIENT_ID: '738803132069-2smc9eictpu5t09e4q070bqe27ci47hu.apps.googleusercontent.com'
   };
 })();

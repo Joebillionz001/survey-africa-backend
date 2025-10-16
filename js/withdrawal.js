@@ -1,9 +1,7 @@
 // Withdrawal API integration
 class WithdrawalAPI {
   constructor() {
-    this.baseURL = window.location.hostname === 'localhost' 
-      ? 'http://localhost:5000/api'
-      : 'https://surveyafrica-backend.up.railway.app/api';
+    this.baseURL = `${API_CONFIG.BASE_URL}/api`;
   }
 
   async request(endpoint, options = {}) {

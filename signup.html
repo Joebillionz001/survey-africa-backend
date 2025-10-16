@@ -537,12 +537,11 @@
       }
 
       try {
-        const response = await fetch('http://localhost:5000/api/auth/register', {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, username, email, password })
         });
-
         const data = await response.json();
 
         if (response.ok && data.token) {
@@ -560,28 +559,11 @@
       }
     });
 
-    // Handle Google OAuth callback
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    const user = urlParams.get('user');
-
-    if (token && user) {
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('currentUser', user);
-      localStorage.setItem('isLoggedIn', 'true');
-      showToast('Google sign-up successful!', 'success');
-      setTimeout(() => window.location.href = 'dashboard.html', 1500);
-    }
-
-    // Clear URL parameters after processing
-    if (token || user) {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
     function signUpWithGoogle() {
-      const redirectUri = `${window.location.origin}/signup.html`;
-      window.location.href = `${API_CONFIG.BASE_URL}/api/auth/google?redirect_uri=${encodeURIComponent(redirectUri)}`;
+      // Let the backend handle the redirect to the dashboard.
+      window.location.href = `${API_CONFIG.BASE_URL}/api/auth/google`;
     }
+
   </script>
 </body>
 

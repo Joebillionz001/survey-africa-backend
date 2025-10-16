@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,19 +34,19 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       z-index: -1;
     }
 
     .login-container {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(15px);
       padding: 50px 40px;
       border-radius: 20px;
-      border: 2px solid rgba(255,255,255,0.2);
+      border: 2px solid rgba(255, 255, 255, 0.2);
       max-width: 400px;
       width: 90%;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       text-align: center;
     }
 
@@ -65,15 +66,15 @@
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
-      color: rgba(255,255,255,0.9);
+      color: rgba(255, 255, 255, 0.9);
     }
 
     .form-group input {
       width: 100%;
       padding: 14px;
-      border: 2px solid rgba(255,255,255,0.2);
+      border: 2px solid rgba(255, 255, 255, 0.2);
       border-radius: 10px;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
       color: white;
       font-size: 16px;
       transition: all 0.3s ease;
@@ -82,11 +83,11 @@
     .form-group input:focus {
       outline: none;
       border-color: #00cec9;
-      background: rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.15);
     }
 
     .form-group input::placeholder {
-      color: rgba(255,255,255,0.6);
+      color: rgba(255, 255, 255, 0.6);
     }
 
     .login-button {
@@ -105,12 +106,12 @@
 
     .login-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,206,201,0.4);
+      box-shadow: 0 6px 20px rgba(0, 206, 201, 0.4);
     }
 
     .signup-link {
       margin-top: 25px;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255, 255, 255, 0.6);
     }
 
     .signup-link a {
@@ -183,7 +184,7 @@
     .google-btn:hover {
       background: #f8f9fa;
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     @media (max-width: 480px) {
@@ -191,7 +192,7 @@
         padding: 30px 20px;
         margin: 20px;
       }
-      
+
       .back-home {
         position: relative;
         top: auto;
@@ -200,25 +201,26 @@
         text-align: center;
         margin-bottom: 20px;
       }
-      
+
       body {
         padding-top: 0;
       }
     }
   </style>
 </head>
+
 <body>
   <a href="index.html" class="back-home">← Back to Home</a>
-  
+
   <div class="login-container">
     <div class="brand">
       <span class="logo-mark">SA</span>
       <span>Survey Africa</span>
     </div>
-    
+
     <div id="errorMessage" class="error-message"></div>
     <div id="successMessage" class="success-message"></div>
-    
+
     <form id="loginForm">
       <div class="form-group">
         <label for="email">Email Address</label>
@@ -230,8 +232,10 @@
         <input type="password" id="password" placeholder="Enter your password" required>
       </div>
 
-      <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
-        <input type="checkbox" id="rememberMe" style="width: auto;">
+      <div class="form-group"
+        style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer;"
+        onclick="document.getElementById('rememberMe').click();">
+        <input type="checkbox" id="rememberMe" style="width: auto; cursor: pointer;">
         <label for="rememberMe" style="margin: 0; font-size: 14px;">Remember me</label>
       </div>
 
@@ -258,7 +262,8 @@
     </p>
   </div>
 
-  <footer style="position: fixed; bottom: 0; width: 100%; text-align: center; padding: 10px; background: rgba(0,0,0,0.5); color: rgba(255,255,255,0.7); font-size: 12px;">
+  <footer
+    style="position: fixed; bottom: 0; width: 100%; text-align: center; padding: 10px; background: rgba(0,0,0,0.5); color: rgba(255,255,255,0.7); font-size: 12px;">
     <p>© 2025 Survey Africa. Made with ❤️ for Africa. All Rights Reserved.</p>
   </footer>
 
@@ -271,11 +276,11 @@
     function showMessage(message, type = 'success') {
       const errorDiv = document.getElementById('errorMessage');
       const successDiv = document.getElementById('successMessage');
-      
+
       // Hide both messages first
       errorDiv.style.display = 'none';
       successDiv.style.display = 'none';
-      
+
       if (type === 'error') {
         errorDiv.textContent = message;
         errorDiv.style.display = 'block';
@@ -288,7 +293,7 @@
     function setLoading(loading) {
       const form = document.getElementById('loginForm');
       const btn = document.getElementById('loginBtn');
-      
+
       if (loading) {
         form.classList.add('loading');
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
@@ -298,38 +303,38 @@
       }
     }
 
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const email = InputValidator.sanitizeHTML(document.getElementById('email').value.trim());
       const password = document.getElementById('password').value;
       const rememberMe = document.getElementById('rememberMe').checked;
-      
+
       if (!email || !password) {
         showMessage('Please fill in all fields', 'error');
         return;
       }
-      
+
       if (!InputValidator.validateEmail(email)) {
         showMessage('Please enter a valid email address', 'error');
         return;
       }
-      
+
       if (password.length < 6) {
         showMessage('Password must be at least 6 characters', 'error');
         return;
       }
-      
+
       setLoading(true);
-      
+
       try {
         const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
-        
+
         const data = await response.json();
-        
+
         if (response.ok && data.token) {
           if (rememberMe) {
             localStorage.setItem('authToken', data.token);
@@ -341,7 +346,7 @@
             sessionStorage.setItem('currentUser', JSON.stringify(data.user));
             sessionStorage.setItem('isLoggedIn', 'true');
           }
-          
+
           showMessage('Login successful! Redirecting...', 'success');
           setTimeout(() => window.location.href = 'dashboard.html', 1500);
         } else {
@@ -355,28 +360,12 @@
     });
 
     function signInWithGoogle() {
+      // The backend should handle the final redirect.
+      // The frontend just needs to initiate the Google auth flow.
       window.location.href = `${API_CONFIG.BASE_URL}/api/auth/google`;
     }
 
-    // Handle Google OAuth callback
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    const user = urlParams.get('user');
-    
-    if (token && user) {
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('currentUser', user);
-      localStorage.setItem('isLoggedIn', 'true');
-      showMessage('Google sign-in successful! Redirecting...', 'success');
-      setTimeout(() => window.location.href = 'dashboard.html', 1500);
-    }
-    
-    // Clear URL parameters after processing
-    if (token || user) {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-
   </script>
 </body>
+
 </html>
